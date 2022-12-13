@@ -1,0 +1,117 @@
+.noticeboard-edit-panel{
+  width: 900px;
+  .notice-expire-delay{
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    margin-bottom: 2rem;
+    .notice-exp-title-wrap{
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .notice-exp{
+      .notice-exp-del-title {
+        background-image: url(/assets/img/icons/delay.png);
+        padding-left: 22px;
+        background-repeat: no-repeat;
+        font-weight: bold;
+        margin-left: 10px;
+      }
+    }
+    .notice-del{
+      .notice-exp-del-title {
+        background-image: url(/assets/img/icons/expire.png);
+        padding-left: 26px;
+        background-repeat: no-repeat;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+    }
+    .notice-date{
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      color: black;
+    }
+    .notice-exp-date{
+      justify-content: flex-end;
+    }
+    .notice-exp-off{
+      color: #ccc;
+      .notice-date{
+        color: #ccc;
+      }
+    }
+  }
+  .mim-btn--upload-attachment{
+    border: 2px solid #f26204;
+    color: #f26204;
+    max-width: 20rem !important;
+    padding: 0.25rem 1rem;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+    display: block;
+    font-family: 'Montserrat';
+    text-transform: uppercase;
+    span{
+      font-weight: bold;
+      padding-top: 8px;
+      padding-left: 5px;
+      color: #f26204 !important;
+    }
+  }
+  .no-uploads{
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+  }
+  .notice-send-email{
+    margin-top: 2rem;
+    font-family: 'Montserrat';
+  }
+  .notice-receiver-radio{
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-top: 16px;
+    .mat-radio-button{
+      font-family: 'Montserrat';
+      margin-right: 5px;
+    }
+  }
+
+  .mim-btn--delete-notice-file {
+    background: #eeeeee;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.5rem;
+    // flex: 0 0 100%;
+    box-sizing: border-box;
+    width: 50%;
+    color: black;
+    img{
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+  
+  .buttons-back{
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+}
+
+
+// screen < 630px
+@media (max-width: 630px) {
+
+}

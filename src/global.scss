@@ -1,0 +1,1202 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import "https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500";
+@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "~quill/dist/quill.core.css";
+@import "~quill/dist/quill.bubble.css";
+@import "~quill/dist/quill.snow.css";
+
+:root {
+  font-family: "Montserrat" !important;
+}
+
+a {
+  text-decoration: none;
+  color: #3d5a92;
+
+  &:visited {
+    color: #3d5a92;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.flex-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Montserrat";
+  min-height: calc(100vh - 64px);
+  margin-top: 64px;
+
+  &.is-fullscreen {
+    height: 100vh;
+    margin-top: 0;
+  }
+}
+
+.d-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.d-flex-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.italic {
+  font-style: italic;
+  font-weight: 200;
+}
+
+.none {
+  display: none;
+}
+
+.mat-form-field-flex {
+  padding: 0 !important;
+}
+
+.mat-form-field-infix {
+  width: 100% !important;
+}
+
+.mat-tab-labels {
+  border-bottom: 1px solid #eee;
+
+  .mat-tab-label {
+    max-width: 190px !important;
+    min-width: 50px !important;
+    opacity: 1 !important;
+    font-size: 14px;
+    text-transform: uppercase;
+    -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+
+    &#mat-tab-label-0-1 {
+      width: 50px !important;
+    }
+  }
+
+  .mat-tab-label-active {
+    background-color: rgb(63, 81, 181) !important;
+    color: #fff !important;
+  }
+}
+
+.mat-tab-body-wrapper {
+  margin-top: 10px;
+  min-height: 532px;
+}
+
+.mat-radio-checked {
+  .mat-radio-inner-circle,
+  .mat-radio-persistent-ripple,
+  .mat-ripple-element {
+    background-color: #4c9cff !important;
+  }
+
+  .mat-radio-outer-circle {
+    border-color: #4c9cff !important;
+  }
+}
+
+.form-wrapper {
+  box-shadow: 0 7px 8px -4px rgb(0 0 0 / 20%), 0 13px 19px 2px rgb(0 0 0 / 14%), 0 5px 24px 4px rgb(0 0 0 / 12%);
+  background: #fff;
+  // min-width: 300px;
+  // min-height: 400px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 20px;
+  z-index: 2;
+}
+
+.mat-input {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+
+  input {
+    border: 1px solid #555555;
+    min-height: 43px;
+    text-indent: 17px;
+
+    &::placeholder {
+      font-weight: 200;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    &.ng-touched.ng-invalid {
+      border-color: #f26204;
+    }
+
+    &:focus {
+      border-color: #4f75b4 !important;
+    }
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  .hint {
+    left: 2px;
+    right: auto;
+    bottom: -16px;
+    font-size: 12px;
+    line-height: 14px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+.mat-input-element {
+  caret-color: #4c9cff;
+}
+
+.mat-form-field.mat-focused {
+  .mat-form-field-label {
+    color: #4c9cff;
+  }
+
+  .mat-form-field-ripple {
+    background-color: #4c9cff;
+  }
+
+  .mat-input-element {
+    border-width: 0;
+  }
+}
+
+.mat-form-field-label-wrapper {
+  top: -0.6em;
+  text-indent: 10px;
+}
+
+.mat-form-field-infix {
+  .mat-input-element {
+    border-top: 1px solid rgba(63, 81, 181, 0.3);
+    border-left: 1px solid rgba(63, 81, 181, 0.3);
+    border-right: 1px solid rgba(126, 133, 177, 0.3);
+    border-bottom: 1px solid rgba(63, 81, 181, 1);
+    padding: 5px 0;
+    text-indent: 10px;
+  }
+}
+
+.mat-form-field-subscript-wrapper {
+  margin-top: 5px;
+}
+
+.login-field {
+  input {
+    width: 100%;
+  }
+}
+
+.login-block-novalid {
+  color: #888;
+  font-size: 12px;
+}
+
+.login-buttons,
+.buttons-back {
+  max-width: 360px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .mat-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 72px;
+    border: 1px solid #555555;
+    border-radius: 0 !important;
+    width: 172px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: "Montserrat";
+
+    &:not([disabled]) {
+      &:hover {
+        background-color: #565655;
+        color: #fff;
+      }
+    }
+
+    &.back-btn {
+      border: 1px solid #555555;
+      background-color: #fff;
+      color: #555555;
+
+      &:hover {
+        background-color: #565655;
+        color: #fff;
+      }
+
+      .mat-icon {
+        margin-right: 10px;
+      }
+    }
+
+    &.submit-btn {
+      border: none;
+      color: #fff;
+      background-color: rgb(76, 156, 255);
+
+      &:disabled {
+        background-color: #f5a069;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.buttons-back {
+  .mat-button,
+  .mat-raised-button {
+    height: 50px;
+
+    &.primary-btn {
+      background: #f26204;
+      color: white;
+      border: 1px solid transparent;
+
+      &:disabled {
+        background-color: #f5a069 !important;
+      }
+    }
+  }
+}
+
+ion-content {
+  z-index: 10;
+  height: 100vh;
+}
+
+ion-content::part(background) {
+  top: var(--padding-start);
+  transition: background-image 0.5s ease-in-out;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-image: url(/assets/img/bg.jpg);
+}
+
+ion-toggle {
+  height: 24px;
+  margin-left: 8px;
+  margin-right: 8px;
+  --background: red;
+  --background-checked: #51d88a;
+  --handle-background: #f0ffff;
+  --handle-background-checked: #f0ffff;
+  --handle-max-height: 20px;
+  --handle-width: 20px;
+}
+
+// Header
+
+.mim-header-toolbar {
+  background-color: #fff;
+  position: fixed;
+  z-index: 1;
+  height: 160px;
+  max-height: 160px;
+  justify-content: space-between;
+}
+
+.mim-main-logo-orig {
+  img {
+    max-width: none;
+    max-height: none;
+    width: 260px;
+    height: auto;
+  }
+}
+
+.switch-role {
+  width: 175px;
+  flex-direction: column;
+
+  .logout-btn {
+    background-color: transparent;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+    box-shadow: none;
+    width: 175px;
+
+    .icon {
+      background: url(/assets/img/icons/logout.svg) no-repeat;
+      width: 20px;
+      height: 23px;
+    }
+
+    .logout {
+      font-weight: 600;
+      font-family: "Montserrat";
+      text-transform: uppercase;
+    }
+  }
+
+  .switch-role-select {
+    border-radius: 0px;
+    border-color: #555555;
+    color: #495057;
+    padding: 5px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
+
+// Loader
+
+.loading-bar {
+  .spinner {
+    height: 50px;
+    width: 50px;
+  }
+}
+
+// Resident
+
+.resident-view {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.resident-header {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.resident-dashboard-select {
+  .popover-content {
+    width: 600px;
+  }
+
+  .select-interface-option {
+    --inner-border-width: 0;
+  }
+}
+
+.mim-contact-link-wrap {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 30px;
+  padding-bottom: 20px;
+
+  .mim-contact-link {
+    color: #fff;
+  }
+}
+
+.mim-header-building-info {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-style: italic;
+  word-break: break-word;
+}
+
+.res-action-button {
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  background-color: rgb(76, 156, 255);
+  display: inline-flex;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 36px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+
+  &:not([disabled]) {
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 26%);
+  }
+}
+
+.pdfGuidDelete {
+  background: transparent;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0;
+  margin: 6px 8px;
+  color: #555;
+}
+
+.buttons-back {
+  margin-top: 20px;
+
+  .mat-raised-button {
+    text-transform: uppercase;
+  }
+}
+
+.book-datepicker {
+  .mat-form-field-flex {
+    flex-direction: row-reverse;
+
+    .mat-form-field-infix .mat-input-element {
+      border: none;
+      padding: 5px 0;
+      text-indent: 10px;
+    }
+
+    .mat-form-field-suffix {
+      .mat-button-wrapper {
+        position: absolute;
+        bottom: 10px;
+        right: 0;
+
+        .mat-datepicker-toggle-default-icon {
+          width: 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+.timepicker {
+  .mat-form-field-wrapper {
+    width: 197px;
+
+    .mat-form-field-flex {
+      flex-direction: row-reverse;
+
+      .mat-form-field-infix {
+        padding-left: 10px;
+
+        .mat-select-placeholder {
+          padding-top: 10px;
+        }
+      }
+
+      .mat-form-field-suffix {
+        .mat-icon {
+          color: rgba(0, 0, 0, 0.54);
+        }
+      }
+    }
+  }
+}
+
+.autocomplete {
+  .mat-form-field-infix .mat-input-element {
+    border: none;
+    padding: 5px 0;
+    text-indent: 10px;
+  }
+}
+
+.resident-update-profile,
+.building-information-tenant {
+  .mat-form-field-infix {
+    padding-bottom: 0;
+  }
+}
+
+// Manager
+
+.build-search-input {
+  .mat-form-field-infix {
+    padding-bottom: 0;
+  }
+}
+
+.mim-panel-header {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 20px;
+  font-family: "Montserrat";
+  font-weight: 400;
+  color: inherit;
+  word-break: break-word;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
+.ap-numbering {
+  border-color: black;
+  border-radius: 0 !important;
+
+  .mat-button-toggle-button {
+    font-family: "Montserrat" !important;
+    font-size: 0.874rem;
+
+    .mat-button-toggle-label-content {
+      line-height: 43px;
+    }
+  }
+
+  .mat-button-toggle + .mat-button-toggle {
+    border-left: solid 1px black;
+  }
+
+  .mat-button-toggle-checked {
+    color: white;
+    background-color: black;
+  }
+}
+
+.as-radio-btn,
+.notify-emails,
+.give-access,
+.share-user-email-frame {
+  .mat-radio-button {
+    font-family: "Montserrat";
+    padding: 10px;
+
+    .mat-radio-ripple {
+      display: none;
+    }
+
+    .mat-radio-outer-circle {
+      border: 1px solid black !important;
+    }
+  }
+
+  .mat-radio-checked {
+    .mat-radio-inner-circle {
+      background-color: black !important;
+    }
+  }
+}
+
+.add-level,
+.remove-level,
+.expire-delay,
+.notific-confirm,
+.moveout-confirm {
+  .alert-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 526px;
+    width: 465px;
+    max-width: 100%;
+    align-items: center;
+    font-family: "Montserrat";
+
+    .alert-head {
+      padding-top: 100px;
+      text-align: center;
+    }
+
+    .alert-button-group {
+      display: flex;
+      justify-content: space-evenly;
+      padding-top: 180px;
+
+      .alert-button-role-cancel {
+        max-width: 250px;
+        min-width: 130px;
+        height: 50px;
+        border-radius: 0px;
+        margin: 0px;
+        transition: 0.2s all;
+        width: 168px;
+        align-items: center;
+        border: 1px solid #555555;
+        font-weight: 600;
+        font-size: 0.875rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #555;
+
+        &:hover {
+          background-color: #555;
+          color: #fff;
+        }
+      }
+
+      .alert-button:not(.alert-button-role-cancel) {
+        max-width: 250px;
+        min-width: 130px;
+        height: 50px;
+        border-radius: 0px;
+        margin: 0px;
+        transition: 0.2s all;
+        border: 1px solid transparent;
+        min-height: 50px;
+        width: 360px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+        letter-spacing: 1.5px;
+        background: #f26204;
+        color: white;
+        text-transform: uppercase;
+
+        &:hover {
+          background-color: #4f75b4;
+        }
+      }
+
+      .alert-button-inner {
+        justify-content: center;
+      }
+    }
+
+    .alert-title {
+      text-transform: none;
+      font-size: 1.5rem;
+      font-weight: normal;
+      letter-spacing: 0.005em;
+      margin-bottom: 20px;
+    }
+
+    .alert-input {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      width: 70px;
+      text-align: center;
+    }
+  }
+}
+
+.moveout-confirm {
+  .alert-head {
+    padding-top: 0px !important;
+  }
+
+  .alert-button-group {
+    padding-top: 0 !important;
+  }
+}
+
+.remove-level {
+  .alert-button-group {
+    padding-top: 260px !important;
+  }
+}
+
+.upload-btn {
+  width: 170px;
+  height: 72px;
+  background: #555555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin: 20px 0px;
+  margin-left: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: white;
+  cursor: pointer;
+  border-radius: 0px;
+  font-family: "Montserrat";
+  margin-top: 48px;
+
+  &:hover {
+    background: #4f75b4;
+  }
+}
+
+.ql-editor {
+  font-size: 16px;
+  font-family: "Montserrat";
+}
+
+.time-settings {
+  .mat-select-trigger {
+    text-indent: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+}
+
+.address-frame,
+.noticeboard-edit-panel,
+.notifications,
+.give-access,
+.share-user-email-frame,
+.par-body-wrap,
+.common-edit,
+.mim-panel--trusted-real-estate,
+.booking-list {
+  .mat-checkbox {
+    .mat-ripple {
+      display: none;
+    }
+  }
+
+  .mat-checkbox-checked {
+    .mat-checkbox-background {
+      background-color: #4c9cff;
+    }
+  }
+
+  .mat-checkbox-inner-container {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mat-checkbox-label {
+    font-family: "Montserrat";
+  }
+}
+
+.building-information {
+  .mat-select {
+    &.ng-touched {
+      background-color: #555;
+
+      .mat-select-arrow,
+      .mat-select-value {
+        color: white;
+      }
+    }
+  }
+
+  .mat-select-trigger {
+    height: 43px;
+
+    .mat-select-value {
+      line-height: 43px;
+      text-indent: 17px;
+      font-family: "Montserrat";
+    }
+  }
+
+  .mat-option {
+    text-transform: uppercase !important;
+    font-family: "Montserrat" !important;
+  }
+
+  .ql-formats {
+    margin-right: 5px !important;
+  }
+}
+
+.expire-delay {
+  .alert-input {
+    width: 100% !important;
+  }
+}
+
+.mim-no-img {
+  background: url(assets/img/icons/image-icon.png) center no-repeat;
+  width: 100%;
+  height: 100%;
+}
+
+.notifications {
+  .mat-tab-body-wrapper {
+    min-height: 440px;
+  }
+
+  .mat-tab-labels {
+    border-bottom: 1px solid #eee;
+
+    .mat-tab-label {
+      font-family: "Montserrat";
+      font-weight: bold;
+      max-width: 190px !important;
+      min-width: 50px !important;
+      opacity: 1 !important;
+      font-size: 14px;
+      text-transform: uppercase;
+      -webkit-transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+      transition: background-color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+
+      &#mat-tab-label-0-1 {
+        width: 50px !important;
+      }
+    }
+
+    .mat-tab-label-active {
+      background-color: #f26204 !important;
+      color: #fff !important;
+    }
+  }
+
+  .mat-ink-bar {
+    background-color: #f26204 !important;
+  }
+
+  .internal-buttons {
+    .mat-tab-list,
+    .mat-tab-label {
+      height: 22px;
+    }
+  }
+}
+
+.trades-access,
+.add-trade,
+.give-access {
+  .mat-select {
+    border: 1px solid black;
+    padding: 6px;
+
+    .mat-select-value {
+      height: 43px;
+      line-height: 43px;
+      font-family: "Montserrat";
+      text-indent: 11px;
+    }
+  }
+}
+
+.access-datepicker {
+  .mat-icon-button {
+    color: #f26204;
+  }
+}
+
+.manager-option {
+  font-family: "Montserrat" !important;
+}
+
+.reports-wrapper {
+  .mat-select {
+    border: 1px solid black;
+    padding: 6px;
+
+    &.ng-touched {
+      background-color: #555;
+
+      .mat-select-arrow,
+      .mat-select-value {
+        color: white;
+      }
+    }
+
+    .mat-select-value {
+      height: 26px;
+      line-height: 26px;
+      font-family: "Montserrat";
+      text-indent: 11px;
+    }
+  }
+}
+
+.report-option {
+  height: unset !important;
+
+  .mat-option-text {
+    white-space: normal;
+  }
+}
+
+.add-parcelle-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  overflow: auto;
+}
+
+.add-parcel-modal {
+  .modal-wrapper {
+    width: 970px;
+    height: 650px !important;
+  }
+
+  .ion-page {
+    overflow: scroll;
+  }
+}
+
+.add-parcels {
+  .mat-select {
+    border: 1px solid black;
+    // padding: 6px;
+    .mat-select-value {
+      height: 40px;
+      line-height: 40px;
+      font-family: "Montserrat";
+      text-indent: 11px;
+    }
+  }
+}
+
+.time-intervals {
+  .mat-select-value {
+    height: 31px;
+    line-height: 31px;
+    font-family: "Montserrat";
+    text-indent: 5px;
+  }
+}
+
+.fc-scroller.fc-day-grid-container {
+  overflow: auto !important;
+  height: auto !important;
+}
+
+.calendar-frame {
+  .fc {
+    height: 455px;
+
+    .fc-scrollgrid {
+      border: 1px solid #f8f8f8;
+    }
+
+    .fc-header-toolbar {
+      margin-bottom: 5px !important;
+    }
+
+    .fc-toolbar {
+      h2 {
+        font-size: 14px;
+        text-transform: capitalize;
+        font-weight: bold;
+      }
+
+      .fc-toolbar-chunk {
+        .fc-button {
+          background-color: #eeeeee;
+          font-family: "Montserrat";
+          color: black;
+          border-radius: 0;
+          border: none;
+          margin-right: 3px;
+          padding: 6px;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .fc-col-header-cell-cushion {
+      font-size: 14px;
+      color: black;
+      font-weight: 400;
+      cursor: normal;
+    }
+
+    table {
+      max-height: 408px !important;
+      border-collapse: separate !important;
+      overflow-y: scroll;
+    }
+
+    .fc-daygrid-day-top {
+      padding: 5px 15px 0 0 !important;
+
+      .fc-daygrid-day-number {
+        font-size: 14px;
+        color: black;
+        font-weight: 400;
+        cursor: normal;
+        padding: 0;
+      }
+    }
+
+    .fc-daygrid-event {
+      padding: 3px;
+      border-radius: 13px;
+      font-weight: 500;
+      font-size: 11px;
+
+      .fc-event-time {
+        overflow: unset;
+      }
+    }
+
+    .fc-day {
+      border: 1px solid #f8f8f8;
+    }
+
+    .fc-daygrid {
+      .fc-day:not(.fc-day-other) {
+        border: 1px solid #555555;
+      }
+    }
+
+    .fc-col-header-cell {
+      border: 1px solid #f8f8f8 !important;
+    }
+
+    .fc-day-today {
+      background-color: #ddd !important;
+    }
+
+    .fc-day-disabled {
+      opacity: 0.05 !important;
+    }
+  }
+
+  .fc-daygrid-day-top,
+  .event-wrap {
+    z-index: 10 !important;
+  }
+}
+
+.mim-re-dashboard,
+.new-book-wrapper {
+  .mat-form-field-infix {
+    border-top: 0;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 2px 1px -1px rgb(0 0 0 / 12%);
+  }
+}
+
+.pac-item {
+  font-family: "Montserrat";
+  line-height: 40px;
+  text-indent: 10px;
+  font-size: 14px;
+
+  .pac-icon-marker {
+    display: none;
+  }
+}
+
+.pac-logo {
+  &:after {
+    display: none !important;
+  }
+}
+
+.event-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 5px 0;
+  position: absolute;
+  width: 100%;
+  bottom: 5px;
+  left: 0;
+
+  .ev-cell {
+    width: 26px;
+    height: 26px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.booking-event {
+      background-color: #1a237e;
+    }
+
+    &.cancel-event {
+      background-color: #b71c1c;
+    }
+
+    &.trade-event {
+      background-color: #00bcd4;
+      color: black;
+      border-radius: 50%;
+    }
+  }
+}
+
+.calendar-day-book {
+  padding-right: 35px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-family: "Montserrat";
+  color: #f46200;
+
+  &-block {
+    color: #eeeeee;
+  }
+
+  &.allowed {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .flex-page {
+    min-height: 100vh;
+    margin-bottom: 0;
+    margin-top: 20%;
+  }
+}
+
+@media (max-width: 600px) {
+  .mim-header-toolbar {
+    background-color: transparent;
+    height: 120px;
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+  }
+  .add-level,
+  .remove-level,
+  .expire-delay,
+  .notific-confirm,
+  .moveout-confirm {
+    .alert-wrapper {
+      width: 100%;
+
+      .alert-button-group {
+        padding-top: 180px !important;
+
+        .alert-button {
+          max-width: 168px !important;
+        }
+      }
+    }
+  }
+}

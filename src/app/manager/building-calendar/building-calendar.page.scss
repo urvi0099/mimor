@@ -1,0 +1,82 @@
+.calendar-frame{
+  width: 945px;
+  .buttons-back{
+    justify-content: center;
+  }
+  .mov-cal-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    h2{
+      text-transform: capitalize;
+      font-size: 24px;
+      margin-top: 0;
+      font-weight: 400;
+    }
+    & + h3{
+      width: 100%;
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .book-legend{
+      display: flex;
+      flex-direction: row;
+      .legend-col{
+        display: flex;
+        flex-direction: column;
+        .legend-el{
+          display: flex;
+          align-items: center;
+          padding: 2.5px 50px 2.5px 0;
+          &.last{
+            padding-right: 0;
+          }
+          span{
+            padding-left: 10px;
+            font-size: 12px;
+          }
+          .square{
+            height: 24px;
+            width: 24px;
+            &.mvi1{
+              border: 1px solid #43a047;
+              background-color: #43a047
+            }
+            &.mvi2{
+              border: 1px solid #43a047;
+            }
+            &.mvo1{
+              border: 1px solid #d81b60;
+              background-color: #d81b60;
+            }
+            &.mvo2{
+              border: 1px solid #d81b60;
+            }
+            &.lb{
+              border: 1px solid #1976d2;
+              background-color: #1976d2;
+            }
+            &.lbc{
+              border: 1px solid #1976d2;
+            }
+          }
+        }
+      }
+    }
+  }
+  .tooltip{
+    position: absolute;
+    z-index: 10001;
+    background-color: white;
+    padding: 0.5em;
+    border: 0.1em solid #b7ddf2;
+    border-radius: 0.5em;
+  }
+}
+
+@media (max-width: 766px) {
+  .calendar-frame{
+    width: 100%;
+  }
+}

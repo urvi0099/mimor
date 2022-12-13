@@ -1,0 +1,119 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+          <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper user-dashboard">
+      <div class="dashboard-wrapper" *ngIf="!pageLoading">
+        <h2 class="text-center resident-header">My Dashboard</h2>
+        <mat-select class="res-select-container" placeholder="Select" (selectionChange)="changeBooking()" [(ngModel)]="selectedBooking">
+          <mat-option *ngFor="let booking of bookings" [value]="booking">
+            {{booking.building.name}} ({{booking.apartment.name}}) {{getFormattedDate(booking.date_from)}}  <span [innerHtml]='getBookingType(booking)'></span>
+          </mat-option>
+        </mat-select>
+        <div class="loading-bar" *ngIf="!model || pageLoading">
+          <ion-spinner class="spinner" color="primary"></ion-spinner>
+        </div>
+        <div class="d-flex res-dashboard-body" *ngIf="model">
+          <div class="building-block d-flex-col">
+            <div class="building-block-header">
+              <div *ngIf="model && model.user_status !== 'Unselected'" class="md-block text-center">
+                Your status -
+                <span *ngIf="model.user_status == 'Owner'"> Owner</span>
+                <span *ngIf="model.user_status == 'Resident'"> Tenant</span>
+                <br><span *ngIf="model.user_status == 'Owner'">({{ model.is_residing }})</span>
+              </div>
+              <div style="color:red;" *ngIf="model && model.user_status === 'Unselected'"
+                class="md-block text-center">
+                Choose your status
+            </div>
+            </div>
+            <div class="building-block-header">
+              <h3 class="dash-h3">{{model.building.name}}</h3>
+            </div>
+            <div class="building-block-img" [ngClass]="{'no-photo-wrap': !model }">
+              <img class="md-whiteframe-z2 building-photo" *ngIf="model"
+                src="{{env.baseUrl}}/img/buildings/{{model.building.photo}}" alt="" class="image-md">
+              <img class="md-whiteframe-z2 photo-no-booking" *ngIf="!model" src="{{env.baseUrl}}/photo/photo-no-booking.jpg"
+                alt="" class="image-md">
+            </div>
+          </div>
+          <div class="tenant-controls d-flex-col">
+            <button mat-button *ngIf="model" class="res-dash-button" aria-label="dashbutton"
+              (click)="showContactDetails()" [disabled]="loading">
+              <mat-icon class="material-icons">&#xE61C;</mat-icon> Building Contact Details
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton"
+              routerLink="../information/{{model.building_id}}" [disabled]="loading">
+              <mat-icon class="material-icons">&#xE0AF;</mat-icon> Building Information
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton" ng-if="model && showCommonArea"
+              routerLink="../book-area/view/{{model.building.id}}" [disabled]="loading">
+              <mat-icon class="material-icons">grade</mat-icon> Common areas bookings
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton"
+              routerLink="../guidelines/view/{{model.building.id}}" *ngIf="model" [disabled]="loading">
+              <mat-icon class="material-icons">&#xE0E0;</mat-icon> Moving Guidelines
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton" *ngIf="checkNext()"
+              routerLink='../building/new-booking' [disabled]="loading">
+              <mat-icon class="material-icons">forward</mat-icon>Next Building
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton"
+              *ngIf="model.building.allow_move_in == 1 && model.status != 'pending' && allowBookLift
+               && !((model.user_status === 'Owner' && model.is_residing == 'Non-Residing'))"
+              routerLink="../book-lift/{{model.id}}" [disabled]="loading">
+              <mat-icon class="material-icons">forward</mat-icon>Book Lift
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton" routerLink="../move/{{model.id}}"
+              *ngIf="model.status === 'pending' && model.building.allow_move_in == 1"
+              [disabled]="loading">
+              <mat-icon *ngIf="model.is_residing === 'Non-Residing'" class="material-icons">check</mat-icon>
+              <mat-icon *ngIf="!(model.is_residing === 'Non-Residing')"
+                title="Please set up date and time to continue booking process" style="color:red;"
+                class="material-icons">report</mat-icon>Set move-in time and date
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton" routerLink="../move-out/{{model.id}}"
+              *ngIf="!model.status_out && model.status === 'moved' && model.building.allow_move_in == 1"
+              [disabled]="loading">
+              <mat-icon class="material-icons">done_all</mat-icon> Book Move Out
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton" routerLink="../move/{{model.id}}/change"
+              *ngIf="model.status === 'moving' && model.building.allow_move_in == 1" [disabled]="loading">
+              <mat-icon class="material-icons">date_range_all</mat-icon> Change
+              {{model.is_lift == 1 ? 'Lift Booking' :  'Moving In'}} Date/Time
+            </button>
+            <button mat-button class="res-dash-button" aria-label="dashbutton" routerLink="../move" routerLink="../move-out/{{model.id}}"
+              *ngIf="model.status_out === 'moving' && model.building.allow_move_in == 1" [disabled]="loading">
+              <mat-icon class="material-icons">date_range_all</mat-icon> Change Moving Out Date/Time
+            </button>
+            <button mat-button class="res-dash-button client-notice-number" aria-label="dashbutton" *ngIf="model"
+              routerLink="../noticeboard/{{model.building.id}}" [disabled]="loading">
+              <mat-icon svgIcon="noticeboard" class="material-icons"></mat-icon> Noticeboard
+              <div *ngIf="noticeNumber !== 0" class="notice-number-circle-wrap">
+                <div class="notice-number-circle">{{noticeNumber}}</div>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div class="mgt20">
+          <button *ngIf="model" mat-button class="res-action-button" aria-label="dashbutton"
+            routerLink="../profile/{{model.id}}">Update my personal profile</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

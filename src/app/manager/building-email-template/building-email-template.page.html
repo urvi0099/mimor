@@ -1,0 +1,48 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button mat-button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="guidelines-frame mim-block-large email-template-frame form-wrapper" ng-show="!infoClick">
+      <div class="mail-temp-edit-wrap width-mobile-100 full-width" *ngIf="!pageLoading">
+        <div class="guidelines-form">
+          <div class="header-mobile text-center">
+            <h2 class="mim-panel-header">{{templateTitle}}</h2>
+            <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+          </div>
+          <div class="template-edit">
+            <quill-editor name="emailTemplate" [(ngModel)]="emailTemplate" [modules]="emailConfig"
+              [styles]="{height: '350px'}" placeholder="">
+            </quill-editor>
+          </div>
+          <div class="btn-reset-to-default">
+            <button mat-button class="mim-btn upload-btn" (click)="resetEmail()" [disabled]="loading">
+              <span>Reset to default</span>
+            </button>
+          </div>
+          <div class="buttons-back buttons-back-mobile">
+            <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+            <button mat-button class="primary-btn" (click)="submit()" [disabled]="loading">
+              <span>{{buttonText}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

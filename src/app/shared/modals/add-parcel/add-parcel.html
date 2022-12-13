@@ -1,0 +1,260 @@
+<div class="add-parcelle-dialog" *ngIf="!manyParcels">
+  <div class="add-parcel">
+    <div class="loading-bar" *ngIf="!isApartmentsFetched">
+      <ion-spinner class="spinner" color="primary"></ion-spinner>
+    </div>
+    <div *ngIf="isApartmentsFetched" class="dialog-content">
+      <h2 class="mim-panel-header text-center">Add new parcel</h2>
+      <div class="apartment d-flex flex-column">
+        <div class="mat-input">
+          <label>Apartment # OR Resident Name:</label>
+          <input name="apartment" [(ngModel)]="this.form.apartment" [ngModelOptions]="{ debounce: 500 }" type="text"
+            (ngModelChange)="onEnterApartmentNumber()" [ngClass]="{'ng-invalid': !isApartmentValid}" autocomplete="off">
+        </div>
+      </div>
+      <div class="users">
+        <div class="mim-panel-header text-left" *ngIf="!users.length">Please, specify the apartment# or resident name
+        </div>
+        <mat-radio-group [(ngModel)]="form.userId">
+          <mat-radio-button *ngFor="let user of users" id="{{ user.id }}" value="{{ user.id }}"
+            class="md-radio-item md-primary">
+            {{ user.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <button mat-button class="primary-btn parcel-btn" [ngClass]="{'hidden': isUnknown || !isApartmentValid}"
+        (click)="toggleUnknown()">
+        Unknown Name
+      </button>
+      <div class="unknown d-flex flex-column justify-between" *ngIf="isUnknown">
+        <div class="unknown-field">
+          <div class="mat-input">
+            <label>Name: </label>
+            <input name="name" [(ngModel)]="unknown.name" type="text" minlength="3">
+          </div>
+        </div>
+        <div class="unknown-field">
+          <div class="mat-input">
+            <label>Phone: </label>
+            <input name="phone" [(ngModel)]="unknown.phone" type="phone" minlength="6" maxlength="50" pattern="^[0-9+]">
+          </div>
+        </div>
+        <div class="unknown-field">
+          <div class="mat-input">
+            <label>Email: </label>
+            <input name="email" [(ngModel)]="unknown.email" type="email"
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,12}$">
+          </div>
+        </div>
+        <div class="unknown-field">
+          <div class="mat-input">
+            <label>Message: </label>
+            <input name="message" [(ngModel)]="unknown.message" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="notifications d-flex align-items-center justify-between" *ngIf="!isUnknown">
+        <span>Notify via:</span>
+        <div>
+          <mat-checkbox name="sms" class="md-warn" [(ngModel)]="checkboxModel.sms">SMS</mat-checkbox>
+          <mat-checkbox name="email" class="md-warn" [(ngModel)]="checkboxModel.email">Email</mat-checkbox>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-between">
+        <span>Carrier:</span>
+        <mat-select class="add-parcel-select" [(ngModel)]="form.carrier" required>
+          <mat-option class="manager-option" *ngFor="let carrier of carriers" [value]="carrier">{{ carrier.name }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="d-flex align-items-center justify-between location-wrap">
+        <span>Parcel Location:</span>
+        <input type="text" [(ngModel)]="formData.location">
+      </div>
+      <button mat-button class="primary-btn parcel-btn"
+        *ngIf="isUnknown && (unknown.name || unknown.email || unknown.phone || unknown.message)"
+        (click)="prepareInfoForPrint()">
+        Print slip
+      </button>
+      <div class="d-flex justify-content-center mgt20 parcel-panel--btns">
+        <button mat-button class="button-log back-btn btn-back" (click)="dismiss()">
+          <mat-icon class="material-icons">keyboard_backspace</mat-icon>
+          Back
+        </button>
+        <button mat-button class="md-raised md-warn primary-btn add-btn" aria-label="description"
+          [disabled]="checkForm()" (click)="addParcels($event)">
+          Add more
+        </button>
+      </div>
+      <div class="d-flex justify-content-center mgt20 parcel-panel-submit">
+        <button mat-button (click)="createParcel(false)" type="submit" class="md-raised md-warn primary-btn notify-btn"
+          [disabled]="checkForm()">
+          Notify and Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="add-parcels-dialog" *ngIf="manyParcels">
+  <div class="add-parcels">
+    <div *ngIf="isApartmentsFetched">
+      <h2 class="text-center mim-panel-header">Parcels</h2>
+      <div class="parcels-add d-flex flex-column" *ngIf="parcelsToAdd.length > 0">
+        <div class="parcels-header d-flex">
+          <div class="par-head-el">
+            <div>Flat</div>
+            <i class="fa fa-sort" aria-hidden="true" (click)="sortParcels(1)"></i>
+          </div>
+          <div class="par-head-el">
+            <div>Resident</div>
+            <i class="fa fa-sort" aria-hidden="true" (click)="sortParcels(2)"></i>
+          </div>
+          <div class="par-head-el">
+            <div>Carrier</div>
+            <i class="fa fa-sort" aria-hidden="true" (click)="sortParcels(3)"></i>
+          </div>
+          <div class="par-head-el">
+            <div>Location</div>
+            <i class="fa fa-sort" aria-hidden="true" (click)="sortParcels(4)"></i>
+          </div>
+          <div class="par-head-el">
+            <div>SMS</div>
+            <i class="fa fa-sort" aria-hidden="true" (click)="sortParcels(5)"></i>
+          </div>
+          <div class="par-head-el">
+            <div>E-mail</div>
+            <i class="fa fa-sort" aria-hidden="true" (click)="sortParcels(6)"></i>
+          </div>
+          <div class="par-head-el"></div>
+        </div>
+        <div class="parcels-body d-flex flex-column">
+          <div class="par-body-el d-flex flex-column" *ngFor="let parcel of parcelsToAdd; let i = index;">
+            <div class="par-body-wrap d-flex" (click)="unknownDropdown = !unknownDropdown">
+              <div class="flat">{{parcel.apartment.name}}</div>
+              <div class="resident">{{parcel.resident ? parcel.resident.name : parcel.unknown ? parcel.unknown.name :
+                'Unknown'}}</div>
+              <div class="carr">{{parcel.carrier.name}}</div>
+              <div class="location">{{parcel.location}}</div>
+              <div class="sms">
+                <mat-checkbox [(ngModel)]="parcel.sms" aria-label="edit"></mat-checkbox>
+              </div>
+              <div class="email">
+                <mat-checkbox [(ngModel)]="parcel.email" aria-label="delete"></mat-checkbox>
+              </div>
+              <div class="edit-btns">
+                <img src="assets/img/icons/edit-parcel.svg" height="16px" width="16px" alt="edit" title="Edit"
+                  (click)="editParcel(i)">
+                <img src="assets/img/icons/delete-parcel.svg" height="22px" width="22px" alt="delete" title="Delete"
+                  (click)="deleteParcel(i)">
+              </div>
+            </div>
+            <div class="par-body-unknown d-flex" *ngIf="parcel.unknown && unknownDropdown">
+              <div class="un-name" *ngIf="parcel.unknown.name">Name: {{parcel.unknown.name}}</div>
+              <div class="un-phone" *ngIf="parcel.unknown.phone">Phone: {{parcel.unknown.phone}}</div>
+              <div class="un-email" *ngIf="parcel.unknown.email">Email: {{parcel.unknown.email}}</div>
+              <div class="un-message" *ngIf="parcel.unknown.message">Message: {{parcel.unknown.message}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ap-wrap">
+        <div class="apartment d-flex flex-column" *ngIf="!loading">
+          <div class="title-input"><span>Flat</span></div>
+          <div class="full-width">
+            <input type="text" [formControl]="unApartment" [matAutocomplete]="auto1">
+            <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectApartment()">
+              <mat-option class="manager-option" *ngFor="let apartment of filteredApartments | async"
+                [value]="apartment.name">
+                {{ apartment.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+
+        <div class="resident d-flex flex-column" *ngIf="!loading">
+          <div class="title-input"><span>Resident</span></div>
+          <div class="full-width">
+            <input type="text" [formControl]="resident" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectResident()">
+              <mat-option class="manager-option" *ngFor="let item of filteredResidents | async" [value]="item.name">
+                {{ item.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+
+        <div class="d-flex flex-column justify-between">
+          <span>Carrier:</span>
+          <mat-select class="add-parcels-select" [(ngModel)]="form.carrier" required>
+            <mat-option class="manager-option" *ngFor="let carrier of carriers" [value]="carrier">{{ carrier.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+
+        <div class="d-flex justify-between flex-column location-wrap">
+          <span>Location:</span>
+          <input type="text" [(ngModel)]="formData.location">
+        </div>
+
+        <div class="notifications d-flex flex-column justify-between">
+          <span>Notify via:</span>
+          <div class="d-flex flex-column">
+            <mat-checkbox name="sms" [(ngModel)]="checkboxModel.sms">SMS</mat-checkbox>
+            <mat-checkbox name="email" [(ngModel)]="checkboxModel.email">Email</mat-checkbox>
+          </div>
+        </div>
+
+        <button mat-button type="submit" class="md-raised md-warn" (click)="addParcelByOne()"
+          ng-disabled="checkAddForm()">
+          {{isEdit ? 'Edit a parcel' : 'Add a parcel'}}
+        </button>
+      </div>
+
+
+      <div class="unknown d-flex justify-between">
+        <button mat-button (click)="toggleUnknown()" [disabled]="isUnknown || !model.selectedApartment">
+          Unknown Name
+        </button>
+        <div class="unknown-field" *ngIf="isUnknown">
+          <div class="mat-input">
+            <label>Name: </label>
+            <input name="name" [(ngModel)]="unknown.name" type="text" minlength="3">
+          </div>
+        </div>
+        <div class="unknown-field" *ngIf="isUnknown">
+          <div class="mat-input">
+            <label>Phone: </label>
+            <input name="phone" [(ngModel)]="unknown.phone" type="phone" minlength="6" maxlength="50" pattern="^[0-9+]">
+          </div>
+        </div>
+        <div class="unknown-field" *ngIf="isUnknown">
+          <div class="mat-input">
+            <label>Email: </label>
+            <input name="email" [(ngModel)]="unknown.email" type="email"
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,12}$">
+          </div>
+        </div>
+        <div class="unknown-field" *ngIf="isUnknown">
+          <div class="mat-input">
+            <label>Message: </label>
+            <input name="message" [(ngModel)]="unknown.message" type="text">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center mgt20 parcel-panel--btns">
+    <button mat-button class="button-log back-btn btn-back" (click)="dismiss()">
+      <mat-icon class="material-icons">keyboard_backspace</mat-icon>
+      Back
+    </button>
+    <button mat-button class="md-raised md-warn primary-btn" ng-disabled="parcelsToAdd.length === 0"
+      (click)="sendParcels()">
+      Notify and Submit
+    </button>
+  </div>
+  <div layout="row" class="loading-bar" *ngIf="!isApartmentsFetched">
+    <ion-spinner class="spinner" color="primary"></ion-spinner>
+  </div>
+</div>

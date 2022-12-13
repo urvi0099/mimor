@@ -1,0 +1,43 @@
+.mat-dialog-content {
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  width: 100%;
+  flex-basis: 100% !important;
+  align-items: flex-start !important;
+  justify-content: flex-start;
+  padding: 24px;
+  .mim-cont-det-preview-wrap:not(.mim-single-item) {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    max-height: 600px;
+  }
+  .mim-cont-det-preview-wrap:not(.mim-single-item)>div {
+    width: 48%;
+    flex: 0 0 48%;
+  }
+  .mim-cont-det-preview-item{
+    margin-bottom: 16px;
+    .mim-cont-det-item-head{
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.mat-dialog-actions {
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 8px;
+  padding-left: 16px;
+
+  .res-btn {
+    height: 34px;
+    border: none;
+    margin: 8px 0 8px 8px;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+  }
+}

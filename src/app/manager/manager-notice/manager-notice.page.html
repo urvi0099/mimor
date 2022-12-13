@@ -1,0 +1,103 @@
+<ion-content [fullscreen]="true">
+	<mat-toolbar class="mim-header-toolbar">
+		<a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+			<img src="assets/img/logoNew.png" class="logo" alt="">
+		</a>
+		<div class="switch-role">
+			<button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+				<span class="icon"></span><span class="logout">Log Out</span>
+			</button>
+			<select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1"
+					(change)="rolesService.selectRole($event.target.value)">
+				<option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+			</select>
+		</div>
+	</mat-toolbar>
+	<div class="flex-page">
+		<div class="form-wrapper noticeboard-edit-panel">
+			<div ng-hide="pageLoading || loading" class="mim-panel-content-wrap">
+				<h2 class="mim-panel-header">{{isEdit ? 'Edit' : 'Create new'}} notice</h2>
+				<div class="noticeboard-edit-form">
+					<div class="notice-expire-delay">
+						<div class="notice-del">
+							<div class="notice-exp-del-title">Set delay start</div>
+							<span (click)="showDate('delay')"
+								  class="notice-del-date notice-date">{{formatDateForClient(noticeData['delay'])}}<img
+									src="assets/img/icons/edit.png" alt=""></span>
+						</div>
+						<div class="notice-exp" [ngClass]="{'notice-exp-off': !noticeData.expirable}">
+							<div class="notice-exp-title-wrap">
+								<mat-checkbox [(ngModel)]='noticeData.expirable'></mat-checkbox>
+								<div class="notice-exp-del-title">Set expiry day</div>
+							</div>
+							<span (click)="showDate('expiry')"
+								  class="notice-exp-date notice-date">{{formatDateForClient(noticeData['expire'])}}<img
+									src="assets/img/icons/edit.png" alt=""></span>
+						</div>
+					</div>
+					<div class="mat-input">
+						<label for="title" class="label-notice-title"><span>Title</span><span class="italic small-note">(0-50
+                characters)</span></label>
+						<input class="mat-input" name="title" placeholder="Title of a new note…" type="text" ng-required
+							   [(ngModel)]="noticeData['title']" placeholder="Title of new note...">
+					</div>
+					<div class="notice-text-input">
+						<quill-editor name="GuidelinesTextEditor" [(ngModel)]="noticeData.content"
+									  [modules]="quillConfig"
+									  [styles]="{height: '350px'}" placeholder=""></quill-editor>
+					</div>
+					<div ng-if="displayNoFiles" class="no-uploads">You don’t have uploaded files yet.</div>
+					<div class="notice-files-list">
+						<div class="mim-btn--delete-notice-file"
+							 *ngFor="let file of noticeFilesData.blobUrl | keyvalue">
+							<a title="{{ file.key }}"
+							   (click)="openFile(file.value)">{{ getSlicedFilename(file.key) }}</a>
+							<img src="assets/img/icons/delete.svg" width="24" height="24" alt=""
+								 (click)="showConfirm(file.key)">
+						</div>
+					</div>
+					<button mat-button (click)="fileInput.click()" class="mim-btn--upload-attachment md-raised">
+						<mat-icon svgIcon="upload2"></mat-icon>
+						<span>upload files (pdf only)</span>
+					</button>
+					<input type="file" (change)="onSelect($event)" class="none" multiple name="pdf" #fileInput
+						   filename="fileName" key='buildingId'
+						   loading="loadingPdf"/>
+					<mat-checkbox [(ngModel)]="noticeData['send_email']" aria-label="Send an email with this notice"
+								  class="notice-send-email">
+						Send an email with this notice
+					</mat-checkbox>
+					<mat-radio-group class="notice-receiver-radio" *ngIf='noticeData.send_email'
+									 [(ngModel)]="noticeData['email_receiver']">
+						<mat-radio-button value='all' aria-label="Send an email with this notice to all users"
+										  class="notice-send-email-rec">
+							All
+						</mat-radio-button>
+						<mat-radio-button value='residents'
+										  aria-label="Send an email with this notice to only residents"
+										  class="notice-send-email-rec">
+							Only Residents (Tenants and Residing Owners)
+						</mat-radio-button>
+						<mat-radio-button value='owners' aria-label="Send an email with this notice to only owners"
+										  class="notice-send-email-rec">
+							Only Owners
+						</mat-radio-button>
+					</mat-radio-group>
+					<div class="btn-wrap buttons-back" ng-hide="pageLoading || loading">
+						<button mat-button class="back-btnn" [disabled]="loading" (click)="back()">
+							<mat-icon class="material-icons">keyboard_backspace</mat-icon>
+							Back
+						</button>
+						<button mat-button class="primary-btn" aria-label="Submit" (click)="submit()"
+								[disabled]="loading || pageLoading || !noticeData['title']">
+							<span>{{buttonText}}</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="loading-bar" *ngIf="pageLoading || loading">
+				<ion-spinner class="spinner" color="primary"></ion-spinner>
+			</div>
+		</div>
+	</div>
+</ion-content>

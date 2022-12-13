@@ -1,0 +1,177 @@
+.as-page {
+  .manager-wrapper {
+    min-width: 710px;
+    padding: 8px 47px 23px;
+    .as-radio-button-level {
+      max-height: 257px;
+      overflow-y: auto;
+      .as-radio-btn {
+        min-height: 49px;
+      }
+      .as-wrapper {
+        max-width: 100%;
+        display: flex;
+        min-height: 120px;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        .as-level {
+          position: relative;
+          padding: 8px;
+          padding-right: 40px;
+          margin: 0 10px;
+          margin-top: 10px;
+          margin-left: 0px;
+          top: -5px;
+          background: #eeeeee;
+          font-weight: 500;
+          font-size: 18px;
+          text-align: center;
+          letter-spacing: 1px;
+          .material-icons {
+            position: absolute;
+            color: #cccbcb;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            padding-top: 7px;
+          }
+        }
+        .as-added {
+          padding: 10px;
+          padding-top: 0;
+          flex-wrap: wrap;
+          padding-left: 0px;
+          display: flex;
+          max-height: 185px;
+          max-width: 710px;
+          overflow-y: scroll;
+        }
+      }
+    }
+    .ap-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 208px;
+    }
+    .as-block {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column-reverse;
+      width: 100%;
+    }
+    .as-form {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      max-width: 543px;
+      margin-top: 38px;
+      .as-form__input {
+        display: flex;
+        justify-content: space-between;
+        max-width: 332px;
+        width: 100%;
+        .mat-input {
+          display: flex;
+          flex-direction: column;
+          max-width: 101px;
+          margin: 0;
+          .mat-input-element {
+            min-width: 83px;
+            width: 100%;
+          }
+        }
+      }
+    }
+    .as-manually {
+      width: 54%;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 37px;
+      align-items: center;
+      .mat-input {
+        max-width: 153px;
+        margin: 0;
+        .mat-input-element {
+          min-width: 103px;
+          width: 100%;
+        }
+      }
+    }
+    .add-em-button {
+      height: 43px;
+      align-self: flex-end;
+      align-items: center;
+    }
+    .as-radio-button-style {
+      font-size: 0.875rem;
+    }
+    .as-wrapper {
+      margin-top: 20px;
+    }
+  }
+  .buttons-back {
+    max-width: 360px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+  }
+  .notify-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+    align-items: center;
+    &.level-buttons {
+      .mat-button {
+        border: 2px solid #f26204;
+        color: #f26204 !important;
+        background: transparent !important;
+        font-weight: bold !important;
+      }
+    }
+  }
+  .add-em-button {
+    .mat-icon {
+      margin: 0px;
+      margin-right: 7px;
+    }
+  }
+  .add-emails-btn {
+    color: #f26204 !important;
+    background: transparent !important;
+    font-weight: bold !important;
+    border: none;
+    margin: 0px;
+    max-width: 200px;
+    font-family: "Montserrat";
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .as-page {
+    margin-top: 1rem !important;
+  }
+  .manager-wrapper {
+    min-width: auto !important;
+    width: 100% !important;
+  }
+  .select-level-mobile {
+    max-height: none !important;
+  }
+  .column-on-mobile {
+    display: flex !important;
+    flex-flow: column nowrap !important;
+    min-width: auto !important;
+    width: 100% !important;
+  }
+  .add-em-button{
+    align-self: center !important;
+  }
+}

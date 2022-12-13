@@ -1,0 +1,75 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper form-background additional-emails add-emails-size"
+      layout="column" layout-wrap>
+      <div class="build-info" *ngIf="!pageLoading">
+        <form name="form" ng-submit="submit()">
+          <div class="text-center">
+            <h2 class="mim-panel-header mgb0">Additional Moving Emails</h2>
+          </div>
+          <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+          <div class="text-center add-em-flex-cont text-column">
+            <p class="add-em-welc-text">Add additional contacts to receive automatic email notifications when a move-in
+              or move-out is booked by a resident. </p>
+            <p class="add-em-welc-text">E.G. add the cleaner so they know to organize lift protectors in the lift.</p>
+          </div>
+          <div class="add-em-flex-cont add-em-email-cont">
+            <div class="scroll-add-email">
+              <div class="description-scroll-notif-mail">
+                <div class="description-block" *ngFor="let email of emails; let i = index">
+                  <button matTooltip="Delete email" class="md-icon-button md-accent btn-delete" ng-disabled="pageLoading"
+                    (click)="removeEmail(i)" aria-label="Remove category" *ngIf="i > 0">
+                    <mat-icon class="material-icons">delete</mat-icon>
+                </button>
+                  <div class="mat-input custom-div info-container">
+                    <label class="md-block" *ngIf="i == 0">Manager’s Email</label>
+                    <label class="md-block" *ngIf="i > 0">Email {{i}}</label>
+                    <input #input type="email" placeholder="For example allen@google.com"
+                      [disabled]="pageLoading ||  i === 0"
+                      [(ngModel)]="email.value" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                      [ngModelOptions]="{standalone: true}">
+                  </div>
+                </div>
+              </div>
+              <div class="add-block">
+                <div class="add-more">
+                  <button mat-button id="addEmail" class="md-raised md-primary add-em-button add-emails-btn"
+                    (click)="addEmail()" [disabled]="limit || pageLoading">
+                    <mat-icon id="emailIcn" class="material-icon add-em-but-icon">add</mat-icon>
+                    <span>Add more emails</span>
+                  </button>
+                </div>
+                <div class="add-em-flex-cont">
+                  <div class="buttons-back autoheight mgt20">
+                    <button mat-button class="button-log back-btn" [disabled]="pageLoading" (click)="back()"
+                      aria-label="Back">
+                      <mat-icon class="material-icons">keyboard_backspace</mat-icon>BACK
+                    </button>
+                    <button mat-button ng-disabled="form.$invalid || pageLoading" class="primary-btn save-btn"
+                      (click)="submit()"><span ng-bind="buttonText">{{buttonText}}</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

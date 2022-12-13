@@ -1,0 +1,37 @@
+.email-templates-logo{
+  max-width: 600px;
+  max-height: 850px;
+  flex-direction: column;
+  .title-input{
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+  .upload-img{
+    width: 100%;
+    .draganddrop-zone{
+      ngx-dropzone{
+        border: 1px solid black;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: center;
+      }
+    }
+    .mat-button{
+      border-radius: 0;
+      height: 3rem;
+    }
+  }
+
+  .buttons-back{
+    width: 25rem;    
+  }
+}
+
+@media screen and (min-width: 992px){
+  .email-templates{
+    max-width: 850px;
+    width: 850px;
+  }
+}

@@ -1,0 +1,138 @@
+.booking-manager-wrapper {
+  max-height: 750px;
+  width: 640px;
+  h2 {
+    font-size: 24px;
+    text-transform: none;
+    font-weight: 400;
+  }
+  .booking-manager {
+    padding: 20px 20px 0 30px;
+  }
+  .title {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+  .apartment-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    .resident-wrap {
+      width: 50%;
+    }
+    .book-flat {
+      width: 40%;
+      flex-direction: column;
+    }
+  }
+  .apartment {
+    .mat-input {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      input {
+        font-family: "Montserrat";
+      }
+    }
+    input {
+      min-height: initial;
+      height: 30px;
+      border-radius: 0;
+      border-width: 0 0 1px !important;
+      outline: none;
+    }
+  }
+  .users {
+    height: 125px;
+    overflow-y: auto;
+    .text-left {
+      margin-top: 10px;
+    }
+    .mat-radio-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .md-radio-item {
+      padding-bottom: 0;
+      margin: 10px 0 10px 0;
+      font-family: "Montserrat";
+    }
+  }
+  .book-flat {
+    label {
+      padding-top: 14px;
+    }
+    .flat-pick {
+      min-width: 150px;
+      margin-top: 5px;
+      mat-select {
+        border: 1px solid black;
+        padding: 9px;
+        font-family: "Montserrat";
+      }
+      .mat-select-value {
+        border-bottom: none;
+        background-image: none;
+      }
+    }
+  }
+
+  .date-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+    .no-date-msg {
+      top: 5rem;
+    }
+    .book-date {
+      display: flex;
+      flex-direction: column;
+      max-width: 250px;
+      .booking-datepicker {
+        display: flex;
+        flex-direction: row;
+        border: 1px solid black;
+        padding: 0;
+        align-items: center;
+        margin-top: 5px;
+        input {
+          font-family: "Montserrat";
+          text-indent: 17px;
+          border: none;
+          outline: none;
+          min-height: 39px;
+        }
+      }
+      mat-datepicker > .mat-button.mat-icon-button mat-icon.mat-datepicker-calendar-icon {
+        color: #f46200;
+      }
+      .timepicker {
+        border: 1px solid black;
+        margin: 5px 0 0 0;
+        height: 42px;
+        line-height: 40px;
+        font-family: "Montserrat";
+        .timepicker-icon {
+          display: none;
+        }
+        .mat-select {
+          float: none;
+          width: 100%;
+          font-family: "Montserrat";
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+  .buttons-back {
+    margin-top: 40px;
+    justify-content: space-evenly;
+    .primary-btn {
+      max-width: 196px;
+    }
+  }
+}

@@ -1,0 +1,156 @@
+.areas-frame {
+  min-height: 400px;
+  min-width: 300px;
+  .areas-form {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 37px;
+    align-items: center;
+  }
+  .areas-block {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    -webkit-column-gap: 0;
+    -moz-column-gap: 0;
+    column-gap: 0;
+    overflow-wrap: break-word;
+    margin-right: 15px;
+  }
+  .areas-section {
+    max-width: 100%;
+    overflow-y: auto;
+    max-height: 480px;
+  }
+  .areas-manager {
+    margin-bottom: 10px;
+    max-width: 317px;
+    float: left;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    padding-left: 30px;
+    padding-right: 29px;
+  }
+  .areas-rules {
+    margin-top: 6px;
+    margin-bottom: 19px;
+    a {
+      background: url(/assets/img/icons/rules.svg) no-repeat;
+      color: #cbcaca;
+      &:hover {
+        background: url(/assets/img/icons/rules1.svg) no-repeat;
+        color: #4f75b4;
+      }
+    }
+  }
+  .areas-change a {
+    background: url(/assets/img/icons/change.svg) no-repeat;
+    color: #f26204;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    &:hover {
+      background: url(/assets/img/icons/change1.svg) no-repeat;
+      color: #4f75b4;
+    }
+  }
+  .areas-calendar a {
+    color: #546e7a;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    background: url(/assets/img/icons/areas-calendar.svg) no-repeat;
+    &:hover {
+      background: url(/assets/img/icons/areas-calendar1.svg) no-repeat;
+      color: #4f75b4;
+    }
+  }
+  .areas-text * {
+    font-size: 0.75rem;
+    line-height: 18px;
+    font-weight: 300;
+  }
+  .add-em-button {
+    margin: 0px;
+    max-width: 168px;
+    height: 50px;
+    border-radius: 0px;
+  }
+  .buttons-back {
+    max-width: 356px;
+    align-self: center;
+    width: 100%;
+  }
+  .areas-form .text-center h2 {
+    margin-bottom: 30px;
+  }
+  .build-info {
+    width: 100%;
+  }
+  .areas-section .areas-block {
+    max-width: 762px;
+    width: 100%;
+  }
+  .md-block {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .ta-left {
+    h2 {
+      text-transform: uppercase;
+      font-weight: 400;
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.areas-pl {
+  padding-left: 26px;
+}
+
+.frame-rules {
+  max-height: 580px;
+  .text-center {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 530px;
+  }
+  .buttons-back {
+    height: 70px;
+    justify-content: center;
+  }
+  .layout-padding > * {
+    max-height: 392px;
+    overflow-wrap: break-word;
+  }
+  .button-log {
+    align-self: flex-end;
+  }
+}
+.areas-manager {
+  .areas-change {
+    margin-top: 6px;
+  }
+  .areas-calendar {
+    margin-top: 6px;
+  }
+}
+
+.areas-block {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.add-em-button {
+  width: 91%;
+  border: 2px solid #f26204;
+  color: #f26204 !important;
+  background: transparent !important;
+  font-weight: bold !important;
+  &:hover {
+    color: #4f75b4 !important;
+    border-color: #4f75b4;
+    cursor: pointer !important;
+  }
+}

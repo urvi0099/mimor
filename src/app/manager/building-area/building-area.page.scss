@@ -1,0 +1,147 @@
+.common-edit {
+  width: 945px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  form {
+    height: 100%;
+    width: 600px;
+    justify-content: space-between;
+  }
+  .mat-input {
+    display: flex;
+    flex-direction: column;
+  }
+  .common-label,
+  .mat-input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    label {
+      font-weight: bold;
+      font-size: 14px;
+    }
+  }
+  .buttons-back {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .certificate {
+    font-family: "Montserrat";
+  }
+  .common-buttons {
+    min-width: 500px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    .add-em-button {
+      margin: 0px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .add-em-button {
+      width: 100%;
+      border: 2px solid #f26204;
+      color: #f26204 !important;
+      background: transparent !important;
+      font-weight: bold !important;
+      text-transform: uppercase;
+      font-family: "Montserrat";
+      border-radius: 0;
+      &:hover {
+        color: #4f75b4 !important;
+        border-color: #4f75b4;
+        cursor: pointer !important;
+      }
+    }
+  }
+
+  .result-image {
+    position: relative;
+    .mat-icon {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      z-index: 3;
+      cursor: pointer;
+      padding: 4px;
+      outline: none;
+      border: none;
+      user-select: none;
+      &:hover {
+        color: #f26204;
+      }
+    }
+  }
+  .common-edit,
+  .common-load {
+    .mat-button {
+      height: 43px;
+      border-radius: 0;
+    }
+  }
+  .common-edit .mat-button {
+    width: 225px;
+  }
+  .no-animate {
+    .save-btn {
+      position: relative;
+      min-height: 50px;
+      width: 196px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid transparent;
+      background: #f26204;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      border-radius: 0;
+      font-family: Montserrat;
+    }
+  }
+  .notify-editor {
+    margin-bottom: 20px;
+  }
+  .common-btn {
+    width: 360px;
+  }
+  .common-load {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+  .area-files-list {
+    width: 365px;
+    overflow-y: auto;
+    max-height: 120px;
+    .delete-area-file {
+      display: flex;
+      align-items: center;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@media (max-width: 601px) {
+  .common-edit {
+    width: 100%;
+    justify-content: center;
+    display: block;
+    min-width: 280px;
+    form{
+      width: 100%;
+    }
+  }
+  .common-buttons{
+    min-width: 320px !important;
+  }
+  .build-info{
+    min-width: auto !important;
+    width: 100% !important;
+  }
+}

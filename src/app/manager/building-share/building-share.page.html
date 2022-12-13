@@ -1,0 +1,150 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div
+      class="notification-white-frame form-wrapper share-user-email-frame">
+      <div class="notification-wrapper none-dinamic-neight" ng-hide="loading">
+        <h2 class="text-center">Access Limit</h2>
+        <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+        <div class="md-emails-height shared-email-wrap">
+          <div class="shared-email-heading">
+            <div class="managers-title">Give an access to these managers:</div>
+            <div class="shared-control share-build-form">
+              <div id="clientEmail" class="mat-input md-block">
+                <label>Manager's E-mail</label>
+                <input required type="email" placeholder="For example manager_jenny@google.com" name="clientEmail"
+                  [(ngModel)]="newUser.email" minlength="10" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"/>
+              </div>
+            </div>
+            <div class="access-parts">
+              <mat-radio-group [(ngModel)]="access" aria-labelledby="access">
+                <mat-radio-button value="all" class="md-primary" (click)="toggleAccessTypes()">Access to all parts
+                </mat-radio-button>
+                <mat-radio-button value="part" class="md-primary" (click)="toggleAccessTypes()">Access to some parts
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="access-settings">
+              <div class="acc-col">
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.notify_move">Move Notices</mat-checkbox>
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.notify_email_sms">SMS/Email Notices
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.notify_common_area">Common Area Notices
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.send_notifications">Send Notifications
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.remove_resident">Resident Access
+                </mat-checkbox>
+              </div>
+              <div class="acc-col">
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.reports">Reports</mat-checkbox>
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.real_estate">Real Estate/ Property MGR
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.parcel_management">Parcel management
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!isParts" [(ngModel)]="newUser.access.notice_board">Notice board</mat-checkbox>
+              </div>
+            </div>
+            <button mat-button class="btn-back share-btn" (click)="shareBuilding()" [disabled]="checkAccess()">Give an
+              access</button>
+          </div>
+          <h3 class="ShareUsersData">Already shared with:</h3>
+          <div class="share-none" *ngIf="noShareUsersData && noShareNewUsersData">No one have access yet.</div>
+          <div class="shared-box share-email-list">
+            <div *ngFor="let val of shareUsersData"
+              class="share-block shared-email-item">
+              <div class="share-email-item-body" (click)="val.dropdown = !val.dropdown">
+                <span class="shared-email-val">{{val.email}}</span>
+                <span class="share-email shared-email-name">{{val.name}}</span>
+                <span class="material-icons" *ngIf="!val.dropdown">
+                  arrow_drop_down
+                </span>
+                <span class="material-icons" *ngIf="val.dropdown">
+                  arrow_drop_up
+                </span>
+              </div>
+              <div *ngIf="testOwnerBuildingUser && val.dropdown" class="share-email-item-switchers">
+                <div class="access-settings">
+                  <div class="acc-col">
+                    <mat-checkbox [(ngModel)]="val.notify_move">Move Notices</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.notify_email_sms">SMS/Email Notices</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.notify_common_area">Common Area Notices</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.send_notifications">Send Notifications</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.remove_resident">Resident Access</mat-checkbox>
+                  </div>
+                  <div class="acc-col">
+                    <mat-checkbox [(ngModel)]="val.reports">Reports</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.real_estate">Real Estate/ Property MGR</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.parcel_management">Parcel management</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.notice_board">Notice board</mat-checkbox>
+                  </div>
+                </div>
+                <div class="access-settings" *ngIf="testOwnerBuildingUser">
+                  <button mat-button on class="save-changes" (click)="updateTriggerNotifications(val, val.id, 'existing')">Save
+                    changes</button>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let val of shareNewUsersData"
+              class="share-block shared-email-item">
+              <div class="share-email-item-body" (click)="val.dropdown = !val.dropdown">
+                <span class="shared-email-val">{{val.email}}</span>
+                <span class="share-email shared-email-name">Pending</span>
+                <span class="material-icons" *ngIf="!val.dropdown">
+                  arrow_drop_down
+                </span>
+                <span class="material-icons" *ngIf="val.dropdown">
+                  arrow_drop_up
+                </span>
+              </div>
+              <div *ngIf="testOwnerBuildingUser && val.dropdown" class="share-email-item-switchers">
+                <div class="access-settings">
+                  <div class="acc-col">
+                    <mat-checkbox [(ngModel)]="val.notify_move">Move Notices</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.notify_email_sms">SMS/Email Notices</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.notify_common_area">Common Area Notices</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.send_notifications">Send Notifications</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.remove_resident">Resident Access</mat-checkbox>
+                  </div>
+                  <div class="acc-col">
+                    <mat-checkbox [(ngModel)]="val.reports">Reports</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.real_estate">Real Estate/ Property MGR</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.parcel_management">Parcel management</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="val.notice_board">Notice board</mat-checkbox>
+                  </div>
+                </div>
+                <div class="edit-buttons" *ngIf="testOwnerBuildingUser">
+                  <button mat-button class="del_email" (click)="delPendingShareUser(key,val.email,val.id)">Delete account
+                  </button>
+                  <button mat-button class="save-changes" (click)="updateTriggerNotifications(val, val.id, 'pending')">Save
+                    changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="share-notify-buttons buttons-back">
+            <button mat-button class="button-log back-btn btn-back" (click)="back()">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

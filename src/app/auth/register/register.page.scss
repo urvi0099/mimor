@@ -1,0 +1,67 @@
+.register-form-wrapper {
+  width: 585px;
+  padding: 30px;
+}
+
+.login-block-header {
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+.mat-input {
+  margin-bottom: 26px;
+}
+
+.terms-cond-privacy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 46px;
+  .terms-checkbox {
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+  }
+}
+
+.form-val-note-wrap {
+  color: #888;
+  font-size: 12px;
+}
+
+.send-ver-code {
+  float: right;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.g_captcha {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  width: auto !important;
+  margin-bottom: 10px;
+}
+
+
+@media (max-width: 600px) {
+  .register-form-wrapper{
+    width: 100%;
+    height: auto;
+    min-width: 300px;
+    margin-top: 90px;
+  }
+  .mim-header-toolbar{
+    background-color: transparent;
+    max-height: 90px;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,108 @@
+.add-trade {
+  max-width: 750px;
+  width: 100%;
+  .manager-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .service-input{
+    max-width: 593px;
+  }
+  .buttons-back{
+    margin-top: 20px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .block-input{
+    max-width: 593px;
+    input{
+      width: 100%;
+    }
+  }
+  .upload-row .title{
+    font-size: 0.875rem;
+  }
+  .title-input{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .title-input-add{
+    display: flex;
+    width: 100%;
+    max-width: 593px;
+    justify-content: flex-start;
+    font-size: 0.875rem;
+    margin-bottom: 5px;
+    margin-top: 28px;
+  }
+  .title-input span{
+    font-size: 0.875rem;
+  }
+  .title-input span.italic{
+    font-style: italic;
+    font-weight: 200;
+  }
+  .additional{
+    width: 100%;
+    display: flex;
+    max-width: 593px;
+    border: none;
+    padding: 0 0 10px 0;
+    margin-left: 0;
+    .add-input{
+      padding: 2px !important;
+      min-height: 43px;
+      border: 1px solid #555555;
+      width: 100%;
+    }
+    .add-button{
+      border: none;
+      width: 100px;
+      padding-left: 16px;
+      margin-left: 5px;
+      font-size: 14px;
+      color:#F46200;
+      background-color: white;
+      font-family: "Montserrat";
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      &:focus{
+        outline: none;
+      }
+    }
+  }
+  .add-email{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+  }
+  .email-button{
+    display: flex;
+    align-items: center;
+    width: 117px;
+    padding-left: 16px;
+    font-size: 14px;
+    color:#F46200;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: none;
+    background-color: white;
+    &:disabled{
+      color: #f5a069;
+      &:hover{
+        cursor: default;
+      }
+    }
+    &:focus{
+      outline: none;
+    }
+    span{
+      font-size: 30px;
+    }
+  }
+}

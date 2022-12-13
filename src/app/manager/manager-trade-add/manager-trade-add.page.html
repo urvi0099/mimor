@@ -1,0 +1,82 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper add-trade">
+      <form #addForm="ngForm" name="form" class="manager-wrapper full-width">
+        <div class="dashboard-header">
+          <h2>{{isEdit ? 'Edit trade' : 'Add new trade'}}</h2>
+        </div>
+        <div class="service-input mat-input">
+          <div class="title-input"><span>Service Name</span></div>
+          <mat-select name="services" [(ngModel)]="selectedService" aria-label="services" [disabled]="loading">
+            <mat-option class="manager-option" [value]="service" *ngFor="let service of services">{{ service.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <div class="block-input mat-input">
+          <div class="title-input"><span>Name and Surname</span></div>
+          <input type="text" required placeholder="For example John Smith" name="name" minlength="3" maxlength="50"
+            [(ngModel)]="name" [ngModelOptions]="{standalone: true}" [disabled]="loading">
+        </div>
+        <div class="title-input-add"><span>E-Mail</span></div>
+        <div class="additional mat-input" *ngFor="let field of contacts.emails; let i = index">
+          <input type="email" class="add-input" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,12}$"
+            placeholder="For example john@gmail.com" name="email{{i}}" maxlength="50" [(ngModel)]="contacts.emails[i]"
+            [disabled]="loading">
+          <button type="button" class="add-button" (click)="removeEmail(i)" [disabled]="loading">
+            <span class="glyphicon glyphicon-minus"></span> REMOVE
+          </button>
+        </div>
+        <div class="block-input add-block mat-input">
+          <div class="add-email">
+            <input type="email" #emailInput="ngModel" required [disabled]="loading"
+              pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,12}$" placeholder="For example john@gmail.com" name="email"
+              maxlength="50" property="email" [(ngModel)]="email">
+            <button class="email-button" [disabled]="loading || emailInput.invalid || contacts.emails.length === 4"
+              (click)="addNewEmail()">
+              <span>+</span>E-Mail
+            </button>
+          </div>
+        </div>
+        <div class="title-input-add"><span>Phone number</span></div>
+        <div class="additional mat-input" *ngFor="let field of contacts.phones; let j = index">
+          <input type="text" class="add-input" required placeholder="For example +61 1 1234 1234" name="phone{{j}}"
+            maxlength="50" [(ngModel)]="contacts.phones[j]" (keypress)="enterKey($event)">
+          <button type="button" class="add-button" (click)="removePhone(j)" [disabled]="loading">
+            <span class="glyphicon glyphicon-minus"></span> REMOVE
+          </button>
+        </div>
+        <div class="block-input mat-input add-block">
+          <div class="add-email">
+            <input type="text" required placeholder="For example +61 1 1234 1234" name="phone" minlength="6"
+              maxlength="50" #phoneInput="ngModel" [(ngModel)]="phone" (keypress)="enterKey($event)">
+            <button class="email-button" [disabled]="loading || phoneInput.invalid || contacts.phones.length === 4"
+              (click)="addNewPhone()">
+              <span>+</span>Phone
+            </button>
+          </div>
+        </div>
+        <div class="buttons-back">
+          <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+          <button mat-button class="primary-btn" [disabled]="loading || !addForm.valid || checkDublicates()"
+            (click)="submit()" aria-label="AO BAO">Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

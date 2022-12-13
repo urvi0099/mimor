@@ -1,0 +1,84 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper form-background frame-md time-settings time-frame timeslots-frame">
+      <div class="build-info" *ngIf="!loading">
+        <div name="form reports-form">
+          <div class="text-center">
+            <h2 *ngIf="building" class="dash-center-h3 mim-panel-header">{{building.name}}</h2>
+            <h3 *ngIf="area" class="dash-center-h3">{{area.name}}</h3>
+            <h3>Allowable Booking Time Slots</h3>
+          </div>
+          <!-- <div class="mim-checkbox-wrap common-area-slots"><span>Allow Booking: </span>OFF<div
+              ng-click="handleBlockCheckbox($event)" data-status="{{area.allow_booking}}"
+              class="mim-checkbox mim-checkbox-margin">
+              <div ng-click="handleBlockCheckbox($event)" class="mim-checker"></div>
+            </div>ON</div> -->
+          <div class="area-toggle">Allow Booking: 
+            <ion-toggle [(ngModel)]="areaAllow" class="ion-toggle" mode="ios"></ion-toggle> ON
+          </div>
+          <div class="time-intervals">
+            <span>Time Intervals</span>
+            <mat-select [(ngModel)]="timeInterval" (selectionChange)="changeType()">
+              <mat-option class="manager-option" [value]="type.key" *ngFor="let type of timeTypes | keyvalue: returnZero" >{{ type.value }}</mat-option>
+            </mat-select>
+          </div>
+          <div class="reports-content">
+            <div>
+              <div class="columns2 time-settings-h">
+                <span>Max</span><span class="time-span">Time
+                  Slot</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+              </div>
+              <div class="columns2">
+                <div class="time-settings-rcl">
+                  <div class="input-container" *ngFor="let time of times">
+                    <input class="max-book" type="text" maxlength="2" [(ngModel)]="time.num_of_bookings">
+                  </div>
+                </div>
+                <span class="columns2 columns2-item-sp2 time-settings-lc">
+                  <span class="" *ngFor="let time of times">{{ time.time }}</span>
+                </span>
+                <div *ngFor="let day of days" class="time-settings-rcl">
+                  <div class="md-block columns2-item" *ngFor="let time of times">
+                    <span [id]="'time' + day.id + time.id" (click)="addDellTime(time.id, day.id)"> ✓
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="position-relative mgt20 buttons-back">
+            <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+            <span *ngIf="showSaveTooltip" class="message-tooltip">Time slots saved!</span>
+
+            <button mat-button (click)="submit()" class="primary-btn" aria-label="description">
+              <span>{{buttonText}}</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+
+    </div>
+
+  </div>
+</ion-content>

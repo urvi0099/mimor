@@ -1,0 +1,24 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar auth-menu-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+  </mat-toolbar>
+  <div class="flex-page welcome-form">
+    <div class="welcome-form-group" (click)="redirect('resident')">
+      <div class="welcome-btn">
+        <a><h2>Resident<br>(Tenants and Owners)<hr></h2></a>
+      </div>
+    </div>
+    <div class="welcome-form-group" (click)="redirect('manager')">
+      <div class="welcome-btn">
+        <a><h2 class="text-center">Owners corp or<br>building manager<hr></h2></a>
+      </div>
+    </div>
+    <div class="welcome-form-group" (click)="redirect('agent')">
+      <div class="welcome-btn">
+        <a><h2 class="text-center">Real estate agent / <br>Property Manager<hr></h2></a>
+      </div>
+    </div>
+  </div>
+</ion-content>

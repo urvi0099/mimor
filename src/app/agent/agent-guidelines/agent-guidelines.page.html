@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+          <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper guidelines-wrapper" layout="column" layout-wrap>
+      <div class="guidlines-wrapper full-width" *ngIf="!pageLoading">
+        <h2 class="resident-header text-center">Moving In/Out Guidelines</h2>
+        <h3 class="subheader text-center">{{ model.name }}</h3>
+        <form class="description-scroll guidelines-form flex1"
+          style="border: 1px solid #eee;padding: 0 10px;margin-bottom: 15px">
+          <div class="d-flex guidline-controls">
+            <button class="pdfGuidDelete" (click)="sendEmail()" matTooltip="Send email" matTooltipPosition="above">
+              <mat-icon class="material-icons">&#xE0BE;</mat-icon>
+            </button>
+            <button class="pdfGuidDelete" (click)="printElem(model.guidlines)" matTooltip="Print" matTooltipPosition="above">
+              <mat-icon class="material-icons">&#xE8AD;</mat-icon>
+            </button>
+          </div>
+          <div class="guidlines-text"
+            [innerHtml]="model.guidlines | emailToLink | urlToLink | phoneToLink"></div>
+        </form>
+        <div class="scroll-guidlines-files">
+          <div class="pdfFileGuid" *ngFor="let file of guidelinesFilesTenant.blobUrlGuidelines | keyvalue">
+            <button mat-button matTooltip="Download file" class="pdfGuidDelete" (click)="downloadFile(id, file.key)">
+              <mat-icon class="material-icons">file_download</mat-icon>
+            </button>
+            <button mat-button matTooltip="View file" class="pdfGuidDelete" target="_blank"
+              (click)="viewFile(file.value)">
+              <mat-icon class="material-icons">&#xE89E;</mat-icon>
+            </button>
+            <a target="_blank" (click)="viewFile(file.value)">{{ file.key }}</a>
+          </div>
+        </div>
+        <button class="res-action-button" routerLink="../information/view/{{ model.id }}" *ngIf="fromPage">
+          Next step
+          <mat-icon class="material-icons">forward</mat-icon>
+        </button>
+        <button class="res-action-button" (click)="dashboard()" *ngIf="!fromPage">Close
+          <mat-icon class="material-icons">close</mat-icon>
+        </button>
+      </div>
+      <div layout="row" class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

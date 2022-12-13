@@ -1,0 +1,219 @@
+.manager-dashboard{
+  padding-right: 0;
+  padding-left: 0;
+  min-width: 300px;
+  min-height: 400px;
+  .dashboard-header{
+    h2{
+      margin: 0;
+      line-height: 34px;
+      font-size: 24px;
+      font-weight: 400;
+      text-transform: unset;
+    }
+  }
+  .building-selector{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 32px;
+    .building-block{
+      display: flex;
+      min-width: 300px;
+      margin-top: 10px;
+      align-items: center;
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 50px;
+      .building-block-header{
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        h3{
+          font-style: normal;
+          font-weight: 500;
+          line-height: 24px;
+          font-size: 18px;
+          letter-spacing: 1px;
+          margin: 0px;
+          margin-bottom: 3px;
+          text-transform: uppercase;
+        }
+      }
+      .building-block-img{
+        height: 80px;
+        width: 80px;
+      }
+    }
+    .build-actions-wrap{
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1rem;
+      .guidelines__toggle{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: 100%;
+        max-width: 720px;
+      }
+      .login-as-resident{
+        display: flex;
+        .mat-input{
+          width: 15rem;
+          margin: 0;
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+  .manager-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .button-palette{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0px;
+    max-width: 950px;
+    margin-bottom: 33px;
+    .headline{
+      width: 100%;
+      margin: 0px 0px 5px 9px;
+      font-size: 1.5rem;
+      font-weight: normal;
+      line-height: 34px;
+      text-transform: uppercase;
+    }
+    .building-button{
+      display: block;
+      height: 40px;
+      width: 292px;
+      cursor: pointer;
+      margin: 9px;
+      border: 2px solid #4f75b4;
+      &:hover{
+        background-color: #4f75b4;
+        color: white;
+        .title{
+          color: white !important; 
+        }
+        .icon{
+          filter: grayscale(100%) brightness(5);
+        }
+      }
+      div{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        .icon{
+          margin: 0px 10px;
+          height: 20px;
+          width: 20px;
+        }
+        .mat-icon{
+          margin: 0px 10px;
+          height: 20px;
+          width: 20px;
+        }
+        .title{
+          text-align: center;
+          font-size: 0.875rem;
+          color: #000000;
+          text-transform: uppercase;
+          font-weight: 500;
+          letter-spacing: -0.3px;
+        }
+      }
+    }
+    .stat-el .icon{
+      background: url(/assets/img/icons/building_info.svg) no-repeat;
+    }
+    .building-button-plus .icon {
+      background: url(/assets/img/icons/plus_blue.svg);
+    }
+    .building-button-notifications .icon {
+      background: url(/assets/img/icons/notifications.svg) no-repeat;
+      background-position-x: 3px;
+    }
+    .building-button-moving_times .icon {
+      background: url(/assets/img/icons/moving_times.svg);
+    }
+    .building-button-moving_emails .icon {
+      background: url(/assets/img/icons/moving_emails.svg) no-repeat;
+      margin-top: 7px !important;
+    }
+    .building-button-common_area .icon {
+      background: url(/assets/img/icons/common_area.svg) no-repeat;
+    }
+    .building-button-ap_numbers .icon {
+      background: url(/assets/img/icons/ap_numbers.svg) no-repeat;
+    }
+    .building-button-building_name .icon {
+      background: url(/assets/img/icons/building_name.svg) no-repeat;
+    }
+    .building-button-building_contact .icon {
+      background: url(/assets/img/icons/building_contact.svg) no-repeat;
+    }
+    .building-button-building-trades .icon {
+      background: url(/assets/img/icons/trades.svg) no-repeat;
+    }
+    .building-button-report .icon {
+      background: url(/assets/img/icons/report.svg) no-repeat;
+    }
+    .building-button-parcel .icon {
+      background: url(/assets/img/icons/parcel.svg) no-repeat;
+      background-size: contain;
+    }
+    .building-button-calendar .icon {
+      background: url(/assets/img/icons/calendar.svg) no-repeat;
+    }
+    .building-button-building_info .icon {
+      background: url(/assets/img/icons/building_info.svg) no-repeat;
+    }
+    .building-button-notification_contacts .icon {
+      background: url(/assets/img/icons/notification_contacts.svg) no-repeat;
+    }
+    .building-button-guidleines .icon {
+      background: url(/assets/img/icons/guidleines.svg) no-repeat;
+      background-position-y: 5px
+    }
+    .building-button-share .icon {
+      background: url(/assets/img/icons/share.svg) no-repeat;
+    }
+    .building-button-email-templates .icon {
+      background: url(/assets/img/icons/moving_emails.svg) center no-repeat;
+    }
+    .building-button-move-out .icon {
+      background: url(/assets/img/icons/moving_times.svg) center no-repeat;
+    }
+    .building-button-noticeboard .icon {
+      background: url(/assets/img/icons/notice_dashboard.svg) center no-repeat;
+    }
+    .building-button-profile .icon {
+      background: url(/assets/img/icons/profile.svg) no-repeat;
+    }
+    .building-button-billing .icon {
+      background: url(/assets/img/icons/billing.svg) no-repeat;
+    }
+  }
+  .pallete-block{
+    max-width: 1015px;
+    padding: 20px 40px;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 1360px){
+  .manager-dashboard {
+    margin-top: 80px;
+  }
+}

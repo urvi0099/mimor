@@ -1,0 +1,52 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button mat-button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-background email-templates-logo form-wrapper">
+      <div ng-hide="pageLoading" class="email-templates-logo-wrap">
+        <div class="email-templates-list">
+          <div class="text-center">
+            <h2 class="mim-panel-header">Change Email Logo</h2>
+            <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="upload-img">
+        <div class="title-input"><span>Email Logo</span><span class="italic">Drag&Drop here:</span></div>
+        <div class="build-photo draganddrop-zone">
+          <ngx-dropzone #drop (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" disableClick
+            maxFileSize="4096000" multiple="false">
+            <ngx-dropzone-label>
+              <img [src]="uploadedLogo" alt="photo">
+            </ngx-dropzone-label>
+            <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
+            </ngx-dropzone-image-preview>
+          </ngx-dropzone>
+        </div>
+        <button mat-button class="upload-btn" (click)="drop.showFileSelector()">Upload Photo</button>
+      </div>
+      <div class="buttons-back" ng-hide="pageLoading">
+        <button mat-button class="back-btn mim-btn" [disabled]="loading" (click)="back()">
+          <mat-icon class="material-icons">keyboard_backspace</mat-icon>
+          Back
+        </button>
+        <button mat-button class="primary-btn mim-btn" (click)="submit()" aria-label="submit company title"
+          [disabled]="loading || !files.length"><span>{{buttonText}}</span></button>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

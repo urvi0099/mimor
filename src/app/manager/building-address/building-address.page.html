@@ -1,0 +1,183 @@
+<ion-content [fullscreen]="true">
+	<mat-toolbar class="mim-header-toolbar">
+		<a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+			<img src="assets/img/logoNew.png" class="logo" alt="">
+		</a>
+		<div class="switch-role">
+			<button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+				<span class="icon"></span><span class="logout">Log Out</span>
+			</button>
+			<select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1"
+					(change)="rolesService.selectRole($event.target.value)">
+				<option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+			</select>
+		</div>
+	</mat-toolbar>
+	<div class="flex-page">
+		<div class="address-frame form-wrapper">
+			<div class="dashboard-header building-contact">
+				<form name="form" [formGroup]="contactsForm" *ngIf="!pageLoading" class="manager-wrapper">
+					<h2 class="mim-uppercase mim-panel-header">{{id ? 'Change Building Contact Details ' : 'Please complete the
+                        details below'}}</h2>
+					<div class="mim-header-building-info"><span>{{buildName}}</span></div>
+					<div class="building-block d-flex width-mobile-100 building-contact-details-mobile">
+						<div class="address-column address-column-left">
+							<div class="text-center">
+								<h3>Owners Corporation Company Details</h3>
+							</div>
+							<div class="mim-cont-det-switcher">
+								<mat-checkbox disableRipple ng-change="globalCheckerChanged('owner_corp_global')"
+											  [checked]="cont_det_switchers.owner_corp_global"
+											  (change)="toggleSwitchOwner()">
+									I want to make this information public
+								</mat-checkbox>
+							</div>
+							<label class="input-title">Owners Corporation Company Name</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='companyCheckerChanged(cont_det_switchers.company.owners_corp_comp_name)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.company.owners_corp_comp_name'></mat-checkbox>
+								<div class="input-field mat-input">
+									<input type="text" placeholder="For example ABC Owners company Ltd"
+										   formControlName="owners_corp_comp_name" maxlength="50">
+								</div>
+							</div>
+							<label class="input-title">OC Number</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple ng-true-value='true' ng-false-value='false'
+											  ng-change='companyCheckerChanged(cont_det_switchers.company.oc_number)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.company.oc_number'></mat-checkbox>
+								<div class="input-field mat-input">
+									<input type="text" placeholder="For example #PC641238L" formControlName="oc_number"
+										   ng-change="autoSharp()">
+								</div>
+							</div>
+							<label class="input-title">Owners Corporation Contact Name</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='companyCheckerChanged(cont_det_switchers.company.contact_name)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.company.contact_name'></mat-checkbox>
+								<div class="input-field mat-input">
+									<input type="text" placeholder="For example John Doe" formControlName="contact_name"
+										   maxlength="50">
+								</div>
+							</div>
+							<label class="input-title">Email</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='companyCheckerChanged(cont_det_switchers.company.owners_corp_contact_email)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.company.owners_corp_contact_email'></mat-checkbox>
+
+								<div class="input-field mat-input mobile-input">
+									<input type="email" restrict="reject" placeholder="For example john@mail.com"
+										   formControlName="owners_corp_contact_email" maxlength="50">
+								</div>
+							</div>
+							<label class="input-title">Company Phone Number</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='companyCheckerChanged(cont_det_switchers.company.contact_phone)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.company.contact_phone'></mat-checkbox>
+
+								<div class="input-field mat-input">
+									<input type="text" (keypress)="enterKey($event)"
+										   mask="00 0000 000 000 || 00 0000 0000 || 0000 0000 || 0 000 000 0000"
+										   ng-focus="editAttempt('ownersMask')"
+										   ng-init="editPhone([contact_phone], $event, 'ownersMask');" placeholder=""
+										   formControlName="contact_phone" id="ownersMask">
+								</div>
+							</div>
+						</div>
+						<div class="address-column address-column-right">
+							<div class="text-center">
+								<h3>Building Contact Details (if building has one)</h3>
+							</div>
+							<div class="mim-cont-det-switcher">
+								<mat-checkbox disableRipple
+											  [checked]="cont_det_switchers.building_global"
+											  (change)="toggleSwitchBuilding()">
+									I want to make this information public
+								</mat-checkbox>
+							</div>
+							<label class="input-title">Building Contact Title</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='contactCheckerChanged(cont_det_switchers.contact.building_contact_title)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.contact.building_contact_title'></mat-checkbox>
+								<div class="input-field mat-input">
+									<input type="text" placeholder="For example Manager"
+										   formControlName="building_contact_title"
+										   maxlength="50">
+								</div>
+							</div>
+							<label class="input-title">Building Contact Name</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='contactCheckerChanged(cont_det_switchers.contact.owners_corp_contact_name)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.contact.owners_corp_contact_name'></mat-checkbox>
+								<div class="input-field mat-input">
+									<input type="text" placeholder="For example John Doe"
+										   formControlName="owners_corp_contact_name"
+										   maxlength="50">
+								</div>
+							</div>
+							<label class="input-title">Email</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='contactCheckerChanged(cont_det_switchers.contact.building_emails)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.contact.building_emails'></mat-checkbox>
+								<div class="input-field mat-input">
+									<input type="email" placeholder="For example john@mail.com"
+										   formControlName="building_emails"
+										   maxlength="50">
+								</div>
+							</div>
+							<label class="input-title">Phone</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='contactCheckerChanged(cont_det_switchers.contact.owners_corp_contact_phone)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.contact.owners_corp_contact_phone'></mat-checkbox>
+								<div class="input-field mat-input">
+									<input type="text" (keypress)="enterKey($event)"
+										   mask="00 0000 000 000 || 00 0000 0000 || 0000 0000 || 0 000 000 0000"
+										   ng-init="event = $event; editPhone([owners_corp_contact_phone], event, 'managersMask')"
+										   placeholder="" formControlName="owners_corp_contact_phone" id="managersMask">
+								</div>
+							</div>
+							<label class="input-title">Notes</label>
+							<div class="mim-cont-det-switch-wrap">
+								<mat-checkbox disableRipple
+											  ng-change='contactCheckerChanged(cont_det_switchers.contact.cont_det_notes)'
+											  [ngModelOptions]="{'standalone': true}"
+											  [(ngModel)]='cont_det_switchers.contact.cont_det_notes'></mat-checkbox>
+								<div class="input-field mat-input cont-det-notes">
+									<textarea maxlength="65535" formControlName="cont_det_notes"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="buttons-back buttons-back-mobile">
+						<button mat-button class="button-log back-btn btn-back" (click)="back()">
+							<mat-icon class="material-icons">keyboard_backspace</mat-icon>
+							Back
+						</button>
+						<button mat-button class="primary-btn" (click)="submit()" aria-label="Submit"
+								ng-disabled="isSubmitDisabled()"><span>{{buttonText}}</span></button>
+					</div>
+				</form>
+				<div class="loading-bar" *ngIf="pageLoading">
+					<ion-spinner color="primary" class="spinner"></ion-spinner>
+				</div>
+			</div>
+		</div>
+	</div>
+</ion-content>

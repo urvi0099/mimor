@@ -1,0 +1,67 @@
+<mat-dialog-content class="mat-dialog-content">
+  <h2 class="mat-title ng-binding">Contact Details</h2>
+  <div class="mim-build-addr" *ngIf="model.building.address">{{model.building.address}}</div>
+  <div class="mim-no-build-info" *ngIf='isNoBuildingInfo()'>No building information is available</div>
+  <div *ngIf='!isNoBuildingInfo()' class="mim-cont-det-preview-wrap">
+    <div *ngIf='cont_det_switchers.building_global' class="mim-cont-det-column-1">
+      <div *ngIf='cont_det_switchers.contact.building_contact_title && contDets.building_contact_title'
+        class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Building Contact Title</div>
+        <div class="mim-cont-det-item-body">{{contDets.building_contact_title}}</div>
+      </div>
+      <div *ngIf='cont_det_switchers.contact.owners_corp_contact_name && contDets.owners_corp_contact_name'
+        class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Building Contact Name</div>
+        <div class="mim-cont-det-item-body">{{contDets.owners_corp_contact_name}}</div>
+      </div>
+      <div *ngIf='cont_det_switchers.contact.building_emails && contDets.building_emails'
+        class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Email</div>
+        <div class="mim-cont-det-item-body"><a href="mailto:contDets.building_emails">{{contDets.building_emails}}</a>
+        </div>
+      </div>
+      <div *ngIf='cont_det_switchers.contact.owners_corp_contact_phone && contDets.owners_corp_contact_phone'
+        class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Phone</div>
+        <div class="mim-cont-det-item-body"><a
+            href="tel:{{contDets.owners_corp_contact_phone}}">{{contDets.owners_corp_contact_phone}}</a></div>
+      </div>
+      <div *ngIf='cont_det_switchers.contact.cont_det_notes && contDets.cont_det_notes'
+        class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Notes</div>
+        <div class="mim-cont-det-item-body" ng-bind-html='nl2br(contDets.cont_det_notes)'></div>
+      </div>
+    </div>
+    <div *ngIf='cont_det_switchers.owner_corp_global' class="mim-cont-det-column-2">
+      <div *ngIf='cont_det_switchers.company.owners_corp_comp_name && contDets.owners_corp_comp_name'
+        class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Owners Corporation Company Name</div>
+        <div class="mim-cont-det-item-body">{{contDets.owners_corp_comp_name}}</div>
+      </div>
+      <div *ngIf='cont_det_switchers.company.oc_number && contDets.oc_number' class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">OC Number</div>
+        <div class="mim-cont-det-item-body">{{contDets.oc_number}}</div>
+      </div>
+      <div *ngIf='cont_det_switchers.company.contact_name && contDets.contact_name' class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Owners Corporation Contact Name</div>
+        <div class="mim-cont-det-item-body">{{contDets.contact_name}}</div>
+      </div>
+      <div *ngIf='cont_det_switchers.company.owners_corp_contact_email && contDets.owners_corp_contact_email'
+        class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Email</div>
+        <div class="mim-cont-det-item-body"><a
+            href="mailto:{{contDets.owners_corp_contact_email}}">{{contDets.owners_corp_contact_email}}</a></div>
+      </div>
+      <div *ngIf='cont_det_switchers.company.contact_phone && contDets.contact_phone' class="mim-cont-det-preview-item">
+        <div class="mim-cont-det-item-head">Company Phone Number</div>
+        <div class="mim-cont-det-item-body"><a href="tel:{{contDets.contact_phone}}">{{contDets.contact_phone}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="dismiss()" class="res-btn">
+    DISMISS
+  </button>
+</mat-dialog-actions>

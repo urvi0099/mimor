@@ -1,0 +1,113 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper form-background add-emails-size areas-frame" *ngIf="!showingRules">
+      <div class="build-info" *ngIf="!loading">
+        <form name="form" class="areas-form">
+          <div class="text-center">
+            <h2 class="mim-panel-header">{{ buildName }} - COMMON AREAS</h2>
+          </div>
+          <div class="areas-section">
+            <div *ngIf="areas.length!=0" class="areas-block">
+              <div *ngFor="let area of areas | keyvalue" class="areas-manager pd-b40">
+                <div class="md-block">
+                  <div class="ta-left">
+                    <h2>{{area.value.name}}</h2>
+                  </div>
+                  <div class="areas-text ta-left">
+                    <p>{{area.value.description}}</p>
+                  </div>
+                  <div class="areas-rules ta-left">
+                    <a (click)="showRules(area.value.id)" class="areas-pl pointer-st"><span class="icon"></span> Rules
+                      of {{area.value.name}}</a>
+                  </div>
+                </div>
+                <div class="ta-left" *ngIf="filenames[area.value.id]">
+                  <p>Common area files:</p>
+                </div>
+                <div class="file-wrap" *ngIf="filenames[area.value.id]">
+                  <div class="many_pdf ta-left" *ngFor="let file of resultAreaFiles[area.value.id].blobUrl | keyvalue">
+                    <a *ngIf="!resultAreaFiles[area.value.id].isLocal[area.key]" target="_blank" href="{{file.value}}"
+                      class="name-pdf">
+                      <span *ngIf="!filenames[area.value.id]" class="op-0">no file</span>
+                      <span>{{file.key}}</span>
+                    </a>
+                    <a *ngIf="resultAreaFiles[area.value.id].isLocal[file.key]" target="_blank" href="{{file.value}}"
+                      class="name-pdf">
+                      <span *ngIf="!filenames[area.value.id]" class="op-0">no file</span>
+                      <span>{{file.key}}</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="areas-change ta-left">
+                  <a href="/manager/building/{{buildId}}/common-areas/{{area.value.id}}/edit" class="areas-pl"><span
+                      class="icon"></span> Edit description/rules</a>
+                </div>
+
+                <div class="areas-change ta-left">
+                  <a class="md-raised md-primary areas-pl pointer-st"
+                    href="/manager/building/{{buildId}}/common-areas/{{area.value.id}}/timeslots"><span class="icon"></span> Change
+                    time slots</a>
+                </div>
+
+                <div class="areas-calendar ta-left">
+                  <a href="/manager/building/{{buildId}}/common-area-calendar/{{area.value.id}}"
+                    class="areas-pl"><span class="icon"></span> Bookings for {{area.value.name}} area</a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="areas.length==0" class="fb-15">
+            <h4 class="text-center">There are no common areas set-up for this building.</h4>
+          </div>
+
+          <div class="buttons-back autoheight mgt20">
+            <button mat-button class="button-log back-btn btn-back" (click)="back()" aria-label="Back">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+            <button mat-button class="add-em-button add-emails-btn md-button md-button" (click)="addNewArea()">Add new
+              area
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+
+    </div>
+
+    <div class="frame-rules form-wrapper form-background frame-md2 h550" *ngIf="showingRules">
+      <div class="text-center">
+        <h2 class="mim-panel-header">{{ areaName }} rules</h2>
+        <div class="text-left">
+          <div class="terms">
+            <div [innerHTML]="areaRules"></div>
+          </div>
+          <div class="buttons-back">
+            <button mat-button class="button-log back-btn btn-back" (click)="showingRules=false;">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

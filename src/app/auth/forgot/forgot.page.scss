@@ -1,0 +1,22 @@
+.forgot-wrapper{
+  width: 540px;
+  height: 650px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.forgot-form{
+  max-height: 350px;
+  max-width: 365px;
+  width: 100%;
+  h2{
+    margin-bottom: 40px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+}
+
+.forgot-buttons{
+  margin-top: 120px;
+}

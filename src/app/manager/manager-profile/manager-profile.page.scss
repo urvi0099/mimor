@@ -1,0 +1,51 @@
+.profile-form-wrapper{
+  width: 585px;
+  height: 807px;
+  padding: 30px;
+}
+
+.login-block-header {
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+.mat-input{
+  margin-bottom: 26px;
+}
+
+.terms-cond-privacy{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 46px;
+  .terms-checkbox{
+    height: 16px;
+    width: 16px;
+    margin-right: 10px;
+  }
+}
+
+.form-val-note-wrap{
+  color: #888;
+  font-size: 12px;
+}
+
+.login-buttons{
+  margin: 0;
+  margin-top: 40px;
+  .mat-button{
+    height: 50px;
+    &.submit-btn{
+      background-color: #f26204;
+      &:disabled{
+        background-color: #f5a069;
+      }
+    }
+  }
+}

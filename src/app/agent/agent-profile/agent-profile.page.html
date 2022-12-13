@@ -1,0 +1,82 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1"
+        (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper resident-update-profile">
+      <form method="post" name="form" [formGroup]="userForm" class="user-edit full-width">
+        <div *ngIf="!pageLoading" class="d-flex-col inner-wrap">
+          <div class="text-center inner-header">
+            <h2 class="resident-header">Update personal profile</h2>
+          </div>
+          <div class="d-flex-col inner-content">
+            <div class="d-flex inner-field-full">
+              <mat-form-field appearance="standard">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" placeholder="Name" formControlName="name" />
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field-full">
+              <mat-form-field appearance="standard">
+                <mat-label>Company Name</mat-label>
+                <input matInput type="text" id="company" formControlName="company" />
+                <mat-hint *ngIf="userForm.controls.company.touched && userForm.controls.company.errors"
+                  class="form-val-input">
+                  Please enter company name.</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field-full">
+              <mat-form-field appearance="standard">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" placeholder="Email" name="email" formControlName="email">
+                <mat-hint *ngIf="userForm.controls.email.touched &&
+                  userForm.controls.email.errors && userForm.controls.email.errors.required" class="form-val-input">
+                  Email is required.</mat-hint>
+                <mat-hint *ngIf="userForm.controls.email.touched &&
+                  userForm.controls.email.errors && userForm.controls.email.errors.pattern" class="form-val-input">
+                  This is not a valid email.</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field-full">
+              <mat-form-field appearance="standard">
+                <mat-label>Password</mat-label>
+                <input matInput name="password" type="password" formControlName="password">
+                <mat-hint *ngIf="userForm.controls.password.touched &&
+                  userForm.controls.password.errors && userForm.controls.password.errors.required"
+                  class="form-val-input">
+                  Password is required.</mat-hint>
+                <mat-hint *ngIf="userForm.controls.password.touched &&
+                  userForm.controls.password.errors && userForm.controls.password.errors.minlength"
+                  class="form-val-input">
+                  Password can't be shorter than 6 characters.</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="buttons-back">
+            <button mat-raised-button class="back-btn" (click)="cancel()"><mat-icon class="material-icons">keyboard_arrow_left</mat-icon>Back</button>
+            <button mat-raised-button class="update-button" [disabled]="false" aria-label="update"
+              (click)="save()">
+              {{buttonText}}<mat-icon class="material-icon">send</mat-icon></button>
+          </div>
+        </div>
+        <div class="loading-bar" *ngIf="pageLoading">
+          <ion-spinner class="spinner" color="primary"></ion-spinner>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

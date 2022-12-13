@@ -1,0 +1,76 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1"
+        (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role?.name">{{role?.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper form-background frame-md3 h620 mim-re-dashboard">
+      <div class="manager-wrapper2" ng-hide="pageLoading">
+        <div layout="column" class="layout-column-sm text-center">
+          <h2 class="text-center resident-header">Select Building</h2>
+          <div class="">
+            <p>Now search and select the building you would like to access information for:</p>
+            <mat-form-field class="autocomplete full-width" appearance="standard">
+              <input type="text" matInput [formControl]="buildAuto" [matAutocomplete]="auto"
+                placeholder="Enter building name or street address">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let build of filteredBuilds | async" (click)="selectBuild(build)"
+                  [value]="build.name">
+                  {{build.name + ' - ' + build.address }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="mgt20 build-box">
+          <div class="ag-dashboard-body" *ngIf="building">
+            <div class="building-block">
+              <div class="building-block-header text-center">
+                <h3 class="dash-h3">{{building.name}}</h3>
+              </div>
+              <div class="building-block-img text-center">
+                <img class="md-whiteframe-z2 building-photo"
+                  src="{{environment.baseUrl}}/img/buildings/{{building.photo}}" alt="photo">
+              </div>
+            </div>
+            <div class="tenant-controls">
+              <button mat-button *ngIf="(building.hide_build_cats != '1')|| isTrustedEmail"
+                class="res-dash-button md-raised text-left" aria-label="description" (click)="redirect('info')"
+                [disabled]="loading">
+                <mat-icon class="material-icons mgr10">&#xE0AF;</mat-icon> Building Information
+              </button>
+              <button mat-button *ngIf="(building.hide_guidelines != '1') || isTrustedEmail"
+                class="res-dash-button md-raised text-left" aria-label="description"
+                (click)="redirect('guidelines/view')" [disabled]="loading">
+                <mat-icon class="material-icons mgr10">&#xE0E0;</mat-icon> View Guidelines
+              </button>
+              <button mat-button class="res-dash-button md-raised text-left" aria-label="description"
+                (click)="showContactDetails()" [disabled]="loading">
+                <mat-icon class="material-icons mgr10">&#xE61C;</mat-icon> Contact details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mgt20">
+          <button mat-button class="res-action-button md-raised md-primary" (click)="redirect('profile')"
+            aria-label="description">Update my
+            profile
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

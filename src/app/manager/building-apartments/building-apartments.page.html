@@ -1,0 +1,138 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper as-page md-whiteframe-mobile">
+      <div *ngIf="!loading"
+        class="manager-wrapper width-mobile-100 manager-wrapper-mobile set-up-your-building-mobile">
+        <div class="dashboard-header">
+          <h2 class="mim-panel-header">Set-Up Your Building Levels</h2>
+          <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+        </div>
+        <div class="as-radio-button">
+          <div *ngIf="!selectedLevelNum && selectedLevelNum !== 0" class="ap-label">
+            <p>To add a level click "+ ADD LEVEL" button.</p>
+          </div>
+          <div class='as-radio-button-level select-level-mobile' *ngIf="selectedLevelNum || selectedLevelNum === 0">
+            <span class="notify-send">Select Level</span>
+            <div class="as-radio-btn">
+              <mat-radio-group [(ngModel)]="selectedLevel">
+                <mat-radio-button value="level" (click)="showLevelApartments(level)" *ngFor="let level of levelsValues">
+                  <span>{{level.level}}</span> LEVEL
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="as-wrapper" *ngIf="levelsValues.length">
+              <div class="as-added" *ngIf="levelsValues[selectedLevelNum].apartments.length">
+                <span *ngFor="let apartment of levelsValues[selectedLevelNum].apartments; let i = index" class="as-level">
+                  {{apartment.name}}
+                  <a *ngIf="levelsValues[selectedLevelNum].apartments.length > 0" (click)="removeApartment(i)">
+                    <i class="material-icons">close</i>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="as-wrapper">
+          <div class="as-block" *ngIf="levelsValues.length">
+            <div class="as-form column-on-mobile">
+              <div class="as-form__input apartment-selector-mobile">
+                <div class="mat-input">
+                  <label>Prefix</label>
+                  <input matInput type="text" placeholder="e. g G"
+                    ng-change="updateLimitStatus()" [(ngModel)]="levelsValues[selectedLevelNum].prefix" maxlength="2">
+                </div>
+                <div class="mat-input">
+                  <label>Start</label>
+                  <input matInput type="text" placeholder="e. g 1"
+                    ng-change="updateLimitStatus()" (keypress)="enterKey($event)"
+                    [(ngModel)]="levelsValues[selectedLevelNum].start" maxlength="3">
+                </div>
+                <div class="mat-input">
+                  <label>Finish</label>
+                  <input matInput type="text" placeholder="e. g 9"
+                    ng-change="updateLimitStatus()" (keypress)="enterKey($event)"
+                    [(ngModel)]="levelsValues[selectedLevelNum].finish" maxlength="3">
+                </div>
+                <div class="mat-input">
+                  <label>Suffix</label>
+                  <input matInput type="text" placeholder="e. g G"
+                    ng-change="updateLimitStatus()" [(ngModel)]="levelsValues[selectedLevelNum].suffix" maxlength="2">
+                </div>
+              </div>
+
+              <button mat-button class="add-button add-em-button add-emails-btn centerize-mobile"
+                ng-disabled="limitReached || !(selectedLevelNum) || loading" (click)="addApartments(selectedLevelNum)">
+                <mat-icon class="material-icons">add</mat-icon> ADD APARTMENTS
+              </button>
+            </div>
+            <div class='as-radio-button-style'>
+              <span class="notify-send">Select Style</span>
+              <div class="as-radio-button__group style-selector-mobile">
+                <mat-button-toggle-group class="ap-numbering" [(ngModel)]="levelsValues[selectedLevelNum].style"
+                  name="numbering" aria-label="Numbering">
+                  <mat-button-toggle value="standard">Standard System</mat-button-toggle>
+                  <mat-button-toggle value="numbering">3 Numbering System</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+
+          </div>
+          <div class="as-manually width-mobile-100 column-on-mobile" *ngIf="levelsValues.length">
+            <div class="mat-input">
+              <label>Manually</label>
+              <input matInput type="text" ng-change="updateLimitStatus()" placeholder="For example G3"
+                [(ngModel)]="levelsValues[selectedLevelNum].manually"
+                maxlength="10">
+            </div>
+            <button mat-button class="md-primary btn-add add-button add-em-button add-emails-btn md-button"
+              (click)="addManually(selectedLevelNum)">
+              <mat-icon class="material-icons">add</mat-icon> ADD MANUALLY
+            </button>
+          </div>
+
+          <div class="buttons-back autoheight">
+            <div class="notify-buttons level-buttons buttons-column">
+              <button mat-button class="md-primary btn-delete add-em-button add-emails-btn"
+                ng-disabled="levels.length < 1 || loading" aria-label="Delete level"
+                (click)="showConfirm(selectedLevelNum)">
+                <mat-icon class="material-icons">delete</mat-icon>
+                <span> DELETE LEVEL</span>
+              </button>
+              <button mat-button class="btn-level md-primary add-em-button add-emails-btn"
+                (click)="presentAlertPrompt()">
+                <mat-icon class="material-icons">add</mat-icon> ADD LEVEL
+              </button>
+            </div>
+
+            <div class="buttons-back notify-buttons buttons-column">
+              <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+                <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+              </button>
+              <button mat-button class="primary-btn save-btn" (click)="submit()"
+                aria-label="Submit" ng-disabled="loading">
+                <span>{{buttonText}}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

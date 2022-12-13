@@ -1,0 +1,115 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="mim-panel parcel-panel form-wrapper">
+      <div class="parcel-table-wrapper">
+        <h2 class="mim-panel-header text-center">Parcel Management</h2>
+        <div class="mim-header-building-info d-flex parcel-manage">
+          <input type="text" [(ngModel)]="form.search" [ngModelOptions]="{debounce: 300}" placeholder="Search name"
+            (ngModelChange)="getParcels()">
+          <span>{{buildName}}</span>
+          <mat-select [(ngModel)]="form.sorting" (ngModelChange)="getParcels()">
+            <mat-option class="manager-option" [value]="sort" *ngFor="let sort of sortingBy">{{ sort.name }}
+            </mat-option>
+          </mat-select>
+        </div>
+
+        <h3 class="text-center" *ngIf="!isPageLoading && !parcels.length">There Are No Parcels For This Building.</h3>
+
+        <div class="table-responsive" *ngIf="parcels.length">
+          <table class="table table-bordered table-striped parcel-table">
+            <thead>
+              <tr>
+                <th class="text-center" *ngFor="let header of tableHeaders">{{ header }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let parcel of parcels">
+                <td class="text-center">{{ parcel.recipients && parcel.recipients[0] ? parcel.recipients[0].name :
+                  parcel.other_recipients && parcel.other_recipients[0]
+                  ? parcel.other_recipients[0].name :'Unknown'}}
+                </td>
+                <td class="text-center">{{ parcel.apartment.name }}</td>
+                <td class="text-center">{{ parcel.location ? parcel.location.location : 'Unknown'}}</td>
+                <td class="text-center">{{ parcel.received_at ? 'Picked up' : 'Notified pending pickup' }}</td>
+                <td class="text-center">{{ parcel.updated_at | date: 'dd/MM' }}</td>
+                <td class="text-center d-flex align-items-center justify-content-center">
+                  <button mat-button type="button" class="md-raised"
+                    [ngClass]="{ 'md-warn primary-btn': !parcel.received_at, 'button-log back-btn btn-back': parcel.received_at }"
+                    (click)="showConfirmPickup($event, parcel.id)" [disabled]="parcel.received_at">
+                    {{ parcel.received_at ? 'Complete' : 'Confirm pickup' }}
+                  </button>
+                  <span class="material-icons delete-parcel" (click)="deleteParcel(parcel.id)">clear</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="loading-bar" *ngIf="isPageLoading">
+          <ion-spinner color="primary" class="spinner"></ion-spinner>
+        </div>
+
+        <div class="pagination" ng-if="!(page === 1 && !isNextPageAvailable)">
+          <button mat-button type="button" class="md-raised md-primary page-item prev" [disabled]="page === 1"
+            (click)="changePage(-1)">
+            <span class="material-icons">keyboard_arrow_left</span>
+          </button>
+          <button mat-button type="button" class="md-raised md-primary page-item next" [disabled]="!isNextPageAvailable"
+            (click)="changePage(1)">
+            <span class="material-icons">keyboard_arrow_right</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="buttons-back parcel-panel--btns">
+        <button mat-button class="button-log back-btn btn-back" (click)="back()">
+          <mat-icon class="material-icons">keyboard_backspace</mat-icon>
+          Back
+        </button>
+        <button mat-button class="md-raised md-warn primary-btn" aria-label="add_parcel" (click)="addParcel($event)">
+          Add new parcel
+        </button>
+      </div>
+    </div>
+    <div class="confirm-pickup-modal form-wrapper" *ngIf="confirmModalOpen">
+      <div class="confirm-pickup--content">
+        <h2 class="md-title ng-binding text-center">Confirm the parcel has been picked up!</h2>
+        <div class="recep-info">Name: {{parcel.recipients[0].name || parcel.other_recipients[0].name || '-'}}</div>
+        <div class="recep-info">Email: {{parcel.recipients[0].email || parcel.other_recipients[0].email || '-'}}</div>
+        <div class="recep-info">Phone: {{parcel.recipients[0].phone || parcel.other_recipients[0].phone || '-'}}</div>
+        <div class="recep-info">Apartment #{{parcel.apartment.name}}</div>
+      </div>
+      <signature-pad [options]="signaturePadOptions" (onEndEvent)="drawComplete()"></signature-pad>
+      <div class="sign-message d-flex justify-around">
+        <span>Please sign in the area above to confirm</span>
+        <button class="clear-sign" (click)="clearSignature()">Clear</button>
+      </div>
+      <div class="modal-actions">
+        <div class="d-flex justify-content-center buttons-back parcel-panel--btns">
+          <button mat-button class="button-log back-btn btn-back" (click)="closeConfirmModal()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon>
+            Back
+          </button>
+          <button mat-button class="md-raised md-warn primary-btn" [disabled]="!signature" aria-label="description"
+            (click)="markAsReceived(parcel.id, signature)">
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-blur" [ngClass]="{'blur-op': confirmModalOpen}" (click)="closeConfirmModal()"></div>
+  </div>
+</ion-content>

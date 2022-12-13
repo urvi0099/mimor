@@ -1,0 +1,197 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page" [class.is-fullscreen]="isFullscreen">
+    <div class="form-wrapper form-background building-information mim-block-large" [class.is-fullscreen]="isFullscreen" *ngIf="!showExample">
+      <div class="build-info full-width" [class.is-fullscreen]="isFullscreen" ng-hide="pageLoading">
+        <div class="text-center">
+          <h2 class="mim-panel-header">Building information<button mat-button
+              class="md-fab md-mini md-primary button-fullsize" aria-label="Use Android"
+              (click)="isFullscreen=!isFullscreen">
+              <mat-icon class="material-icons">fullscreen</mat-icon>
+            </button>
+          </h2>
+          <div class="mim-header-building-info"><span>{{building.name}}</span></div>
+          <a (click)="showExample=!showExample;">Click here for example</a>
+          <!-- <div class="mim-checkbox-wrap mim-checkbox-header"><span>Real Estate Visibility: </span>OFF<div
+                ng-click="switchHiddenStatusCategories($event)"
+                data-status="{{building.hide_build_cats == '0' || building.hide_build_cats == null ? 'block' : 'active'}}"
+                class="mim-checkbox mim-checkbox-margin mim-checkbox-hide-agent">
+                <div ng-click="switchHiddenStatusCategories($event)" class="mim-checker"></div>
+              </div>ON</div> -->
+          <div class="guidelines__toggle">Real Estate Visibility: OFF
+            <ion-toggle [(ngModel)]="realEstateVisibility" class="ion-toggle"
+              mode="ios"></ion-toggle> ON
+          </div>
+        </div>
+        <div>
+          <div class="build-select">
+            <span>Select Category</span>
+            <div class="mat-input info-container">
+              <mat-select class="info-select" placeholder="Category" [(ngModel)]="category"
+                aria-label="Categories">
+                <mat-option class="uppercase manager-option" *ngFor="let cat of categories | keyvalue" value="{{ cat.key }}"
+                  ng-if="cat.value.new != 0" ng-disabled="disableOption(cat.value.id)" (click)="log(cat)">{{
+                  cat.value.name }}</mat-option>
+              </mat-select>
+              <button mat-button class="md-raised md-primary add-em-button add-btn button-autocomplete nomarg"
+                (click)="addCategory(category)" [disabled]="!category">
+                <mat-icon id="emailIcn" class="material-icon add-em-but-icon">add</mat-icon> Add category
+              </button>
+            </div>
+          </div>
+          <div class="mat-input search-info-categories">
+            <label class="md-block">Search Category</label>
+            <input class="search-info-categories" [disabled]="loading" [(ngModel)]="searchFilter"
+              placeholder="For example 'ADDITIONAL KEYS'"
+              onkeydown="if(event.keyCode==13){return false;}" />
+          </div>
+          <div class="description-scroll">
+            <div class="description-block"
+              *ngFor="let cat of selected | keyvalue | orderBy:'position' | filter : searchFilter">
+              <div class="build-editor">
+                <div class="cat-name-wrap">
+                  <h4>{{cat.value.name}}</h4>
+                  <div class="mim-checkbox-single-cat guidelines__toggle">Real Estate Visibility: OFF
+                    <ion-toggle [(ngModel)]="cat.value.hidden" class="ion-toggle"
+                      mode="ios"></ion-toggle> ON
+                  </div>
+                </div>
+                <quill-editor name="GuidelinesTextEditor" [(ngModel)]="cat.value.description"
+                  [modules]="quillConfig" [styles]="{height: '350px'}"
+                  placeholder="">
+                </quill-editor>
+                <button class="md-icon-button md-accent btn-delete" matTooltip="Delete category"
+                  (click)="removeCategory(cat.value.id)" aria-label="Remove category">
+                  <mat-icon class="material-icons">delete</mat-icon>
+                </button>
+              </div>
+              <div class="build-block">
+                <div class="build-file">
+                  <div class="many_pdf" *ngFor="let file of resultArrCategory[cat.value.name].blobUrl | keyvalue">
+                    <button class="pdfGuidDelete md-icon-button md-accent btn-delete-pdf" matTooltip="delete PDF"
+                      ng-hide="!fileInfo[fromKeyPDF(k.id)]"
+                      ng-click="deletePDF(fromKeyPDF(k.id),getCatName(k.id),key,k.id)"
+                      (click)="deletePdf(cat.value.name, file.key)">
+                      <mat-icon class="material-icons">clear</mat-icon>
+                    </button>
+                    <!-- <a ng-if="!resultArrCategory[getCatName(k.id)].isLocal[key]" target="_blank" href="{{file.value}}"
+                        class="name-pdf">
+                        <span ng-hide="fileInfo[fromKeyPDF(k.id)]" class="op-0">no file</span>
+                        <span>{{file.key}}</span>
+                      </a> -->
+                    <a ng-if="resultArrCategory[getCatName(k.id)].isLocal[key]" title="{{file.key}}" target="_blank"
+                      (click)="openFile(file.value)" class="name-pdf">
+                      <!-- <span ng-hide="fileInfo[fromKeyPDF(k.id)]" class="op-0">no file</span> -->
+                      <span>{{file.key}}</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="fileUpload guidelines__uppload-btn">
+                  <span>Upload file</span>
+                  <input (change)="onSelect($event, cat.value.name)" name="pdf{{ cat.value.id }}" type="file"
+                    accept=".pdf" class="guidelines__upload-input" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4 class="text-center" *ngIf="noCategories">No categories selected</h4>
+        </div>
+        <div class="btn-wrap btn-wrap-bottom buttons-back" ng-hide="pageLoading">
+          <button mat-button class="button-log back-btn btn-back" ng-disabled="loading" (click)="back()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+          <button mat-button class="primary-btn save-btn" (click)="submit()" aria-label="Submit"
+            ng-disabled="loading || form.$invalid"><span>{{buttonText}}</span></button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+    <div class="form-wrapper form-background build-inform" *ngIf="showExample">
+      <div class="build-wrap">
+        <h2 class="mim-panel-header">Building information example</h2>
+        <div class="terms" layout-padding>
+          <p class="ta-left build-info-example">
+            <strong>ADDITIONAL KEYS</strong><br>
+            <a href="https://app.mimor.com.au/download_cat_pdf/278/Additional%20Key%20Form.pdf">FILE_DOWNLOAD</a> <a
+              href="https://app.mimor.com.au/upload/pdf/278/Additional%20Key%20Form.pdf">View Additional Key
+              Form.pdf</a><br>
+            The front door entry keys and storage cages keys are RESTRICTED KEYS which can only be cut by WYNNS
+            Locksmiths.
+            <br><br><strong>BASEMENT HEIGHT</strong><br>
+            2.2 meters
+            <br><br><strong>BIKES/BICYCLES</strong><br>
+            Bicycles may be stored in the bike racks at the bottom of the driveway on B2
+
+            <br><br><strong>CAR STACKER</strong><br>
+            Prior to using the car stacker system, residents must be trained in the safe use of the system.<br><br>
+            Please contact CST to arrange training in the use of this system: 9462 7400
+
+            <br><br><strong>ELECTRICITY</strong><br>
+            These apartments have been built using an embedded electrical network contracted to OC Energy P/L.<br><br>
+            To connect apply here: <a href="www.ocenergy.com.au/apply">www.ocenergy.com.au/apply</a>
+
+            <br><br><strong>FOXTEL</strong><br>
+            This building is Foxtel Ready.<br>
+            Please call 131 787 to get connected
+
+            <br><br><strong>GARAGE DOOR</strong><br>
+            If the garage door is not working during business hours please call the OC Manager (ABCS) on 8154 5478, if
+            after hours call Micro Doors directly on 0418 501 511.
+
+            <br><br><strong>HARD RUBBISH</strong><br>
+            NO hard rubbish is to be dumped in the bin room.<br>
+            All packing boxes must be flat packed and placed in the recycle bin.<br>
+            The Owners Corporation will notify you through MIMOR when an upcoming hard rubbish collection day is
+            approaching.<br>
+
+            <br><br><strong>INTERCOM</strong><br>
+            Please follow instructions:<br>
+            • Top button: Press to speak to the person ringing the bell and to allow them into the foyer.<br>
+            • Second button: Press to view without opening the doors.<br>
+            • Bottom button: Press to release the lift.<br>
+
+            <br><br><strong>LIFT</strong><br>
+            The lift is fitted with custom made protective lift blankets. This is to ensure there is NO DAMAGE caused to
+            the lift during moves in and out of the building.
+
+            <br><br>Dimensions:<br><br>
+
+            Depth 1960mm<br>
+            Width 1400mm<br>
+            Height 2300mm<br>
+
+            <br><br><strong>PARKING</strong><br>
+            <a href="https://app.mimor.com.au/download_cat_pdf/278/Car%20Parking%20Plan.pdf">FILE_DOWNLOAD</a> <a
+              href="https://app.mimor.com.au/upload/pdf/278/Car%20Parking%20Plan.pdf">View Car Parking Plan.pdf</a><br>
+            All residents MUST park in their allocated parking space/s, please see attached document to find your
+            allocated space.<br><br>
+            There are 6 visitor parking spots on the property, these are ONLY to be used by visitors.
+
+            <br><br><strong>STORAGE CAGE NUMBERS</strong><br>
+            If you are unaware of the location of your storage cage, please contact ABCS for assistance on 03 8584 2547
+            or info@abcs.com.au.
+          </p>
+        </div>
+        <div class="buttons-back">
+          <button mat-button class="button-log back-btn btn-back" (click)="showExample=!showExample">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

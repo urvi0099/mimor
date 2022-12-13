@@ -1,0 +1,150 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper register-form-wrapper" ng-if="newTenant">
+      <form class="register-form" [formGroup]="registerForm" (ngSubmit)="register()">
+        <div ng-hide="pageLoading" class="login-block" layout="column">
+          <h4 class="login-block-header mim-uppercase">Please fill in your details</h4>
+          <div class="login-fields">
+            <div class="login-field mat-input">
+              <label ng-if="!existingEmail">Full Name</label>
+              <input matInput type="text" placeholder="For example John Doe" formControlName="name">
+              <div
+                *ngIf="(registerForm.submitted || registerForm.controls.name.touched && registerForm.controls.name.errors) && !existingEmail"
+                class="form-validation-wrap">
+                <div class="form-val-note-wrap">
+                  <span class="form-val-input" *ngIf="registerForm.controls.name.errors.required">Tell us your full
+                    name.</span>
+                </div>
+              </div>
+            </div>
+            <div class="login-field mat-input">
+              <label>E-mail</label>
+              <input matInput ng-blur="getRoleEmail()" type="email" placeholder="For example john@gmail.com"
+                name="email" formControlName="email">
+              <div
+                *ngIf="registerForm.submitted || registerForm.controls.email.touched && registerForm.controls.email.errors || existingEmail"
+                class="form-validation-wrap">
+                <div class="form-val-note-wrap">
+                  <span class="form-val-input" *ngIf="registerForm.controls.email.errors.required">Tell us your
+                    email.</span>
+                  <span class="form-val-input" *ngIf="registerForm.controls.email.errors.pattern">This is not a valid
+                    email.</span>
+                  <!-- <div class="email-check" ng-if="existingEmail && form.email.$valid">
+                    <span class="another-role-novalid">{{existingEmail}}</span>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="login-field mat-input">
+              <label class="md-block">Password</label>
+              <input matInput type="password" placeholder="*************" name="password" minlength="6"
+                formControlName="password">
+              <div
+                *ngIf="registerForm.submitted || registerForm.controls.password.touched && registerForm.controls.password.errors"
+                class="form-validation-wrap">
+                <div class="form-val-note-wrap">
+                  <span class="form-val-input" *ngIf="registerForm.controls.password.errors.required">Tell us your
+                    password.</span>
+                  <span class="form-val-input" *ngIf="registerForm.controls.password.errors.minlength">Password can't be
+                    shorter than 6 characters.</span>
+                </div>
+              </div>
+            </div>
+            <div class="login-field mat-input">
+              <label class="md-block">Confirm Password</label>
+              <input matInput type="password" placeholder="*************" name="confirmPassword" minlength="6"
+                formControlName="confirm" pattern="{{ registerForm.controls.password.value }}">
+              <div
+                *ngIf="registerForm.submitted || registerForm.controls.confirm.touched && registerForm.controls.confirm.errors"
+                class="form-validation-wrap">
+                <div class="form-val-note-wrap">
+                  <span class="form-val-input" *ngIf="registerForm.controls.confirm.errors.required">Confirm your
+                    password.</span>
+                  <span class="form-val-input" *ngIf="registerForm.controls.confirm.errors.pattern">Passwords does not
+                    match.</span>
+                </div>
+              </div>
+            </div>
+            <div class="login-field mat-input" *ngIf="role !== 'resident'">
+              <label>Company Name</label>
+              <input matInput type="text" placeholder="For example John Doe" formControlName="company">
+              <div
+                *ngIf="(registerForm.submitted || registerForm.controls.company.touched && registerForm.controls.company.errors)"
+                class="form-validation-wrap">
+                <div class="form-val-note-wrap">
+                  <span class="form-val-input" *ngIf="registerForm.controls.company.errors.required">Please enter
+                    company name.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="login-field mat-input" *ngIf="role !== 'agent'">
+              <label class="md-block">Phone</label>
+              <input matInput placeholder="Enter your phone number" type="tel"
+                mask="00 0000 000 000 || 00 0000 0000 || 0000 0000 || 0 000 000 0000" name="phone" (keypress)="enterKey($event)" ng-change="editPhone()"
+                formControlName="phone">
+              <div class="hint"
+                ng-hide="(form.$submitted || form.$dirty) && (!phone.valid || !phone.mask || form.phone.$error.required)">
+                * International numbers please include country and/or area code</div>
+              <div
+                *ngIf="registerForm.submitted || registerForm.controls.phone.touched && registerForm.controls.phone.errors"
+                class="form-validation-wrap">
+                <div class="form-val-note-wrap">
+                  <span class="form-val-input" *ngIf="registerForm.controls.phone.errors.required">Please enter your
+                    phone number.</span>
+                  <span class="form-val-input" *ngIf="registerForm.controls.phone.errors.pattern">Please enter a correct
+                    phone.</span>
+                </div>
+              </div>
+            </div>
+            <div class="login-field mat-input" *ngIf="role === 'resident'">
+              <label>Verification code</label>
+              <span (click)="genVerCode()" class="send-ver-code">Send code</span>
+              <input matInput type="text" placeholder="For example John Doe" (keypress)="enterKey($event)"
+                formControlName="verCode">
+              <div
+                *ngIf="(registerForm.submitted || registerForm.controls.verCode.touched && registerForm.controls.verCode.errors)"
+                class="form-validation-wrap">
+                <div class="form-val-note-wrap">
+                  <span class="form-val-input" *ngIf="registerForm.controls.verCode.errors.required">Please enter
+                    verification code.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="terms-cond-privacy">
+              <input class="terms-checkbox" type="checkbox" formControlName="terms" aria-label="terms">
+              <span> I agree to the Mimor
+                <a class="terms-conditions" (click)="presentModal('terms')"> Terms and Conditions</a>
+                and
+                <a class="terms-conditions" (click)="presentModal('privacy')"> Privacy Policy</a>.
+              </span>
+            </div>
+            <!-- <div id="g_captcha" tabindex="3" theme="clean" vc-recaptcha key=googlePublicKey
+              on-create="setWidgetId(widgetId)" on-success="setResponse(response)" on-expire="cbExpiration()">
+            </div> -->
+            <div class="g_captcha">
+              <ngx-recaptcha2 #captchaElem [siteKey]="siteKey" (reset)="handleReset()" (expire)="handleExpire()"
+              (load)="handleLoad()" (success)="handleSuccess($event)" [useGlobalDomain]="false" [size]="size"
+              [hl]="lang" [theme]="theme" [type]="type" formControlName="recaptcha">
+            </ngx-recaptcha2>
+            </div>
+          </div>
+          <div class="login-buttons">
+            <button mat-button type="button" class="back-btn" (click)="back()">
+              <mat-icon aria-hidden="false" aria-label="back">keyboard_backspace</mat-icon> Back
+            </button>
+            <button mat-button type="submit" (click)="register()" class="submit-btn"
+              [disabled]="loading || registerForm.status === 'INVALID' || !registerForm.value.terms"
+              aria-label="description">Register</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

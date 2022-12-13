@@ -1,0 +1,110 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="give-access form-wrapper">
+      <div class="manager-wrapper">
+        <div class="dashboard-header" *ngIf="!loading">
+          <h2>{{isEdit ? 'Edit' : 'Give'}} Access</h2>
+        </div>
+        <div class="loading-bar" *ngIf="loading">
+          <ion-spinner class="spinner" color="primary"></ion-spinner>
+        </div>
+        <div class="worker-main" *ngIf="trade && !loading">
+          <div class="worker-info">
+            <div class="title-input"><span>Worker</span></div>
+            <div class="title-service">{{trade.serviceName}}<span>{{trade.name}}</span></div>
+          </div>
+          <input class="none" type="file" name="pdf" accept=".pdf" key='id' #fileInput (change)="onSelect($event)"
+            loading="loadingPdf" />
+          <button mat-button class="upload-order" [disabled]="loading" (click)="fileInput.click()">
+            <span>Upload file</span>
+          </button>
+        </div>
+        <div class="file-name" *ngIf="file && !loading">{{file.name}}<span class="material-icons delete-file"
+            (click)="deleteFile()" *ngIf="file.name">clear</span></div>
+        <div class="locations" *ngIf="areas && !loading">
+          <div class="title-input"><span>Locations</span></div>
+          <div class="areas">
+            <div class="area" *ngFor="let area of areas">
+              <mat-checkbox aria-label="area.name" [(ngModel)]="area.checked"></mat-checkbox>
+              <div class="areaname">{{area.name}}</div>
+            </div>
+          </div>
+          <div class="when">
+            <div class="title-input"><span>When</span></div>
+            <mat-radio-group class="controls" name="radioButtons" [(ngModel)]="when" (change)="getTime()">
+              <mat-radio-button *ngFor="let button of radio" [value]="button" aria-label="button.type">
+                {{ button.type }}
+              </mat-radio-button>
+            </mat-radio-group>
+            <div class="custom-range" *ngIf="when.id === 2">
+              <div class="date">
+                <div class="date-title">Date</div>
+                <div class="mat-input access-datepicker">
+                  <input matInput [matDatepicker]="picker" [min]="mindate" [(ngModel)]="selectedDate" (dateChange)="getTime();">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </div>
+              </div>
+              <div class="timeslot">
+                <div class="time-head">Time slot</div>
+                <div class="ranges">
+                  <div class="range">
+                    <div class="from-to">Start</div>
+                    <div class="mat-input">
+                      <mat-select [(ngModel)]="timeFrom" name="from" (selectionChange)="onTimeChange(true)">
+                        <mat-option class="manager-option" [value]="time" *ngFor="let time of limitsFrom">{{ time }}</mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div class="range">
+                    <div class="from-to">Finish</div>
+                    <div class="mat-input">
+                      <mat-select [(ngModel)]="timeTo" name="to" (selectionChange)="onTimeChange(false)">
+                        <mat-option class="manager-option" [value]="time" *ngFor="let time of limitsTo">{{ time }}</mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="time-err" *ngIf="timeError">Finish date must be later than start date</div>
+            </div>
+          </div>
+          <div class="instructions" *ngIf="!loading">
+            <div class="title-input"><span>Instructions</span></div>
+             <div class="mat-input full-width">
+              <input type="text" matInput [formControl]="instruction" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+               <mat-option class="manager-option" *ngFor="let item of filteredInstructions | async" [value]="item.instruction">
+                 {{ item.instruction }}
+               </mat-option>
+             </mat-autocomplete>
+             </div>
+          </div>
+          <div class="buttons-back">
+            <button mat-button class="button-log back-btn btn-back delete-btn" [disabled]="loading" (click)="back()">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+            <button mat-button class="primary-btn delete-btn" *ngIf="tradeId" [disabled]="!hasAccess"
+              (click)="showConfirm()" aria-label="AO BAO">Delete</button>
+            <button mat-button class="primary-btn delete-btn"
+              [disabled]="selectedAreas() || timeError" (click)="submit()"
+              aria-label="AO BAO">{{isEdit ? 'Edit' : 'Give'}} access</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,161 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper resident-update-profile">
+      <form method="post" name="form" [formGroup]="userForm" class="user-edit full-width">
+        <div *ngIf="!pageLoading" class="d-flex-col inner-wrap">
+          <div class="text-center inner-header">
+            <h2 class="resident-header">Update personal profile</h2>
+          </div>
+          <div class="d-flex-col inner-content">
+            <div class="d-flex inner-field">
+              <mat-form-field appearance="standard">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" placeholder="Name" formControlName="name" />
+              </mat-form-field>
+              <div class="d-flex special-needs">
+                <div>Special Requirements: </div>
+                <input type="checkbox" class="special-check" formControlName="special_needs">
+              </div>
+            </div>
+            <div class="d-flex inner-field">
+              <mat-form-field appearance="standard" class="phone-field">
+                <mat-label>Phone</mat-label>
+                <input matInput type="text" mask="mask.phone" id="phone" formControlName="phone" mask="00 0000 000 000 || 00 0000 0000 || 0000 0000 || 0 000 000 0000" />
+                <mat-hint *ngIf="userForm.controls.phone.touched && userForm.controls.phone.errors"
+                  class="form-val-input">
+                  Please enter a correct phone.</mat-hint>
+              </mat-form-field>
+              <mat-form-field appearance="standard" class="email-field">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" placeholder="Email" name="email" formControlName="email">
+                <mat-hint *ngIf="userForm.controls.email.touched &&
+                  userForm.controls.email.errors && userForm.controls.email.errors.required" class="form-val-input">
+                  Email is required.</mat-hint>
+                <mat-hint *ngIf="userForm.controls.email.touched &&
+                  userForm.controls.email.errors && userForm.controls.email.errors.pattern" class="form-val-input">
+                  This is not a valid email.</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field">
+              <mat-form-field appearance="standard">
+                <mat-label class="mobile-label">My vehicle registration number</mat-label>
+                <input matInput type="text" formControlName="car_registration_number" />
+              </mat-form-field>
+              <mat-form-field appearance="standard">
+                <mat-label>Car Park Number</mat-label>
+                <input matInput type="text" formControlName="car_park_number" />
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field">
+              <mat-form-field appearance="standard" class="email-field">
+                <mat-label>Secondary Email</mat-label>
+                <input matInput type="email" name="email2" formControlName="email2">
+                <mat-hint *ngIf="userForm.controls.email2.touched &&
+                  userForm.controls.email2.errors && userForm.controls.email2.errors.required" class="form-val-input">
+                  Email is required.</mat-hint>
+                <mat-hint *ngIf="userForm.controls.email2.touched &&
+                  userForm.controls.email2.errors && userForm.controls.email2.errors.pattern" class="form-val-input">
+                  This is not a valid email.</mat-hint>
+              </mat-form-field>
+              <mat-form-field appearance="standard" class="phone-field">
+                <mat-label>Secondary Phone</mat-label>
+                <input matInput type="text" mask="mask.phone2" validate="false" ng-change="editPhone('phone2')"
+                  ng-keydown="dontPaste($event)" id="phone2" restrict="reject" limit="false" formControlName="phone2" />
+                <mat-hint *ngIf="userForm.controls.phone2.touched && userForm.controls.phone2.errors"
+                  class="form-val-input">
+                  Please enter a correct phone.</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field">
+              <mat-form-field appearance="standard" class="email-field">
+                <mat-label class="mobile-label">Real Estate Email</mat-label>
+                <input matInput type="email" name="agent_email" formControlName="agent_email">
+                <mat-hint *ngIf="userForm.controls.agent_email.touched && userForm.controls.agent_email.errors.pattern"
+                  class="form-val-input">
+                  This is not a valid email.</mat-hint>
+              </mat-form-field>
+              <mat-form-field appearance="standard" class="phone-field">
+                <mat-label>Real Estate Phone</mat-label>
+                <input matInput type="text" mask="mask.agent_phone" id="phone3" formControlName="agent_phone" />
+                <mat-hint *ngIf="userForm.controls.agent_phone.touched && userForm.controls.agent_phone.errors"
+                  class="form-val-input">
+                  Please enter a correct phone.</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field-full">
+              <mat-form-field appearance="standard">
+                <mat-label>Password</mat-label>
+                <input matInput name="password" type="password" formControlName="password">
+                <mat-hint *ngIf="userForm.controls.password.touched &&
+                  userForm.controls.password.errors && userForm.controls.password.errors.required"
+                  class="form-val-input">
+                  Password is required.</mat-hint>
+                <mat-hint *ngIf="userForm.controls.password.touched &&
+                  userForm.controls.password.errors && userForm.controls.password.errors.minlength"
+                  class="form-val-input">
+                  Password can't be shorter than 6 characters.</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="d-flex inner-field-full">
+              <mat-form-field appearance="standard">
+                <mat-label>Confirm password</mat-label>
+                <input matInput name="confirmPassword" type="password" formControlName="confirmPassword"
+                  pattern="{{ userForm.controls.password.value }}">
+                <mat-hint *ngIf="userForm.controls.confirmPassword.touched && userForm.controls.confirmPassword.errors"
+                  class="form-val-input">
+                  The entered value does not match the value of the password field</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="upd-profile-book-wrap">
+              <div class="upd-profile-book-info" *ngIf="bookingData">{{getFormattedDate(bookingData.date_from)}} -
+                {{getFormattedDate(bookingData.date_to)}} {{bookingData.building.name}} ({{bookingData.apartment.name}})
+              </div>
+              <div class="upd-profile-book-actions">
+                <button mat-raised-button class="text-left" aria-label="description" *ngIf="bookingData"
+                  (click)="changeApartment()" [disabled]="loading">
+                  <mat-icon class="material-icons">exposure</mat-icon> Change Apartment
+                </button>
+                <button mat-raised-button class="text-left" aria-label="description"
+                  *ngIf="bookingData && bookingData.user_status!='Unselected'" (click)="changeSubRole()"
+                  [disabled]="loading">
+                  <mat-icon class="material-icons">account_circle</mat-icon> Change status
+                </button>
+                <button mat-raised-button class="text-left" aria-label="description"
+                  *ngIf="bookingData && bookingData.user_status=='Unselected'" (click)="changeSubRole()"
+                  [disabled]="loading">
+                  <mat-icon class="material-icons mgr10">account_circle</mat-icon> Choose your status
+                  <mat-icon title="Please сhoose your status for this apartment"
+                    style="color: red;padding-bottom: 3px;padding-left: 13px;" class="material-icons" role="img"
+                    aria-label="error">error</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <button mat-raised-button class="res-action-button update-button" [disabled]="false" aria-label="update"
+            (click)="save()">
+            {{buttonText}}</button>
+          <button mat-raised-button class="res-action-button" (click)="cancel()">Back</button>
+        </div>
+        <div class="loading-bar" *ngIf="pageLoading">
+          <ion-spinner class="spinner" color="primary"></ion-spinner>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

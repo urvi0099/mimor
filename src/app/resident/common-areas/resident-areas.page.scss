@@ -1,0 +1,108 @@
+.mim-common-a-client{
+  width: 700px;
+  .resident-header{
+    margin-bottom: 0;
+  }
+  .subheader{
+    margin-top: 0;
+    font-size: 1.17em;
+  }
+  .common-a-content-wrap{
+    display: flex;
+    flex-flow: column;
+    max-height: 600px;
+    h3{
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+    .common-area-booking-list {
+      max-height: 150px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      padding: 10px;
+      overflow: auto;
+      .area-booking-item {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        &:not(:last-child) {
+          margin-bottom: 12px;
+        }
+        .title{
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  .guidelines-form{
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-top: 28px;
+    .common-a-list {
+      height: 100%;
+      .description-block {
+        display: flex;
+        flex-direction: column;
+        border: 0;
+        border-bottom: 1px solid #ccc;
+        margin-top: 0;
+        padding: 18px;
+      }
+      .areas {
+        display: flex;
+        flex-wrap: wrap;
+        flex: 0 0 30%;
+        justify-content: space-between;
+        align-items: center;
+        .area-right-side--info, .area-right-side{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          flex-grow: 1;
+          margin-top: 10px;
+          .book-rules{
+            margin-top: 10px;
+          }
+        }
+        .area-booked{
+          text-align: center;
+          margin-top: 20px;
+          .area-time-booking {
+            padding: 10px 5px;
+          }
+          .book-date{
+            .mat-icon{
+              color: #999;
+            }
+          }
+        }
+        .area-booking-btn{
+          margin: 15px 5px 10px;
+          .mat-raised-button{
+            color: rgba(255,255,255,0.87);
+            background-color: rgb(76,156,255);
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+}
+.area-rules-wrapper{
+  max-height: 750px;
+  width: 640px;
+  .mat-raised-button{
+    background-color: #4c9cff;
+    color: white;
+  }
+}
+
+@media (max-width: 767px){
+  .mim-common-a-client{
+    min-width: 320px;
+    width: 100%;
+    height: auto;
+  }
+}

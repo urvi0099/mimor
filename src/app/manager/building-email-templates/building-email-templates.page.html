@@ -1,0 +1,137 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button mat-button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-background additional-emails email-templates form-wrapper">
+      <div ng-hide="pageLoading" class="email-templates-wrap">
+        <div class="email-templates-list">
+          <div class="text-center">
+            <h2 class="mim-panel-header">White Label</h2>
+            <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+          </div>
+          <div class="mat-input email-template-company-title block-input md-block">
+            <div class="title-input"><span>Company Title in Email: </span><span class="italic">(0-50 characters)</span>
+            </div>
+            <input class="full-width" type="text" [disabled]="loading" placeholder="Your company title" maxlength="50"
+              required [(ngModel)]="companyTitle">
+          </div>
+          <div class="email-temp-btn-wrap">
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="logo()">
+                Change logo
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('welcome')">
+                Welcome
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('move_in')">
+                Move In Booking
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('move_out_create')">
+                Move Out Booking
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('already_move_in')">
+                Already Moved In
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('already_move_out')">
+                Already Moved Out
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('lift_create')">
+                Lift Booking
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('comm_area_create')">
+                Common Area Create
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('comm_area_update')">
+                Common Area Update
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('comm_area_delete')">
+                Common Area Delete
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('lift_delete')">
+                Lift Delete
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('move_in_delete')">
+                Move In Delete
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('move_out_delete')">
+                Move Out Delete
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('lift_update')">
+                Lift Update
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('move_in_update')">
+                Move In Update
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('move_out_update')">
+                Move Out Update
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary">
+              <a (click)="redirect('notification')">
+                Notification Email
+              </a>
+            </button>
+            <button mat-button class="add-item-btn md-raised md-primary" ng-if="isParcelesAvailable">
+              <a (click)="redirect('parcel_create')">
+                Parcel Notification
+              </a>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="buttons-back" ng-hide="pageLoading">
+        <button mat-button class="back-btn mim-btn" [disabled]="loading" (click)="back()">
+          <mat-icon class="material-icons">keyboard_backspace</mat-icon>
+          Back
+        </button>
+        <button mat-button class="primary-btn mim-btn" (click)="submitCompanyTitle()" aria-label="submit company title"
+          [disabled]="loading || !companyTitle.length"><span>{{buttonText}}</span></button>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

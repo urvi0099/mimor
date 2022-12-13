@@ -1,0 +1,99 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1"
+        (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="booking-manager-wrapper form-wrapper form-background frame-xs book-frame" ng-show="!showRulesModal">
+      <div class="full-width" *ngIf="!loading">
+        <div class="text-center">
+          <h2>Booking a Time Slot</h2>
+          <div *ngIf="commonArea" class="text-center">{{ commonArea.building_name }}, {{ commonArea.name }}</div>
+        </div>
+        <div name="form" class="booking-manager">
+          <div class="title">Resident</div>
+          <div class="apartment-wrap">
+            <div class="residents-wrap">
+              <div class="apartment d-flex flex-column">
+                <div class="mat-input">
+                  <label>Resident Name:</label>
+                  <input name="resident" [(ngModel)]="resident" [ngModelOptions]="{ debounce: 500 }" type="text"
+                    (ngModelChange)="onEnterResidentName()" autocomplete="off">
+                </div>
+              </div>
+              <div class="users">
+                <div class="text-left" *ngIf="!users.length">Please, specify resident name</div>
+                <mat-radio-group [(ngModel)]="userId">
+                  <mat-radio-button *ngFor="let user of users" id="{{ user.id }}" value="{{ user.id }}"
+                    (click)="onSelectUser(user.id)" class="md-radio-item md-primary">
+                    {{ user.name }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+            <div class="book-flat d-flex">
+              <div class="flat-pick">
+                <label>Flat</label>
+                <div class="mat-input">
+                  <mat-select [(ngModel)]="model.apartment_id" ng-disabled="!userId" aria-label="apartment">
+                    <mat-option class="manager-option" *ngFor="let flat of userApartments" value="{{ flat.id }}">
+                      {{ flat.name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="title">Booking</div>
+          <div class="date-wrap">
+            <div class="book-date mat-input">
+              <div class="head">Date</div>
+              <div class="booking-datepicker">
+                <input matInput [formControl]="selectedDate" [min]="minDate" [matDatepicker]="picker"
+                  (ngModelChange)="loadHours()">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </div>
+            </div>
+            <div class="book-date mat-input">
+              <div class="head">Time slot</div>
+              <div class="timepicker">
+                <mat-select [(ngModel)]="model.hour">
+                  <mat-option *ngFor="let hour of hours" class="manager-option" [value]="hour.id">
+                    {{ hour.from + ':' + hour.from_min + ' ' + hour.day_part_from + ' - ' + hour.to + ':' + hour.to_min
+                    +
+                    ' ' + hour.day_part_to }}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+          <div class="no-date-msg" *ngIf="hours && hours.length == 0">This date is booked/blocked out, please select
+            another date.</div>
+          <div class="position-relative mgt20 buttons-back">
+            <button mat-button class="button-log back-btn btn-back" (click)="back()">
+              <mat-icon class="material-icons">keyboard_arrow_left</mat-icon> Back
+            </button>
+            <button mat-button (click)="submit()"
+              [disabled]="loading||!model.hour||!userId||!model.apartment_id" class="primary-btn">
+              <span>Book</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

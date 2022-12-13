@@ -1,0 +1,104 @@
+.area-payment-wrapper{
+  // max-height: 750px;
+  // height: 650px;
+  // width: 640px;
+
+  .book-button{
+    text-transform: uppercase;
+    color: #fff;
+    &:not(.mat-button-disabled){
+      background-color: #4c9cff;
+    }
+  }
+  .payment-form{
+    input{
+      width: 300px;
+      height: 35px;
+      text-indent: 8px;
+    }
+  }
+  .fields{
+    .email-field{
+      width: 286px;
+      height: 35px;
+      text-indent: 8px;
+    }
+    .mandate-acceptance {
+      text-align: justify;
+      font-size: 13px;
+      padding-top: 11px;
+      padding-bottom: 11px;
+      line-height: 1.4;
+      .mandate-short{
+        display: inline-flex !important;
+        align-items: center;
+        &:hover{
+          cursor: pointer;
+        }
+      }
+    }
+    input{
+      border-width: 1px 1px 1px;
+      border-color: #555555;
+      border-radius: 4px;
+    }
+    .agreement {
+      display: inline;
+    }
+    .bank-account, #card-element {
+      border: 1px solid #555555;
+      padding: 6.5px;
+      border-top: none;
+      margin-bottom: 20px;
+    }
+    .card-additional, .field{
+      width: 286px;
+      // border: 1px solid #555555;
+    }
+    .field{
+      margin-top: 20px;
+      border-radius: 3px 3px 0 0;
+    }
+    #card-number{
+      border: 1px solid #555;
+      border-radius: 4px 4px 0 0;
+      border-bottom: 0;
+    }
+    .card-additional{
+      display: -ms-flexbox;
+      display: flex;
+      margin-bottom: 5px;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      border: 1px solid #555;
+      .field-half-width{
+        position: relative;
+        width: 50%;
+        &.cvc{
+          border-left: 1px solid #555;
+        }
+      }
+    }
+    #card-number, #card-expiry, #card-cvc{
+      padding: 5px;
+    }
+  }
+  .price{
+    display: flex;
+    justify-content: center;
+    button{
+      span{
+        background-color: #4c9cff;
+        padding: 10px;
+        border-radius: 4px;
+        color: white
+      }
+      &:disabled{
+        span{
+          background-color: #7cb7ff;
+        }
+      }
+    }
+
+  }
+}

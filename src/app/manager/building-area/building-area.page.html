@@ -1,0 +1,129 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper md-whiteframe-z5 form-background h550 add-emails-size common-edit">
+      <div class="build-info width-mobile-100" *ngIf="!pageLoading">
+        <form name="form" [formGroup]="areaForm" class="width-mobile-100">
+          <div class="text-center">
+            <h2 class="mim-panel-header">{{title}}</h2>
+          </div>
+          <div class="common-block">
+            <div class="common-frame">
+              <div class="md-block mat-input">
+                <label class="md-block ">Area Name</label>
+                <input matInput type="text" placeholder="Area Name" name="area_name" formControlName="name">
+              </div>
+              <div class="md-block mat-input">
+                <label class="md-block">Area Description</label>
+                <input matInput type="text" placeholder="Area Description" name="area_description"
+                  formControlName="description">
+              </div>
+              <div class="md-block mat-input">
+                <label class="md-block">Area Price (AUD)</label>
+                <input type="text" placeholder="Area Price (AUD)" name="area_price" formControlName="price">
+              </div>
+              <div class="md-block mat-input">
+                <label class="md-block">Area Fee (AUD)</label>
+                <input type="text" placeholder="Area Fee (AUD)" name="area_fee" formControlName="fee">
+              </div>
+              <div class="certificate">
+                <mat-checkbox formControlName="cert_required">This area requires proof of information</mat-checkbox>
+              </div>
+              <div class="md-block common-edit mat-input">
+                <button mat-button class="upload-btn w-100" [disabled]="loading" (click)="fileInput.click()">
+                  Upload cover photo
+                </button>
+              </div>
+
+              <input type="file" class="none" #fileInput (change)="fileChangeEvent($event)" />
+              <div [ngClass]="{'none': isCropped}">
+                <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="1.7"
+                  [resizeToWidth]="340" [resizeToHeight]="200" format="png" (imageCropped)="imageCropped($event)"
+                  (imageLoaded)="imageLoaded()">
+                </image-cropper>
+                <img [src]="croppedImage" />
+              </div>
+              <div *ngIf="isCropped && croppedImage && !isImageDeleted" class="no-animate">
+                <div class="result-image">
+                  <img [src]="croppedImage" alt="croppedImage" height="250">
+                  <mat-icon class="material-icons" (click)="deleteResultImage()">clear</mat-icon>
+                </div>
+              </div>
+              <div *ngIf="isCroppedButton" class="no-animate">
+                <button mat-button class="save-btn primary-btn" (click)="toggleCrop()">OK</button>
+              </div>
+
+              <div class="md-block mat-input" *ngIf="isC2AAvailable">
+                <label class="md-block">Mobile Number</label>
+                <input matInput type="text" formControlName="c2a_mobile" />
+              </div>
+
+              <div class="common-label">
+                <label>Area Rules</label>
+              </div>
+
+              <div class="notify-editor">
+                <quill-editor name="GuidelinesTextEditor" formControlName="rules" [modules]="quillConfig"
+                  [styles]="{height: '165px'}">
+                </quill-editor>
+              </div>
+            
+
+              <div class="common-upload">
+                <div class="common-load">
+                  <div class="area-files-list">
+                    <div class="delete-area-file" *ngFor="let file of resultAreaFiles.blobUrl | keyvalue">
+                      <a title="{{ file.key }}" (click)="openFile(file.value)">{{ file.key }}</a>
+                      <img src="assets/img/icons/delete.svg" width="24" height="24" alt="" (click)="showConfirm(file.key)">
+                    </div>
+                  </div>
+                  <input type="file" (change)="onSelect($event)" class="none" multiple name="pdf" #fileInput1 filename="fileName" key='buildingId'
+                    loading="loadingPdf" />
+                  <button mat-button class="upload-btn" [disabled]="loading" (click)="fileInput1.click()">Upload
+                    file</button>
+                </div>
+              </div>
+
+              <div class="md-block mat-input">
+                <label class="md-block">Additional Notification Email</label>
+                <input matInput type="text" placeholder="Area Notification Email" name="area_addit_email"
+                  formControlName="addit_email">
+              </div>
+
+              <div class="common-buttons">
+                <div class="common-btn">
+                  <button mat-button class="md-raised md-primary add-em-button add-emails-btn md-button"
+                    [disabled]="loading" *ngIf="isEdit" (click)="showConfirm(area.name)">
+                    <mat-icon class="material-icons">delete</mat-icon>Delete this area
+                  </button>
+
+                  <div class="buttons-back buttons-back-mobile">
+                    <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="showConfirm()"
+                      aria-label="Back">
+                      <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+                    </button>
+                    <button mat-button class="save-btn primary-btn" (click)="submit()" [disabled]="loading">
+                      <span aria-label="buttonText">{{buttonText}}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ion-content>

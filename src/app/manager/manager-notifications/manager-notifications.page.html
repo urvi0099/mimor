@@ -1,0 +1,576 @@
+<ion-content [fullscreen]="true">
+    <mat-toolbar class="mim-header-toolbar">
+        <a href="https://mimor.com.au"
+           class="mim-main-logo mim-main-logo-orig">
+            <img src="assets/img/logoNew.png"
+                 class="logo"
+                 alt="">
+        </a>
+        <div class="switch-role">
+            <button class="logout-btn"
+                    aria-label="logoutbut"
+                    (click)="rolesService.logout()">
+                <span class="icon"></span>
+                <span class="logout">Log Out</span>
+            </button>
+            <select class="switch-role-select"
+                    *ngIf="rolesService.getRoles().length > 1"
+                    (change)="rolesService.selectRole($event.target.value)">
+                <option *ngFor="let role of rolesService.getRoles()"
+                        [value]="role.name">{{role.displayName}}</option>
+            </select>
+        </div>
+    </mat-toolbar>
+    <div class="flex-page">
+        <div class="form-wrapper notification-white-frame notification-frame form-background notifications"
+             layout="column"
+             layout-wrap
+             flex-direction="row">
+            <div class="notification-wrapper full-width"
+                 ng-hide="pageLoading || sendingLoader"
+                 md-no-ink>
+                <div>
+                    <h2 class="text-center mim-panel-header">Notifications</h2>
+                    <div class="mim-header-building-info">
+                        <span>{{buildName}}</span>
+                    </div>
+                    <mat-tab-group (selectedTabChange)="selectMainTab($event)">
+                        <mat-tab label="Email">
+                            <mat-tab-group class="internal-buttons"
+                                           (selectedTabChange)="selectTab($event)">
+                                <mat-tab class="message-tab"
+                                         label="Message">
+                                    <div class="md-padding nowidth-x notify-tab notification-content">
+                                        <div ng-disabled="loading"
+                                             class="mat-input md-block">
+                                            <label class="md-block labels">Title</label>
+                                            <input maxlength="50"
+                                                   class="mat-input otification-input"
+                                                   id="email-title-max-symbols"
+                                                   aria-label="Title"
+                                                   required
+                                                   name="description"
+                                                   [(ngModel)]="email.title">
+                                        </div>
+                                        <div class="mat-input md-block">
+                                            <quill-editor name="noticeTextEditor"
+                                                          [(ngModel)]="email.message"
+                                                          [modules]="quillConfig"
+                                                          [styles]="{height: '350px'}"
+                                                          placeholder=""></quill-editor>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Residents">
+                                    <div class="notify-friends notify-emails"
+                                         *ngIf="users.length > 0 || realEstateAll.length > 0 || realEstateNotRegistered.length > 0">
+                                        <span class="notify-send">Send to:</span>
+                                        <mat-radio-group class="select-user-type"
+                                                         [(ngModel)]="email.showUsers"
+                                                         layout="row">
+                                            <mat-radio-button value="all"
+                                                              class="md-primary">All
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Owner"
+                                                              class="md-primary">Only Owners
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Resident"
+                                                              class="md-primary">Only Residents
+                                                (Tenants and Residing Owners)
+                                            </mat-radio-button>
+                                            <mat-radio-button value="real_estate"
+                                                              class="md-primary">Real Estate /
+                                                Property Mgr
+                                            </mat-radio-button>
+                                            <mat-radio-button value="individual"
+                                                              class="md-primary"> Individual
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+
+                                        <div class="notify-all-cats"
+                                             *ngIf="email.showUsers === 'all'">
+                                            <div class="notify-all-item">
+                                                <div class="notify-all-item-header">
+                                                    <mat-checkbox
+                                                            [(ngModel)]="email.notifyAllCategories.owners">
+                                                        Owners
+                                                    </mat-checkbox>
+                                                    <span class="notify-all-counter">({{owners.length}})</span>
+                                                    <mat-icon (click)="openUserList('email','owners')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="!dropdowns.email.owners"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_down
+                                                    </mat-icon>
+                                                    <mat-icon (click)="openUserList('email','owners')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="dropdowns.email.owners"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_up
+                                                    </mat-icon>
+                                                </div>
+                                                <div class="notify-all-user-list"
+                                                     *ngIf="dropdowns.email.owners">
+                                                    <mat-list *ngFor="let user of owners"
+                                                              aria-label="Checkbox"
+                                                              class="md-primary">
+                                                        <span>Ap. #{{ user.ap_name + ': ' + user.email }}</span>
+                                                    </mat-list>
+                                                </div>
+                                            </div>
+                                            <div class="notify-all-item">
+                                                <div class="notify-all-item-header">
+                                                    <mat-checkbox
+                                                            [(ngModel)]="email.notifyAllCategories.residents">
+                                                        Residents
+                                                    </mat-checkbox>
+                                                    <span class="notify-all-counter">({{residents.length}})</span>
+                                                    <mat-icon (click)="openUserList('email','residents')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="!dropdowns.email.residents"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_down
+                                                    </mat-icon>
+                                                    <mat-icon (click)="openUserList('email','residents')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="dropdowns.email.residents"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_up
+                                                    </mat-icon>
+                                                </div>
+                                                <div class="notify-all-user-list"
+                                                     *ngIf="dropdowns.email.residents">
+                                                    <mat-list *ngFor="let user of residents"
+                                                              aria-label="Checkbox"
+                                                              class="md-primary">
+                                                        <span>Ap. #{{ user.ap_name + ': ' + user.email }}</span>
+                                                    </mat-list>
+                                                </div>
+                                            </div>
+                                            <div class="notify-all-item">
+                                                <div class="notify-all-item-header">
+                                                    <mat-checkbox
+                                                            [(ngModel)]="email.notifyAllCategories.real_estate">
+                                                        Real estate / Property mgr
+                                                    </mat-checkbox>
+                                                    <span class="notify-all-counter">({{realEstateAll.length +
+                                                    realEstateNotRegistered.length}})</span>
+                                                    <mat-icon (click)="openUserList('email','real_estate')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="!dropdowns.email.real_estate"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_down
+                                                    </mat-icon>
+                                                    <mat-icon (click)="openUserList('email','real_estate')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="dropdowns.email.real_estate"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_up
+                                                    </mat-icon>
+                                                </div>
+                                                <div class="notify-all-user-list"
+                                                     *ngIf="dropdowns.email.real_estate">
+                                                    <mat-list *ngFor="let user of realEstateAll"
+                                                              aria-label="Checkbox"
+                                                              class="md-primary">
+                                                        <span>RE Agent: {{ user.email }}</span>
+                                                    </mat-list>
+                                                    <mat-list *ngFor="let user of realEstateNotRegistered"
+                                                              aria-label="Checkbox"
+                                                              class="md-primary">
+                                                        <span>RE Agent: {{ user.email }}</span>
+                                                    </mat-list>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="notify-wrapper selected-user-type"
+                                             *ngIf="email.showUsers==='Owner'">
+                                            <mat-checkbox *ngFor="let user of owners"
+                                                          [(ngModel)]="user.checkbox"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                <span>Ap. #{{ user.ap_name + ': ' + user.email }}</span>
+                                            </mat-checkbox>
+                                        </div>
+
+                                        <div class="notify-wrapper selected-user-type"
+                                             *ngIf="email.showUsers==='Resident'">
+                                            <mat-checkbox *ngFor="let user of residents"
+                                                          [(ngModel)]="user.checkbox"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                <span>Ap. #{{ user.ap_name + ': ' + user.email }}</span>
+                                            </mat-checkbox>
+                                        </div>
+
+                                        <div class="notify-wrapper selected-user-type"
+                                             *ngIf="email.showUsers==='real_estate'">
+                                            <mat-checkbox *ngFor="let user of realEstateAll"
+                                                          [(ngModel)]="user.checkbox"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                <span>RE Agent: {{ user.email }}</span>
+                                            </mat-checkbox>
+                                            <mat-checkbox *ngFor="let user of realEstateNotRegistered"
+                                                          [(ngModel)]="user.checkbox"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                <span>RE Agent: {{ user.email }}</span>
+                                            </mat-checkbox>
+                                        </div>
+
+                                        <div class="notify-wrapper selected-user-type"
+                                             *ngIf="email.showUsers==='individual'">
+                                            <mat-checkbox *ngFor="let user of users"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                Ap. #{{ user.ap_name + ': ' + user.email }}
+                                            </mat-checkbox>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-center"
+                                        *ngIf="users.length==0 && !realEstateAll.length && !realEstateNotRegistered.length">
+                                        You have no
+                                        users
+                                    </h3>
+                                </mat-tab>
+
+                                <mat-tab label="Complex">
+                                    <div class="notify-friends notify-emails complex-tab-wrap">
+                                        <span class="notify-send">Send to:</span>
+                                        <mat-radio-group disableRipple
+                                                         [(ngModel)]="email.showUsersForBuildings"
+                                                         class="select-user-type">
+                                            <mat-radio-button value="all"
+                                                              class="md-primary">All
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Owner"
+                                                              class="md-primary">Only Owners
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Resident"
+                                                              class="md-primary">Only Residents
+                                                (Tenants and Residing
+                                                Owners)
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+
+                                        <div class="notify-wrapper complex-b-wrapper build-list-wrap">
+                                            <mat-checkbox *ngFor="let building of email.selectedBuildings"
+                                                          [(ngModel)]="building.checked"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                Add. #{{ building.address + ': ' + building.name }}
+                                            </mat-checkbox>
+                                        </div>
+
+                                        <div class="notify-wrapper complex-b-wrapper user-list-wrap"
+                                             *ngIf="email.showUsersForBuildings==='all'">
+                                            <div *ngFor="let building of email.selectedBuildings">
+                                                <mat-list *ngFor="let user of allUsersFromBuildings[building.id]"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                    <span *ngIf="building.checked">Ap. #{{ user.ap_name + ': ' + user.email }}</span>
+                                                </mat-list>
+                                            </div>
+                                        </div>
+
+                                        <div class="notify-wrapper complex-b-wrapper  user-list-wrap"
+                                             *ngIf="email.showUsersForBuildings==='Owner'">
+                                            <div *ngFor="let building of email.selectedBuildings">
+                                                <mat-list *ngFor="let user of ownersForBuildings[building.id]"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                    <span *ngIf="building.checked">Ap. #{{ user.ap_name + ': ' + user.email }}</span>
+                                                </mat-list>
+                                            </div>
+                                        </div>
+
+                                        <div class="notify-wrapper complex-b-wrapper notify-em user-list-wrap"
+                                             *ngIf="email.showUsersForBuildings==='Resident'">
+                                            <div *ngFor="let building of email.selectedBuildings">
+                                                <mat-list *ngFor="let user of residentsForBuildings[building.id]"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                    <span *ngIf="building.checked">Ap. #{{ user.ap_name + ': ' + user.email }}</span>
+                                                </mat-list>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+
+                        </mat-tab>
+
+                        <mat-tab label="SMS"
+                                 [disabled]="loading"
+                                 (click)="selectSms()">
+                            <mat-tab-group class="internal-buttons"
+                                           (selectedTabChange)="selectTab($event)">
+                                <mat-tab class="message-tab"
+                                         label="Message">
+                                    <div class="md-padding nowidth-x notify-tab sms-content">
+                                        <div ng-disabled="loading"
+                                             class="mat-input md-block">
+                                            <div class="labels">
+                                                <label class="md-block">Message</label>
+                                                <span class="sms-limit-info">Characters left: <span>{{157 - maxLengthBuildName -
+                                                sms.message.length}}</span></span>
+                                            </div>
+                                            <input type="text"
+                                                   required
+                                                   placeholder="Message"
+                                                   [(ngModel)]="sms.message"
+                                                   id="sms-title-max-symbols"
+                                                   aria-label="Title"
+                                                   required
+                                                   maxlength="{{157 - maxLengthBuildName}}"
+                                                   class="notification-input">
+                                        </div>
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Residents">
+                                    <div class="notify-friends notify-emails"
+                                         *ngIf="users.length > 0 || realEstateAll.length > 0 || realEstateNotRegistered.length > 0">
+                                        <span class="notify-send">Send to:</span>
+                                        <mat-radio-group class="select-user-type"
+                                                         [(ngModel)]="sms.showUsers"
+                                                         layout="row">
+                                            <mat-radio-button value="all"
+                                                              class="md-primary">All
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Owner"
+                                                              class="md-primary">Only Owners
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Resident"
+                                                              class="md-primary">Only Residents
+                                                (Tenants and Residing Owners)
+                                            </mat-radio-button>
+                                            <mat-radio-button value="individual"
+                                                              class="md-primary"> Individual
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+
+                                        <div class="notify-all-cats"
+                                             *ngIf="sms.showUsers === 'all'">
+                                            <div class="notify-all-item">
+                                                <div class="notify-all-item-header">
+                                                    <mat-checkbox [(ngModel)]="sms.notifyAllCategories.owners">Owners
+                                                    </mat-checkbox>
+                                                    <span class="notify-all-counter">({{owners.length}})</span>
+                                                    <mat-icon (click)="openUserList('sms','owners')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="!dropdowns.sms.owners"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_down
+                                                    </mat-icon>
+                                                    <mat-icon (click)="openUserList('sms','owners')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="dropdowns.sms.owners"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_up
+                                                    </mat-icon>
+                                                </div>
+                                                <div class="notify-all-user-list"
+                                                     *ngIf="dropdowns.sms.owners">
+                                                    <mat-list *ngFor="let user of owners"
+                                                              aria-label="Checkbox"
+                                                              class="md-primary">
+                                                        <span>Ap. #{{ user.ap_name + ': ' + user.phone }}</span>
+                                                    </mat-list>
+                                                </div>
+                                            </div>
+                                            <div class="notify-all-item">
+                                                <div class="notify-all-item-header">
+                                                    <mat-checkbox [(ngModel)]="sms.notifyAllCategories.residents">
+                                                        Residents
+                                                    </mat-checkbox>
+                                                    <span class="notify-all-counter">({{residents.length}})</span>
+                                                    <mat-icon (click)="openUserList('sms','residents')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="!dropdowns.sms.residents"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_down
+                                                    </mat-icon>
+                                                    <mat-icon (click)="openUserList('sms','residents')"
+                                                              class="material-icons"
+                                                              role="img"
+                                                              *ngIf="dropdowns.sms.residents"
+                                                              aria-label="keyboard_arrow_down">keyboard_arrow_up
+                                                    </mat-icon>
+                                                </div>
+                                                <div class="notify-all-user-list"
+                                                     *ngIf="dropdowns.sms.residents">
+                                                    <mat-list *ngFor="let user of residents"
+                                                              aria-label="Checkbox"
+                                                              class="md-primary">
+                                                        <span>Ap. #{{ user.ap_name + ': ' + user.phone }}</span>
+                                                    </mat-list>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="notify-wrapper selected-user-type"
+                                             *ngIf="sms.showUsers==='Owner'">
+                                            <mat-checkbox *ngFor="let user of owners"
+                                                          [(ngModel)]="user.checkbox"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                <span>Ap. #{{ user.ap_name + ': ' + user.phone }}</span>
+                                            </mat-checkbox>
+                                        </div>
+
+                                        <div class="notify-wrapper selected-user-type"
+                                             *ngIf="sms.showUsers==='Resident'">
+                                            <mat-checkbox *ngFor="let user of residents"
+                                                          [(ngModel)]="user.checkbox"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                <span>Ap. #{{ user.ap_name + ': ' + user.phone }}</span>
+                                            </mat-checkbox>
+                                        </div>
+
+                                        <div class="notify-wrapper selected-user-type"
+                                             *ngIf="sms.showUsers==='individual'">
+                                            <mat-checkbox *ngFor="let user of users"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                Ap. #{{ user.ap_name + ': ' + user.phone }}
+                                            </mat-checkbox>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-center"
+                                        *ngIf="users.length==0 && !realEstateAll.length && !realEstateNotRegistered.length">
+                                        You have no
+                                        users
+                                    </h3>
+                                </mat-tab>
+
+                                <mat-tab label="Complex">
+                                    <div class="notify-friends notify-emails complex-tab-wrap">
+                                        <span class="notify-send">Send to:</span>
+                                        <mat-radio-group disableRipple
+                                                         [(ngModel)]="email.showUsersForBuildings"
+                                                         class="select-user-type">
+                                            <mat-radio-button value="all"
+                                                              class="md-primary">All
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Owner"
+                                                              class="md-primary">Only Owners
+                                            </mat-radio-button>
+                                            <mat-radio-button value="Resident"
+                                                              class="md-primary">Only Residents
+                                                (Tenants and Residing
+                                                Owners)
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+
+                                        <div class="notify-wrapper complex-b-wrapper build-list-wrap">
+                                            <mat-checkbox *ngFor="let building of email.selectedBuildings"
+                                                          [(ngModel)]="building.checked"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                Add. #{{ building.address + ': ' + building.name }}
+                                            </mat-checkbox>
+                                        </div>
+
+                                        <div class="notify-wrapper complex-b-wrapper user-list-wrap"
+                                             *ngIf="email.showUsersForBuildings==='all'">
+                                            <div *ngFor="let building of email.selectedBuildings">
+                                                <mat-list *ngFor="let user of allUsersFromBuildings[building.id]"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                    <span *ngIf="building.checked">Ap. #{{ user.ap_name + ': ' + user.phone }}</span>
+                                                </mat-list>
+                                            </div>
+                                        </div>
+
+                                        <div class="notify-wrapper complex-b-wrapper  user-list-wrap"
+                                             *ngIf="email.showUsersForBuildings==='Owner'">
+                                            <div *ngFor="let building of email.selectedBuildings">
+                                                <mat-list *ngFor="let user of ownersForBuildings[building.id]"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                    <span *ngIf="building.checked">Ap. #{{ user.ap_name + ': ' + user.phone }}</span>
+                                                </mat-list>
+                                            </div>
+                                        </div>
+
+                                        <div class="notify-wrapper complex-b-wrapper notify-em user-list-wrap"
+                                             *ngIf="email.showUsersForBuildings==='Resident'">
+                                            <div *ngFor="let building of email.selectedBuildings">
+                                                <mat-list *ngFor="let user of residentsForBuildings[building.id]"
+                                                          aria-label="Checkbox"
+                                                          class="md-primary">
+                                                    <span *ngIf="building.checked">Ap. #{{ user.ap_name + ': ' + user.phone }}</span>
+                                                </mat-list>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+                <div *ngIf="notificationTypeMain=='email'"
+                     class="notify-buttons notify-upload-btn">
+                    <button mat-button
+                            style="background:transparent"
+                            class="button-log back-btn btn-back upload-button mim-btn--notif-upload-btn"
+                            (click)="fileInput.click()">
+                        <span class="upload upload-icon"></span>
+                        UPLOAD ATTACHMENT (PDF
+                        only)
+                    </button>
+                    <div class="pdfFileGuid"
+                         *ngIf="fileName">
+                        <button matTooltip="delete PDF"
+                                class="pdfGuidDelete"
+                                [disabled]="loading"
+                                (click)="deletePdf()">
+                            <mat-icon class="material-icons"
+                                      align="center">clear
+                            </mat-icon>
+                        </button>
+                        <a title="{{fileName}}">{{ fileName }}</a>
+                    </div>
+                </div>
+                <div class="loading-bar"
+                     *ngIf="pageLoading || sendingLoader">
+                    <h3 *ngIf="sendingLoader">Please wait... Notifications are sending</h3>
+                    <ion-spinner class="spinner"
+                                 color="primary"></ion-spinner>
+                </div>
+                <div class="btn-wrap btn-wrap-bottom buttons-back"
+                     *ngIf="!pageLoading">
+                    <button mat-button
+                            class="mim-btn--back mim-btn back-btn"
+                            [disabled]="loading || pageLoading"
+                            (click)="back()">
+                        <mat-icon class="material-icons">keyboard_backspace</mat-icon>
+                        Back
+                    </button>
+                    <button mat-button
+                            class="mim-btn--submit mim-btn primary-btn"
+                            (click)="showConfirm()"
+                            aria-label="Submit"
+                            [disabled]="loading || pageLoading || users.length === 0 && (notificationTypeMain === 'sms')">
+                        Send
+                    </button>
+                </div>
+            </div>
+
+            <form class="none">
+                <input type="file"
+                       name="pdf"
+                       accept=".pdf"
+                       key='id'
+                       #fileInput
+                       (change)="onSelect($event)"
+                       loading="loadingPdf"/>
+            </form>
+        </div>
+    </div>
+</ion-content>

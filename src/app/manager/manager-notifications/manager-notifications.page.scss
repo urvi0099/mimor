@@ -1,0 +1,140 @@
+.notifications {
+  width: 1000px;
+
+  .mat-input {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .notify-send {
+    font-size: 0.875rem;
+    font-family: 'Montserrat';
+  }
+
+  .notify-all-item, .complex-b-wrapper {
+    font-size: 0.875rem;
+    display: flex;
+    flex-direction: column;
+
+    .notify-all-item-header {
+      display: flex;
+      align-items: center;
+      font-family: 'Montserrat';
+    }
+
+    .notify-all-user-list {
+      font-family: 'Montserrat';
+    }
+
+    .mat-list {
+      font-family: 'Montserrat';
+      padding: 8px 0;
+    }
+
+    .mat-icon {
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .notify-wrapper {
+    margin-top: 20px;
+    max-height: 320px;
+    overflow: auto;
+    width: 100%;
+  }
+
+  .build-list-wrap {
+    height: auto !important;
+    max-height: 180px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .select-user-type {
+    font-size: 0.875rem;
+    display: flex;
+  }
+
+  .selected-user-type {
+    font-size: 0.875rem;
+    display: flex;
+    flex-direction: column;
+
+    .mat-checkbox {
+      padding: 4px 0;
+    }
+  }
+
+  .notify-upload-btn {
+    margin-top: 26px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    .pdfFileGuid {
+      display: flex;
+      align-items: center;
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .upload-button {
+      letter-spacing: 0;
+      width: 20rem;
+      border: 2px solid #f26204;
+      color: #f26204;
+      min-width: 291px;
+      font-family: 'Montserrat';
+      text-transform: uppercase;
+      font-weight: bold;
+
+      .upload-icon {
+        display: inline-block;
+        height: 22px;
+        width: 22px;
+        background: url(/assets/img/icons/upload.svg) no-repeat;
+      }
+
+      &:hover {
+        border: 2px solid #4f75b4;
+        color: #4f75b4;
+
+        .upload-icon {
+          background: url(/assets/img/icons/upload1.svg) no-repeat;
+        }
+      }
+    }
+  }
+
+  .labels {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Montserrat';
+    font-size: 14px;
+  }
+
+  .loading-bar {
+    display: flex;
+    justify-content: center;
+  }
+
+  .buttons-back {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+// screen < 630px
+@media (max-width: 630px) {
+  .notifications {
+    width: 100%;
+
+  }
+}

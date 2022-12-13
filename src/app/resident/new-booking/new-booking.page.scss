@@ -1,0 +1,49 @@
+.new-book-wrapper{
+  max-height: 750px;
+  height: 675px;
+  width: 640px;
+  flex-direction: row;
+  margin: auto;
+  align-items: flex-start;
+  .header{
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .buttons-back{
+    width: 100%;
+  }
+  .next-button, .building-check-mark{
+    width: 100%;
+    text-transform: uppercase;
+    background-color: #4c9cff;
+    color: white;
+    &.mat-button-disabled{
+      background-color: rgba(0,0,0,0.12);
+      color: rgba(0,0,0,0.38);
+      cursor: default;
+    }
+  }
+  .building-check-mark{
+    margin-bottom: 15px;
+  }
+  .radios{
+    align-items: flex-start;
+  }
+  .mat-radio-button{
+    margin-right: 10px;
+  }
+  .mat-radio-group{
+    padding-bottom: 20px;
+  }
+  .select-ap{
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px){
+  .new-book-wrapper{
+    min-width: 320px;
+    width: 100%;
+    height: auto;
+  }
+}

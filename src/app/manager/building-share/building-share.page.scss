@@ -1,0 +1,224 @@
+.share-user-email-frame {
+  padding: 20px 0 20px 0 !important;
+  width: 640px;
+  .mat-input{
+    display: flex;
+    flex-direction: column;
+  }
+  h2{
+    text-transform: capitalize;
+    margin-bottom: 0;
+    font-size: 24px;
+    font-weight: 400;
+  }
+  .md-on{
+    background-color: black !important;
+  }
+  .share-email-item-body{
+    background-color: #EEEEEE;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  .access-parts{
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .access-settings{
+    display: flex;
+    font-size: 14px;
+    .acc-col{
+      display: flex;
+      width: 50%;
+      flex-direction: column;
+      .mat-checkbox{
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .notification-wrapper {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    overflow-y: hidden;
+
+    h3 {
+      margin-bottom: 6px;
+      padding-left: 34px;
+    }
+  }
+
+  .shared-box {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .share-none{
+    padding-left: 38px;
+    margin-top: 15px;
+  }
+
+  .share-block {
+    justify-content: flex-start !important;
+  }
+
+  .shared-email-wrap {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+  }
+
+  .share-email-list {
+    min-height: auto;
+    max-height: 200px;
+  }
+
+  .shared-email-new {
+    min-height: auto;
+    margin-bottom: 0;
+  }
+
+  .shared-email-heading{
+    padding: 10px 38px;
+    .managers-title{
+      padding-bottom: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .share-btn{
+      margin: 0;
+      margin-bottom: 10px;
+      border-radius: 0;
+      background-color: #f26204;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.5;
+      color: white;
+      &:disabled{
+        background-color: #f5a069;
+      }
+    }
+  }
+
+  .shared-email-item {
+    display: block !important;
+
+    .share-email-item-body,
+    .share-email-item-switchers {
+      width: 100%;
+      display: block;
+    }
+
+    .ng-scope {
+      background: transparent;
+    }
+
+    .share-email-item-body {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      margin: 5px 0;
+      padding: 3px 0;
+      font-size: 14px;
+      .shared-email-name {
+        width: 42%;
+        max-width: 42%;
+        min-width: auto;
+        word-break: break-word;
+        font-weight: 600;
+      }
+
+      .shared-email-val {
+        width: 45%;
+        max-width: 45%;
+        min-width: auto;
+        word-break: break-word;
+        padding-left: 38px;
+        font-weight: 600;
+      }
+
+      .shared-email-delete {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        width: 10%;
+        max-width: 10%;
+        min-width: auto;
+        word-break: break-word;
+
+        .mat-icon {
+          padding: 0;
+        }
+      }
+    }
+
+    .share-email-item-switchers {
+      background-color: #F8F8F8;
+      overflow: hidden;
+      .switcher-col{
+        display: flex;
+      }
+      .switchers-item {
+        display: flex;
+        flex-wrap: nowrap;
+        flex: 0 0 40%;
+        align-items: center;
+        padding-bottom: 6px;
+        padding-left: 38px;
+      }
+      .del_email{
+        margin-left: 38px;
+        background-color: #555555;
+        letter-spacing: 0.5px;
+        border-radius: 0;
+        color: white;
+        font-size: 11px;
+        &:hover{
+          color: white;
+          background-color: #757575;
+        }
+      }
+      .save-changes{
+        border: 1px solid #555555;
+        letter-spacing: 0.5px;
+        border-radius: 0;
+        color: #555555;
+        font-size: 11px;
+        &:hover{
+          background-color: #dfdfdf;
+        }
+      }
+      .shared-email-checkbox {
+        margin-bottom: 0;
+      }
+      .access-parts, .access-settings{
+        padding-left: 38px;
+      }
+      .acc-col{
+        width: 47.8%;
+      }
+    }
+  }
+  .mat-button{
+    text-transform: uppercase;
+    font-family: 'Montserrat';
+  }
+  .share-notify-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
+@media (max-width: 599px) {
+  .share-user-email-frame{
+    width: 100%;
+  }
+  .access-settings{
+    flex-direction: column;
+  }
+}

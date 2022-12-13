@@ -1,0 +1,479 @@
+<ion-content [fullscreen]="true">
+	<mat-toolbar class="mim-header-toolbar">
+		<a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+			<img src="assets/img/logoNew.png" class="logo" alt="">
+		</a>
+		<div class="switch-role">
+			<button mat-button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+				<span class="icon"></span><span class="logout">Log Out</span>
+			</button>
+			<select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1"
+					(change)="rolesService.selectRole($event.target.value)">
+				<option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+			</select>
+		</div>
+	</mat-toolbar>
+	<div class="flex-page">
+		<div class="form-wrapper form-background frame-md reports-tab reports-block" *ngIf="showData">
+			<div class="reports-wrapper" ng-hide="pageLoading || !showData">
+				<div class="text-center">
+					<h2 class="mim-panel-header">Report for {{ type != 8 ? buildName : 'all buildings' }}:
+						<span class="report-subheader">{{ types[type] }}
+							<span *ngIf="!(type == 5 || type == 7 || type == 8 || type == 9 || type == 10 || type == 15)">
+                {{' from ' + showFromDate + ' to ' + showToDate }}
+              </span>
+            </span>
+					</h2>
+				</div>
+				<div class="reports-content reports__content">
+					<div class="reports-table">
+						<table class="table table-hover" *ngIf="type == 1 || type == 4">
+							<thead>
+							<tr>
+								<th>Building name</th>
+								<th>Apartment #</th>
+								<th>Status</th>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Secondary Email</th>
+								<th>Phone #</th>
+								<th>Secondary Phone #</th>
+								<th>Vehicle registration number</th>
+								<th>Car park #</th>
+								<th>Real estate email</th>
+								<th>Real estate phone #</th>
+								<th>Special Needs</th>
+								<th>Move-in date</th>
+								<th>Move-out date</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let b of data">
+								<td>{{b.building.name}}</td>
+								<td>{{b.apartment.name}}</td>
+								<td><span *ngIf="b.user_status == 'Owner'">Owner</span>
+									<span *ngIf="b.user_status == 'Resident'">Tenant</span>
+									<span *ngIf="b.user_status == 'Owner'">{{b.is_residing == '1' ? 'Residing' : 'Non-Residing'}}</span>
+									<span
+											*ngIf="b.status == 'pending' && !(b.user_status == 'Owner' && b.is_residing != '1')">Incomplete</span>
+									<span
+											*ngIf="!(b.user_status == 'Owner' && b.is_residing != '1')&& b.user_status != 'Resident'">Unknown</span>
+
+								</td>
+								<td>{{b.user.name}}</td>
+								<td>{{b.user.email}}</td>
+								<td>{{b.user.email2}}</td>
+								<td>{{b.user.phone}}</td>
+								<td>{{b.user.phone2}}</td>
+								<td>{{b.user.car_registration_number}}</td>
+								<td>{{b.user.car_park_number}}</td>
+								<td>{{b.user.agent_email}}</td>
+								<td>{{b.user.agent_phone}}</td>
+								<td>{{b.user.special_needs === '1' ? 'Yes' : 'No'}}</td>
+								<td>{{b.date_from == 'NaN/NaN/NaN NaN:NaN' ? '-' : b.date_from}}</td>
+								<td>{{formateDate(b.date_out_to, 'd/m/Y H:i') == 'NaN/NaN/NaN NaN:NaN' ? '-'
+                                    : formateDate(b.date_out_to, 'd/m/Y H:i')}}
+								</td>
+
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover table-wide-1200" *ngIf="type == 11">
+							<thead>
+							<tr>
+								<th>User name</th>
+								<th>Apartment #</th>
+								<th>Email</th>
+								<th>Phone #</th>
+								<th>Status</th>
+								<th>Date From</th>
+								<th>Date To</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let resident of data">
+								<td>{{ resident.user.name }}</td>
+								<td>{{ resident.apartment.name }}</td>
+								<td>{{ resident.user.email }}</td>
+								<td>{{ resident.user.phone }}</td>
+								<td>{{ resident.status }}</td>
+								<td>{{ resident.date_from.includes('NaN') ? '' : resident.date_from }}</td>
+								<td>{{ resident.date_to.includes('NaN') ? '' : resident.date_to }}</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" *ngIf="type == 13 || type == 14 || type == 15">
+							<thead>
+							<tr>
+								<th>User name</th>
+								<th>Apartment #</th>
+								<th>Email</th>
+								<th>Phone #</th>
+								<th>Carrier</th>
+								<th>Date</th>
+								<th *ngIf="type == 14">Signature</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let parcel of data">
+								<td>{{ parcel.recipients[0] ? parcel.recipients[0].name : 'Unknown' }}</td>
+								<td>{{ parcel.apartment ? parcel.apartment.name : ''  }}</td>
+								<td>{{ parcel.recipients[0] ? parcel.recipients[0].email : '' }}</td>
+								<td>{{ parcel.recipients[0] ? parcel.recipients[0].phone : '' }}</td>
+								<td>{{ parcel.carrier.name }}</td>
+								<td>{{ parcel.updated_at | date: 'dd/MM/yy HH:mm' }}</td>
+								<td *ngIf="type == 14 && parcel.file" class="signature-icon">
+									<mat-icon class="material-icons" ng-click="openImage(parcel.file)">forward
+									</mat-icon>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" *ngIf="type == 2 || type == 3">
+							<thead>
+							<tr>
+								<th>Building name</th>
+								<th>Apartment #</th>
+								<th>Status</th>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Secondary Email</th>
+								<th>Phone #</th>
+								<th>Secondary Phone #</th>
+								<th>Vehicle registration number</th>
+								<th>Car park #</th>
+								<th>Real estate email</th>
+								<th>Real estate phone #</th>
+								<th>Special needs</th>
+								<th>Move-in date</th>
+								<th>Move-out date</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let foo in data">
+								<td>{{foo.building.name}}</td>
+								<td>{{foo.apartment.name}}</td>
+								<td><span *ngIf="foo.user_status == 'Owner'">Owner</span>
+									<span *ngIf="foo.user_status == 'Resident'">Tenant</span>
+									<span *ngIf="foo.user_status == 'Owner'">
+									  {{foo.is_residing == '1' ? 'Residing' : 'Non-Residing'}}
+									</span>
+									<span
+											*ngIf="foo.status == 'pending' && !(foo.user_status == 'Owner' && foo.is_residing != '1')">Incomplete</span>
+									<span *ngIf="foo.user_status != 'Owner' && foo.user_status != 'Resident'">Unknown</span>
+								</td>
+								<td>{{foo.user.name}}</td>
+								<td>{{foo.user.email}}</td>
+								<td>{{foo.user.email2}}</td>
+								<td>{{foo.user.phone}}</td>
+								<td>{{foo.user.phone2}}</td>
+								<td>{{foo.user.car_registration_number}}</td>
+								<td>{{foo.user.car_park_number}}</td>
+								<td>{{foo.user.agent_email}}</td>
+								<td>{{foo.user.agent_phone}}</td>
+								<td>{{foo.user.special_needs === '1' ? 'Yes' : 'No'}}</td>
+								<td>{{foo.date_from == 'NaN/NaN/NaN NaN:NaN' ? '-' : foo.date_from}}</td>
+								<td>{{formateDate(foo.date_out_to, 'd/m/Y H:i') == 'NaN/NaN/NaN NaN:NaN' ? '-'
+                                    : formateDate(foo.date_out_to, 'd/m/Y H:i')}}
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" *ngIf="type == 5 || type == 9">
+							<thead>
+							<tr>
+								<th style="text-align:left">Apartment</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let a of data">
+								<td>{{ 'Level ' + a.level + ', Apartment ' + a.name }}</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" *ngIf="type == 6">
+							<thead>
+							<tr>
+								<th>Type</th>
+								<th>User</th>
+								<th>Message</th>
+								<th>Date</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let bar in data">
+								<td>{{ bar.type }}</td>
+								<td>{{ bar.type == 'sms' ? bar.user.phone : bar.user.email }}</td>
+								<td [innerHtml]="bar.message"></td>
+								<td>{{ formateDate(bar.created_at, 'd/m/Y H:i') }}</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" *ngIf="type == 7 || type == 12">
+							<thead>
+							<tr>
+								<th>Building name</th>
+								<th>Apartment #</th>
+								<th>Status</th>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Secondary Email</th>
+								<th>Phone #</th>
+								<th>Secondary Phone #</th>
+								<th>Vehicle registration number</th>
+								<th>Car park #</th>
+								<th>Real estate email</th>
+								<th>Real estate phone #</th>
+								<th>Special needs</th>
+								<th>Move-in date</th>
+								<th>Move-out date</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let n of data">
+								<td>{{n.building.name}}</td>
+								<td>{{n.apartment.name}}</td>
+								<td><span *ngIf="n.user_status == 'Owner'">Owner</span>
+									<span *ngIf="n.user_status == 'Resident'">Tenant</span>
+									<span *ngIf="n.user_status == 'Owner'">
+                      {{n.is_residing == '1' ? 'Residing' : 'Non-Residing'}}
+                    </span>
+									<span
+											*ngIf="n.status == 'pending' && !(n.user_status == 'Owner' && n.is_residing != '1')">Incomplete</span>
+									<span *ngIf="n.user_status != 'Owner' && n.user_status != 'Resident' ">Unknown</span>
+								</td>
+								<td>{{n.user.name}}</td>
+								<td>{{n.user.email}}</td>
+								<td>{{n.user.email2}}</td>
+								<td>{{n.user.phone}}</td>
+								<td>{{n.user.phone2}}</td>
+								<td>{{n.user.car_registration_number}}</td>
+								<td>{{n.user.car_park_number}}</td>
+								<td>{{n.user.agent_email}}</td>
+								<td>{{n.user.agent_phone}}</td>
+								<td>{{n.user.special_needs === '1' ? 'Yes' : 'No'}}</td>
+								<td>{{n.date_from == 'NaN/NaN/NaN NaN:NaN' ? '-' : n.date_from}}</td>
+								<td>{{formateDate(n.date_out_to, 'd/m/Y H:i') == 'NaN/NaN/NaN NaN:NaN' ? '-'
+                                    : formateDate(n.date_out_to, 'd/m/Y H:i')}}
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" *ngIf="type == 10">
+							<thead>
+							<tr>
+								<th>Building name</th>
+								<th>Apartment #</th>
+								<th>Status</th>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Secondary Email</th>
+								<th>Phone #</th>
+								<th>Secondary Phone #</th>
+								<th>Vehicle registration number</th>
+								<th>Real estate email</th>
+								<th>Real estate phone #</th>
+								<th>Move-in date</th>
+								<th>Move-out date</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let n of data">
+								<td>{{n.building.name}}</td>
+								<td>{{n.apartment.name}}</td>
+								<td><span *ngIf="n.user_status == 'Owner'">Owner</span>
+									<span *ngIf="n.user_status == 'Resident'">Tenant</span>
+									<span *ngIf="n.user_status == 'Owner'">
+									  {{n.is_residing == '1' ? 'Residing' : 'Non-Residing'}}
+									</span>
+									<span
+											*ngIf="n.status == 'pending' && !(n.user_status == 'Owner' && n.is_residing != '1')">Incomplete</span>
+									<span *ngIf="n.user_status != 'Owner' && n.user_status != 'Resident'">Unknown</span>
+								</td>
+								<td>{{n.user.name}}</td>
+								<td>{{n.user.email}}</td>
+								<td>{{n.user.email2}}</td>
+								<td>{{n.user.phone}}</td>
+								<td>{{n.user.phone2}}</td>
+								<td>{{n.user.car_registration_number}}</td>
+								<td>{{n.user.agent_email}}</td>
+								<td>{{n.user.agent_phone}}</td>
+								<td>{{n.date_from == 'NaN/NaN/NaN NaN:NaN' ? '-' : n.date_from}}</td>
+								<td>{{formateDate(n.date_out_to, 'd/m/Y H:i') == 'NaN/NaN/NaN NaN:NaN' ? '-'
+                                    : formateDate(n.date_out_to, 'd/m/Y H:i')}}
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<table class="table table-hover" *ngIf="type == 8">
+							<thead>
+							<tr>
+								<th>Building name</th>
+								<th>Apartment #</th>
+								<th>Status</th>
+								<th>Name</th>
+								<th>Email</th>
+								<th>Secondary Email</th>
+								<th>Phone #</th>
+								<th>Secondary Phone #</th>
+								<th>Vehicle registration number</th>
+								<th>Real estate email</th>
+								<th>Real estate phone #</th>
+								<th>Move-in date</th>
+								<th>Move-out date</th>
+							</tr>
+							</thead>
+							<tbody *ngFor="let build of data">
+							<tr>
+								<td>{{build.build_name}}</td>
+								<td>{{build.name}}</td>
+								<td><span *ngIf="build.user_status == 'Owner'">Owner</span>
+									<span *ngIf="build.user_status == 'Resident'">Tenant</span>
+									<span *ngIf="build.user_status == 'Owner'">
+									  {{build.is_residing == '1' ? 'Residing' : 'Non-Residing' }}
+									</span>
+									<span
+											*ngIf="build.status == 'pending' && !(build.user_status == 'Owner' && build.is_residing != '1')">Incomplete</span>
+									<span *ngIf="build.user_status != 'Owner' && build.user_status != 'Resident'">Unknown</span>
+								</td>
+								<td>{{ build.u_name }}</td>
+								<td>{{ build.u_email }}</td>
+								<td>{{build.u_email2}}</td>
+								<td>{{build.u_phone}}</td>
+								<td>{{build.u_phone2}}</td>
+								<td>{{build.u_car_registration_number}}</td>
+								<td>{{build.u_agent_email}}</td>
+								<td>{{build.u_agent_phone}}</td>
+								<td>{{ build.date_from == 'NaN/NaN/NaN NaN:NaN' ? '-' : build.date_from }}</td>
+								<td>{{ formateDate(build.date_out_to, 'd/m/Y H:i') == 'NaN/NaN/NaN NaN:NaN' ? '-'
+                                    : formateDate(build.date_out_to, 'd/m/Y H:i') }}
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<h3 class="text-center" *ngIf="!loading && data.length == 0">No results</h3>
+					</div>
+				</div>
+				<div layout="column" class="mgt20 buttons-back">
+					<button mat-button class="button-log back-btn btn-back" ng-disabled="loading"
+							(click)="showData=false;">
+						<mat-icon class="material-icons">keyboard_backspace</mat-icon>
+						Back
+					</button>
+					<div style="text-align: right;">
+						<button mat-button (click)="generateCsv()" class="primary-btn" ng-disabled="false ||loading"
+								aria-label="description">
+							<span>Generate CSV</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="loading-bar" *ngIf="pageLoading">
+				<ion-spinner color="primary" class="spinner"></ion-spinner>
+			</div>
+		</div>
+
+		<div class="form-wrapper reports-block" *ngIf="!showData">
+			<div class="reports-wrapper" ng-hide="pageLoading || showData">
+				<div class="reports-form">
+					<div class="text-center">
+						<h2 class="mim-panel-header">Reports for {{ buildName }}</h2>
+					</div>
+					<div class="reports-content">
+						<div class="reports-input padd15-15">
+							<label>Select Type: </label>
+							<mat-select panelClass="option-pannel" class="select-date report-select"
+										[disabled]="loading"
+										[(ngModel)]="type" aria-label="Buildings" class="reports-select"
+										(selectionChange)="changeType($event.value)">
+								<mat-option class="manager-option report-option" *ngFor="let i of types_sort | keyvalue"
+											[value]="i.key">{{ types[i.value] }}</mat-option>
+							</mat-select>
+						</div>
+						<div *ngIf='displaySorting' class="reports-input padd15-15">
+							<label>Select Sorting Method: </label>
+							<mat-select class="select-date" [disabled]="loading" [(ngModel)]="selectedSorting"
+										aria-label="Buildings"
+										class="reports-select">
+								<mat-option class="manager-option" *ngFor="let sort of sorting | keyvalue"
+											[value]="sort.key">{{
+                                    sort.value }}</mat-option>
+							</mat-select>
+						</div>
+						<div *ngIf='displaySorting' class="reports-input padd15-15">
+							<label>Select Sorting Order: </label>
+							<mat-select class="select-date" [disabled]="loading" [(ngModel)]="selectedSortOrder"
+										aria-label="Buildings" class="reports-select">
+								<mat-option class="manager-option" *ngFor="let sortOrder of sortingOrder | keyvalue"
+											[value]="sortOrder.key">{{ sortOrder.value }}</mat-option>
+							</mat-select>
+						</div>
+
+						<div class="reports-input padd15-15"
+							 *ngIf="!(type == 5 || type == 7 || type == 8 || type == 9 || type == 10 || type == 11 || type == 12 || type == 15)">
+							<label *ngIf="type">Select Time Period: </label>
+							<mat-select *ngIf="type == 1 || type == 4 || type == 6 || type == 13 || type == 14"
+										class="select-date"
+										[disabled]="loading" (selectionChange)="selectTimePeriod1()"
+										[(ngModel)]="timePeriod1"
+										aria-label="Buildings" class="reports-select">
+								<mat-option class="manager-option" *ngFor="let t of timePeriods1 | keyvalue"
+											[value]="t.key">{{ t.value
+									}}</mat-option>
+							</mat-select>
+							<mat-select *ngIf="type == 2 || type == 3" class="select-date" [disabled]="loading"
+										(selectionChange)="selectTimePeriod2()" [(ngModel)]="timePeriod2"
+										aria-label="Buildings"
+										class="reports-select">
+								<mat-option class="manager-option" *ngFor="let tp of timePeriods2 | keyvalue"
+											[value]="tp.key">{{
+                                    tp.value }}</mat-option>
+							</mat-select>
+						</div>
+
+						<div
+								*ngIf="!(!type || type == 5 || type == 7 || type == 8 || type == 9 || type == 10 || type == 11 || type == 12 || type == 15)">
+							<div class="reports-blocks"
+								 *ngIf="!(timePeriod1 == 1 || timePeriod1 == 6 || timePeriod2 == 1)">
+								<div class="reports-input">
+									<label>Report Date From:</label>
+									<div class="picker">
+										<input matInput [matDatepicker]="pickerFrom"
+											   [(ngModel)]="fromDate"
+											   (dateChange)="changeDate($event)">
+										<mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+										<mat-datepicker #pickerFrom></mat-datepicker>
+									</div>
+								</div>
+								<div class="reports-input">
+									<label>Report Date To:</label>
+									<div class="picker">
+										<input matInput [matDatepicker]="pickerTo"
+											   [(ngModel)]="toDate"
+											   (dateChange)="changeDate($event)">
+										<mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+										<mat-datepicker #pickerTo></mat-datepicker>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mgt20 buttons-back" style="margin-top: 120px">
+						<button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+							<mat-icon class="material-icons">keyboard_backspace</mat-icon>
+							Back
+						</button>
+						<button mat-button (click)="submit()" class="md-raised md-primary primary-btn"
+								[disabled]="!type || loading"
+								aria-label="description">
+							<span>Generate</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="loading-bar" *ngIf="pageLoading">
+				<ion-spinner color="primary" class="spinner"></ion-spinner>
+			</div>
+		</div>
+	</div>
+</ion-content>

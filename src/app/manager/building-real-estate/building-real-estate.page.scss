@@ -1,0 +1,69 @@
+.mim-panel--trusted-real-estate {
+  width: 640px;
+  min-height: 537px;
+  align-items: baseline;
+  .trusted-email-list {
+    min-height: 450px;
+  }
+  .trusted-email-list {
+    height: 200px;
+    overflow-y: auto;
+
+    &__email {
+      border: 1px solid #ccc;
+      padding: 8px 8px 8px 8px;
+      margin-bottom: 12px;
+    }
+
+    .re-email-item-body {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+    }
+
+    .re-email-val {
+      text-align: left;
+      width: 50%;
+      flex: 0 0 50%;
+      word-break: break-word;
+    }
+
+    .re-email-delete {
+      text-align: right;
+      width: 50%;
+      flex: 0 0 50%;
+    }
+
+    .re-email-item-switchers {
+      padding-left: 6px;
+
+      .re-email-checkbox {
+        margin-bottom: 0;
+      }
+
+      .switchers-item {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        margin: 6px 0 6px 0;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        span {
+          font-weight: 500;
+          font-size: 0.875rem;
+
+          width: 10rem;
+        }
+      }
+    }
+  }
+  .buttons-back {
+    width: 100%;
+    justify-content: space-between;
+    margin: 0;
+    margin-top: 20px;
+  }
+}

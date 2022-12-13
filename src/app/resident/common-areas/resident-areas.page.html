@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper mim-common-a-client" *ngIf="!showingRules">
+      <div class="info-wrapper full-width" *ngIf="!pageLoading">
+        <div class="text-center full-width">
+          <h2 class="resident-header">Common areas</h2>
+          <h3 class="subheader text-center">{{ building.name }}</h3>
+        </div>
+        <div *ngIf='areas.length === 0' layout="column" class="text-center">
+          <h3> There is no common areas for this building yet.</h3>
+        </div>
+        <div class="common-a-content-wrap">
+          <div *ngIf="bookingList.length !== 0" class="common-area-bookings-wrap">
+            <h3>Your bookings:</h3>
+            <div class="common-area-booking-list">
+              <div class="area-booking-item" *ngFor="let areaBooking of bookingList">
+                <div class="title">{{areaBooking.name}}</div>
+                <div class="dates">{{getDateWithYearTo12(areaBooking.date_from)}} - {{getDateTo12(areaBooking.date_to)}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <form name="form" class="guidelines-form full-width" ng-submit="save()" *ngIf="areas.length>0">
+            <div class="common-a-list" md-border-bottom>
+              <div class="d-flex areas description-block" *ngFor="let area of areas">
+                <div class="area-left-side" *ngIf="area.image">
+                  <img src="{{env.baseUrl}}{{area.image}}" alt="alt">
+                </div>
+                <div class="area-right-side">
+                  <div class="area-right-side--info">
+                    <h3 class="resident-header">{{area.name}}</h3>
+                    <div>{{area.description}}</div>
+
+                    <!-- <div ng-repeat="(key, value) in fromFilesName(area.name)" ng-hide="!value">
+                      <button mat-button class="inform-cat-download-button md-accent btn-view-pdf-tenant"
+                        сlass="md-accent btn-view-pdf-tenant"
+                        href="/download_area_file/{{building.id}}/{{area.id}}/{{ value }}">
+                        <mat-icon class="material-icons">file_download</mat-icon>
+                      </button>
+
+                      <button mat-button target="_blank" class=" md-accent btn-view-pdf-tenant"
+                        href="/upload/pdf/{{building.id}}/common_areas/{{area.id}}/{{ value }}">
+                        <span style="text-transform: none !important;">
+                          View {{ value }}
+                        </span>
+                        <mat-icon class="material-icons">&#xE89E;</mat-icon>
+                      </button>
+                    </div> -->
+                    <div class="book-rules mgt10">
+                      <a (click)='showRules(area.id)' style="cursor: pointer;">Rules of {{area.name}}</a>
+                    </div>
+                    <div class="book-rules mgt10" *ngIf="area.price">
+                      Price - {{area.price}} AUD
+                    </div>
+                    <div class="book-rules mgt10" *ngIf="area.fee">
+                      Fee - {{area.fee}} AUD
+                    </div>
+                    <div *ngIf="area.area_booking.length > 0" class="area-booked">
+                      <b>You've booked this area:</b>
+                      <div *ngFor="let booking of area.area_booking">
+                        <div class="area-time-booking">
+                          {{getDateWithYearTo12(booking.date_from)}} - {{getDateTo12(booking.date_to)}}
+                        </div>
+                        <div class="book-date">
+                          <button mat-button class="inform-cat-download-button md-accent btn-view-pdf-tenant watch-icon"
+                            (click)="editAreaBooking(area, booking.id)">
+                            <mat-icon style="font-size: 23px" class="material-icons">watch_later</mat-icon>
+                          </button>
+                          <button mat-button class="inform-cat-download-button md-accent btn-view-pdf-tenant"
+                            (click)='deleteAreaBooking(area.id, booking.id, area.name, booking.date_from)'>
+                            <mat-icon class="material-icons">delete_forever</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="area-booking-btn">
+                    <button mat-raised-button [disabled]="area.allow_booking === '0'" (click)="checkFreeArea(area)">
+                      Book this area
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="mgt20 buttons-back">
+          <button mat-raised-button aria-label="description" (click)="back()">
+            <mat-icon class="material-icons">keyboard_arrow_left</mat-icon>
+            Back
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+    </div>
+    <div class="form-wrapper area-rules-wrapper" *ngIf="showingRules">
+      <div class="text-center full-width">
+        <h2 class="resident-header">{{ areaName }} rules</h2>
+        <div class="text-left">
+          <div class="terms" layout-padding>
+            <div [innerHtml]="areaRules"></div>
+          </div>
+          <div class="buttons-back">
+            <button mat-raised-button class="button-log back-btn btn-back" (click)="showingRules=false;">
+              Close
+              <mat-icon class="material-icons">close</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

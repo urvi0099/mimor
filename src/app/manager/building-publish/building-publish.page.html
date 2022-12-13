@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper ready-to-publish">
+      <form name="form" *ngIf="!loading" class="manager-wrapper full-width d-flex-col">
+        <div class="dashboard-header">
+          <h2 class="mim-panel-header">{{buildName}}</h2>
+        </div>
+        <div class="mim-question__msg"><span>Are you ready to publish your building for clients?</span></div>
+        <div class="mim-question__sub-msg"><span>You can change this status at anytime.</span></div>
+        <div class="buttons-back">
+          <button mat-button class="primary-btn" (click)="changeBuildingStatus(false)" aria-label="AO BAO"
+            [disabled]="loading"><span>No</span></button>
+          <button mat-button class="primary-btn" (click)="changeBuildingStatus(true)" aria-label="AO BAO"
+            [disabled]="loading"><span>Yes</span></button>
+        </div>
+      </form>
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

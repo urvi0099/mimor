@@ -1,0 +1,60 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper mim-panel mim-panel--trusted-real-estate">
+      <div ng-hide="pageLoading || loading" class="mim-panel-content-wrap">
+        <h2 class="mim-panel-header">REAL ESTATE / PROPERTY MGR</h2>
+        <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+        <div name="trustedEmalForm">
+          <div class="real-estate-email block-input md-block mat-input">
+            <div class="title-input"><span>Add Email: </span></div>
+            <input class="full-width" type="email" [disabled]="loading" placeholder="Trusted Email" maxlength="50"
+             required [(ngModel)]="trustedEmailInput">
+          </div>
+          <div class="trusted-email-list">
+            <div class="trusted-email-list__email" *ngFor="let trusted of trustedEmailList">
+              <div class="re-email-item-body">
+                <span class="re-email-val">{{trusted.email}}</span>
+                <div class="re-email-delete">
+                  <mat-icon class="material-icons del_email" (click)="showConfirm(trusted.email)">close
+                  </mat-icon>
+                </div>
+              </div>
+              <div class="re-email-item-switchers">
+                <div class="switchers-item">
+                  <span>SMS/Email Notices</span>
+                  <mat-checkbox class="re-email-checkbox"
+                    (change)='triggerNotification(trusted.pivot.notify_email_sms, trusted.pivot.id, i, "notify_email_sms")'
+                    [(ngModel)]="trusted.pivot.notify_email_sms"></mat-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="btn-wrap btn-wrap-bottom buttons-back">
+            <button mat-button class="mim-btn--back back-btn" ng-disabled="loading" (click)="back()">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+            <button mat-button class="mim-btn--submit mim-btn primary-btn" (click)="submit()" aria-label="AO BAO"
+              ng-disabled="!trustedEmailInput.length || trustedEmalForm.$invalid"><span>Add</span>
+            </button>
+          </div>
+        </div>
+        <div class="loading-bar" *ngIf="pageLoading || loading">
+          <ion-spinner color="primary" class="spinner"></ion-spinner>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

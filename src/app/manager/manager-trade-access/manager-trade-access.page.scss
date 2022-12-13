@@ -1,0 +1,142 @@
+.give-access{
+  max-width: 625px;
+  padding: 21px 80px 20px 80px !important;
+  .custom-range{
+    padding-top: 20px;
+    .date{
+      margin-bottom: 20px;
+      .date-title{
+        padding-bottom: 5px;
+      }
+    }
+    .time-err{
+      padding-top: 5px;
+      color: red;
+    }
+    .timeslot{
+      .time-head{
+        font-weight: bold;
+        padding-bottom: 11px;
+      }
+      .ranges{
+        display: flex;
+        .range{
+          width: 40%;
+          margin-right: 10px;
+        }
+      }
+      .from-to{
+        padding-bottom: 5px;
+      }
+    }
+
+  }
+  .manager-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .block-input{
+    margin-top: 28px!important;
+  }
+  .primary-btn{
+    max-width: 196px;
+  }
+  input{
+    text-indent: 17px;
+  }
+  .instructions{
+    input{
+      width: 100%;
+    }
+  }
+  .title-input{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    span{
+      font-size: 24px;
+    }
+    .italic{
+      font-style: italic;
+      font-weight: 200;
+    }
+  }
+  .title-service span{
+    font-weight: bold;
+    padding-left: 8px;
+  }
+  .worker-main{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    width: 100%;
+    .upload-order{
+      background-color:#555;
+      border-radius: 0;
+      padding: 5px 10px 5px 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      position: relative;
+      span{
+        font-family: 'Montserrat';
+        color: white;
+        text-transform: uppercase;
+      }
+      &:hover{
+        background-color: rgba(158,158,158,1);
+      }
+    }
+  }
+  .file-name{
+    display: flex;
+    align-items: center;
+    .delete-file{
+      margin-left: 10px;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+  .areas{
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 30%;
+    justify-content: space-between;
+    align-items: center;
+    .area{
+      width: 30%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+      md-checkbox{
+        margin: 0;
+      }
+      .areaname{
+        padding-left: 10px;
+        font-size: 12px;
+      }
+    }
+  }
+  .when,.locations{
+    .title-input{
+      margin-top: 30px;
+    }
+  }
+  .controls{
+    display: flex;
+    flex-direction: row;
+  }
+  .mat-select{
+    padding: 0;
+  }
+  .buttons-back{
+    margin-top: 37px;
+    width: 100%;
+    justify-content: space-between;
+  }
+}

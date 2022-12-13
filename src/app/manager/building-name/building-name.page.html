@@ -1,0 +1,83 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper name-and-photo">
+      <form name="form" *ngIf="!loading" class="manager-wrapper full-width d-flex-col">
+        <div class="dashboard-header">
+          <h2 class="mim-panel-header">{{isEdit ? 'Change' : 'Add'}} Building Details</h2>
+          <div class="mim-header-building-info" *ngIf="name.value"><span>{{name.value}}</span></div>
+        </div>
+        <div *ngIf="buildId" class="building-block photo-small">
+          <div class="building-block-img">
+            <div class="mim-no-img" *ngIf="!photo2 && !photo"></div>
+            <img src="{{photo2}}" *ngIf="photo2" />
+            <img src="{{photo}}" *ngIf="!photo2 && photo" />
+          </div>
+          <div class="building-block-header" *ngIf="name.value && address.value">
+            <h3 class="dash-h3">{{name.value}}</h3>
+            <span>{{address.value}}</span>
+          </div>
+        </div>
+        <div class="adress-autocomplete mat-input block-input">
+          <div class="title-input"><span>Building Address</span></div>
+          <input type="text" class="full-width" matInput matGoogleMapsAutocomplete [country]="au"
+            (onAutocompleteSelected)="onAutocompleteSelected($event)" (onLocationSelected)="onLocationSelected($event)"
+            [formControl]="address" [placeholder]="adressPlaceholder">
+          <!-- <input type="text" class="full-width" matInput [formControl]="address" [matAutocomplete]="auto"
+            placeholder="For example 637 Flinders St">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option class="manager-option" *ngFor="let build of filteredBuilds | async" (click)="selectBuild(build)"
+              [value]="build">
+              {{build.name + ' - ' + build.address }}
+            </mat-option>
+          </mat-autocomplete> -->
+        </div>
+        <div class="mat-input block-input">
+          <div class="title-input"><span>Building Name</span><span class="italic">(1-50 characters)</span></div>
+          <input type="text" class="full-width" placeholder="For example The Avenue" name="name" [formControl]="name">
+        </div>
+        <div class="upload-row">
+          <div class="title"><span>Building Photo</span><span class="italic">Drag&Drop here:</span></div>
+          <div class="build-photo draganddrop-zone">
+            <ngx-dropzone #drop (change)="onSelect($event)" accept="image/jpeg,image/jpg,image/png" disableClick
+              maxFileSize="4096000" [multiple]="multiplePhotos">
+              <ngx-dropzone-label>
+                <img src="assets/img/icons/image-icon.png" alt="photo">
+              </ngx-dropzone-label>
+              <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f">
+              </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+          </div>
+          <div class="recommend-size">Recommended image width is 280px.</div>
+
+          <span class="upload-or">or</span>
+          <button mat-button class="upload-btn" [disabled]="loading" (click)="drop.showFileSelector()">Upload
+            Photo</button>
+          <div *ngIf="!buildId" class="mim-skip-photo" (click)="skipPhoto()"><span>Skip, do this later</span></div>
+        </div>
+        <div class="buttons-back">
+          <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+          <button mat-button class="primary-btn" (click)="submit()" aria-label="AO BAO"
+            [disabled]="loading || address.status === 'IVALID' || name.status === 'INVALID' "><span>{{buttonText}}</span></button>
+        </div>
+      </form>
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

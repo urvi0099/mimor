@@ -1,0 +1,119 @@
+.time-settings{
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-height: 750px;
+  width: 640px;
+  flex-wrap: wrap;
+  h5{
+    width: 450px;
+    font-size: 0.83em;
+    font-weight: 400;
+  }
+  .time-intervals{
+    width: 100%;
+    display: flex;
+    margin-bottom: 25px;
+    &>span{
+      padding: 5px;
+      min-width: 115px;
+      font-size: 14px;
+    }
+    .mat-select{
+      width: 100%;
+      margin: 0;
+      font-size: 14px;
+      border-color: #555555;
+      min-width: 165px;
+      font-family: 'Montserrat';
+      line-height: 28px;
+    }
+  }
+  .reports-content{
+    user-select: none;
+    cursor: default;
+    max-height: 288px;
+    overflow: auto;
+    .time-settings-h{
+      flex-wrap: nowrap;
+      span{
+        width: 41px;
+        height: 40px;
+        border: solid 1px;
+        border-left: 0;
+        line-height: 40px;
+        &:first-child{
+          border-left: solid 1px;
+        }
+      }
+    }
+    .time-settings-lc {
+      width: 157px;
+      font-size: 0.875rem;
+      span{
+        width: 100%;
+        height: 40px;
+        border: solid 1px;
+        border-top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+    .awc-lc span{
+      border-left: 1px solid black;
+    }
+    .columns2{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .awt span:first-child{
+      width: 157px;
+    }
+    .time-settings-rcl{
+      width: 41px;
+      border-right: 1px solid black;
+      .mat-input{
+        width: 41px;
+        height: 40px;
+        border-bottom: solid 1px;
+        margin: 0 !important;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+      }
+    }
+  }
+  .delay-booking{
+    margin: 30px 0;
+    input{
+      display: inline-block;
+      width: 4rem;
+      float: none;
+      min-height: auto;
+      height: 2rem;
+      margin-left: 0.25em;
+      margin-right: 0.25em;
+      padding: 6px !important;
+    }
+  }
+}
+.transparent{
+  color: transparent;
+}
+.black{
+  color: black;
+}
+
+@media (max-width: 767px){
+  .time-settings {
+    overflow: auto;
+    width: 100%;
+    min-width: 380px;
+  }
+}

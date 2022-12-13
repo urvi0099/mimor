@@ -1,0 +1,39 @@
+.mat-dialog-content {
+  font-family: 'Montserrat';
+  text-align: center;
+  flex-basis: 27%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  .mat-title{
+    font-family: 'Montserrat';
+    text-transform: none;
+    font-size: 1.5rem;
+    font-weight: normal;
+    letter-spacing: .005em;
+  }
+}
+
+.mat-dialog-actions {
+  font-family: 'Montserrat';
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  .res-btn {
+    max-width: 250px;
+    min-width: 130px;
+    height: 50px;
+    border-radius: 0px;
+    margin: 0px;
+    transition: 0.2s all;
+    background-color: #f26204;
+    border: 1px solid transparent;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 600;
+    &:hover{
+      background-color: #4f75b4;
+    }
+  }
+}

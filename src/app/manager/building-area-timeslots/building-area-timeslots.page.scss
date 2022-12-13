@@ -1,0 +1,143 @@
+
+.time-settings {
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  width: 640px;
+}
+
+.time-settings form {
+  min-width: 330px;
+}
+
+.time-settings form h5 {
+  width: 450px;
+}
+
+.time-settings div.reports-content {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: default;
+  max-height: 288px;
+  overflow: auto;
+}
+.time-settings-h {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.time-settings-h span {
+  width: 40px;
+  height: 40px;
+  border: solid 1px;
+  border-left: 0;
+}
+
+.time-settings-h span:first-child {
+  border-left: solid 1px;
+}
+
+.time-settings-h .time-span{
+  width: 157px;
+}
+
+.awt span:first-child{
+  width: 155px;
+}
+
+.time-settings-lc {
+  width: 157px;
+  font-size: 0.875rem;
+  display: block !important;
+}
+
+.time-settings-lc span {
+  width: 100%;
+  height: 41px;
+  border: solid 1px;
+  border-top: 0;
+  border-left: none;
+}
+
+.awc-lc span {
+  border-left: 1px solid black;
+}
+
+.time-settings-rcl {
+  border-right: solid 1px;
+  .columns2-item{
+    border-bottom: 1px solid black;
+  }
+}
+
+.time-settings-rcl .input-container {
+  border-bottom: solid 1px;
+  margin: 0 !important;
+  padding: 0;
+}
+
+.time-settings-rcl .input-container .max-book{
+  border-right: 1px solid black !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  /* border-left: 1px solid black !important; */
+  min-height: 40px !important;
+  text-align: center;
+  font-family: 'Montserrat';
+  width: 40px;
+  border-width: 1px;
+  outline: none;
+}
+
+.time-settings-rcl,
+.time-settings-rcl .input-container,
+.time-settings-rcl span {
+  width: 40px;
+}
+
+.time-settings-rcl span {
+  height: 40px;
+  text-align: center;
+  font-size: 21px;
+  // color: transparent;
+  outline: none;
+  user-select: none;
+  cursor: pointer;
+}
+.time-settings-h span,
+.time-settings-lc span,
+.time-settings-rcl span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.columns2{
+  display: flex;
+}
+
+.time-intervals{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  .mat-select{
+    width: 65%;
+  }
+}
+
+.area-toggle{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+
+@media (max-width: 767px){
+  .time-settings {
+    overflow: auto;
+    width: 100%;
+    min-width: 380px;
+  }
+}

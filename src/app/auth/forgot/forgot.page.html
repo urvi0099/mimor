@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper forgot-wrapper">
+      <form [formGroup]="forgotForm" class="forgot-form">
+        <div class="text-center">
+          <h2>Forgot your password</h2>
+        </div>
+        <div class="login-fields">
+          <div class="login-field mat-input" appearance="fill">
+            <label for="login-email">Email</label>
+            <input matInput type="email" id="login-email" formControlName="email" placeholder="For example john@gmail.com">
+            <div *ngIf="forgotForm.submitted || forgotForm.controls.email.touched && forgotForm.controls.email.errors">
+              <span class="login-block-novalid" *ngIf="forgotForm.controls.email.errors.required">Tell us your email.</span>
+              <span class="login-block-novalid" *ngIf="forgotForm.controls.email.errors.pattern">This is not a valid email.</span>
+            </div>
+          </div>
+          <div *ngIf="forgotSent">Recover password instructions were sent to your email.</div>
+        </div>
+        <div class="login-buttons forgot-buttons">
+          <button mat-button class="back-btn" (click)="back()">
+            <mat-icon aria-hidden="false" aria-label="back">keyboard_backspace</mat-icon> Back
+          </button>
+          <button mat-button class="submit-btn" (click)="forgot()"
+            [disabled]="forgotForm.invalid" aria-label="description"
+            >Forgot password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

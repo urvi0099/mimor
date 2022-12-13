@@ -1,0 +1,90 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1"
+        (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div style="height: 650px;"
+      class="form-wrapper add-emails-size form-background frame-md time-settings calendar-frame" *ngIf="!showModal">
+      <div class="reports-wrapper full-width" ng-hide="pageLoading || showData">
+        <div name="form" class="full-page reports-form">
+          <div class="com-cal-wrap">
+            <h2>{{ areaName }}</h2>
+            <div class="com-legend">
+              <div class="legend-el">
+                <div class="square conf"></div>
+                <span>Confirmed</span>
+              </div>
+              <div class="legend-el">
+                <div class="square canc"></div>
+                <span>Expired</span>
+              </div>
+              <div class="legend-el">
+                <div class="square trade"></div>
+                <span>24/7 Trades</span>
+              </div>
+            </div>
+          </div>
+          <h3>Worker's calendar</h3>
+          <full-calendar (click)="catchClick($event)" id="calendar" class="booking-calendar" [options]="calendarOptions"
+            height="455px"></full-calendar>
+        </div>
+        <div class="buttons-back">
+          <button mat-button class="button-log back-btn btn-back" (click)="back()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+
+    <div class="day-popup" [ngClass]="modalClasses" *ngIf="dayModalVisible" [ngStyle]="modalCoords"
+      (clickOutside)="checkModal()">
+      <div class="day-head">
+        <div class="day-head-el">
+          Name
+          <mat-icon aria-hidden="true" (click)="sortSlots(1)">unfold_more</mat-icon>
+        </div>
+        <div class="day-head-el">
+          {{modalClass !== 'trade' ? 'Flat/' : ''}}Specialist
+          <mat-icon aria-hidden="true" (click)="sortSlots(2)">unfold_more</mat-icon>
+        </div>
+        <div class="day-head-el time-slot">
+          {{modalClass === 'trade' ? 'Access Given' : 'Time Slot'}}
+          <mat-icon aria-hidden="true" (click)="sortSlots(3)">unfold_more</mat-icon>
+        </div>
+        <div class="day-head-el" *ngIf="modalClass === 'confirmed'">
+          Availability
+          <mat-icon aria-hidden="true" (click)="sortSlots(4)">unfold_more</mat-icon>
+        </div>
+      </div>
+      <div class="loader" *ngIf="renderModal.length === 0">Loading...</div>
+      <div class="day-body">
+        <div class="day-body-el" *ngFor="let slot of renderModal" [ngClass]="!slot.event ? 'booked' : ''"
+          (click)="onEventClick(slot.event)">
+          <div class="day-body-el-wrap" *ngIf="modalClass === 'confirmed' || slot.event">
+            <div class="day-el-name">{{ slot.event && slot.event.user || 'No Booking'}}</div>
+            <div class="day-el-flat">{{slot.event && slot.event.apartment || slot.event && slot.event.trade || ''}}</div>
+            <div class="day-el-time" *ngIf="slot.time">{{slot.time}}</div>
+            <div class="day-el-time" *ngIf="modalClass === 'trade'">{{slot.event.datefrom}} {{slot.event.starttime}}
+            </div>
+            <div class="day-el-book" (click)="bookTimeslot(slot)" *ngIf="modalClass === 'confirmed'">{{slot.event ? '' :
+              '+ Book'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

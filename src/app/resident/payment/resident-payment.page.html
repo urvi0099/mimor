@@ -1,0 +1,70 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper area-payment-wrapper" *ngIf="!showRulesModal">
+      <div class="move-wrapper d-flex-col full-page" ng-hide="pageLoading">
+        <div class="text-center" *ngIf="commonArea">
+          <div class="text-center">{{ buildingName }}</div>
+          <h2 class="resident-header">{{ commonArea.name }} Payment</h2>
+        </div>
+        <div class="payment-form fields">
+          <ngx-stripe-card-group [formGroup]="stripeTest" [elementsOptions]="elementsOptions">
+            <input matInput class="email-field" placeholder="Email" formControlName="email" name="email">
+            <div class="field">
+              <div id="card-number">
+                <ngx-stripe-card-number [options]="cardOptions"></ngx-stripe-card-number>
+              </div>
+              <div class="card-additional">
+                <div class="field-half-width">
+                  <div id="card-expiry">
+                    <ngx-stripe-card-expiry [options]="cardOptions"></ngx-stripe-card-expiry>
+                  </div>
+                </div>
+                <div class="field-half-width cvc">
+                  <div id="card-cvc">
+                    <ngx-stripe-card-cvc [options]="cardOptions"></ngx-stripe-card-cvc>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="error" id="error-message" role="alert">{{error}}</div>
+            </div>
+            <div class="price">
+              <button mat-button [disabled]="stripeTest.status === 'INVALID'" class="pay-button" (click)="submitPayment()">
+                <span *ngIf="amount">Pay {{amount / 100}} AUD</span>
+              </button>
+            </div>
+          </ngx-stripe-card-group>
+        </div>
+        <div class="text-center" *ngIf="loading">
+          <h3 сlass="loading-message">{{loadingMessage}}</h3>
+          <div class="loading-bar">
+            <ion-spinner class="spinner" color="primary"></ion-spinner>
+          </div>
+        </div>
+        <div class="buttons-back autoheight full-width">
+          <button mat-raised-button (click)="back()">
+            <mat-icon class="material-icons">keyboard_arrow_left</mat-icon> Back
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

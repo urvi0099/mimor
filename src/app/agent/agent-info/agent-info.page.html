@@ -1,0 +1,103 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+          <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper building-information-tenant">
+      <div class="info-wrapper full-width" *ngIf="!loading">
+        <div class="text-center full-width">
+          <h2 class="resident-header mim-print-build-info-title">Building Information <div class="print-info-btn-wrap">
+              <button class="pdfGuidDelete mim-print-build-info-btn" matTooltip="Print" (click)="prepareInfoForPrint()">
+                <mat-icon class="material-icons">&#xE8AD;</mat-icon>
+              </button>
+              <button class="pdfGuidDelete mim-download-info" matTooltip="Download" (click)="downloadInfo()">
+                <mat-icon class="material-icons">cloud_download</mat-icon>
+              </button>
+            </div>
+          </h2>
+          <h3 *ngIf="building" class="subheader text-center">{{ building.name }}</h3>
+        </div>
+        <form name="form"class="guidelines-form flex1 full-width">
+          <mat-tab-group class="tabs-350 flex1">
+            <mat-tab label="Building Information" class="full-page">
+              <div class="search-wrap">
+                <button class="button-fullsize" aria-label="Use Android"
+                  (click)="showAdvanced($event)">
+                  <mat-icon class="material-icons">fullscreen</mat-icon>
+                </button>
+                <div class="search-info-categories">
+                  <mat-form-field appearance="standard">
+                    <mat-label>Search category</mat-label>
+                    <input matInput [(ngModel)]="searchFilter" [ngModelOptions]="{standalone: true}">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="build-i-wrapper fix-height">
+                <div class="description-block" *ngFor="let k of building.categories | filter: searchFilter">
+                  <h4 class="uppercase">{{k.name}}</h4>
+                  <div *ngFor="let item of fromFileInfo(k.name) | keyvalue">
+                    <button class="inform-cat-download-button md-accent btn-view-pdf-tenant"
+                      href="/download_cat_pdf/{{building.id}}/{{ item.value }}">
+                      <mat-icon class="material-icons">file_download</mat-icon>
+                    </button>
+                    <button target="_blank" class=" md-accent btn-view-pdf-tenant"
+                      href="/upload/pdf/{{building.id}}/{{ item.value }}">
+                      <span style="text-transform: none !important;">
+                        View {{ item.value }}
+                      </span>
+                      <mat-icon class="material-icons">&#xE89E;</mat-icon>
+                    </button>
+                  </div>
+
+                  <div class="build-info-output"
+                    [innerHtml]="k.description | emailToLink | urlToLink | phoneToLink"></div>
+                  <div (click)="triggerBlockHeight($event)" class="mim-see-more">See more</div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Map" class="map">
+              <div class="text-center" *ngIf="building.contact_phone">
+                {{building.address}}({{building.contact_phone}}
+              </div>
+              <div class="text-center" *ngIf="!building.contact_phone">
+              {{building.address}}</div>
+              <div class="map-info">
+                <div id="map">
+                  <google-map height="200"></google-map>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+          <div *ngIf="!fromPage" class="buttons-back">
+            <button class="md-raised" aria-label="description" (click)="back()">
+              <mat-icon class="material-icons">keyboard_arrow_left</mat-icon> Back
+            </button>
+            <button class="md-raised md-primary" routerLink="/#/noticeboard/view/{{building.id}}">Next <mat-icon
+                class="material-icons">forward</mat-icon>
+            </button>
+          </div>
+          <button mat-button class="res-action-button" (click)="back()" *ngIf="fromPage">Close<mat-icon class="material-icons">
+              close</mat-icon>
+          </button>
+        </form>
+      </div>
+      <div layout="row" layout-sm="column" layout-align="space-around" class="loading-bar"
+        *ngIf="loading || showLoading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

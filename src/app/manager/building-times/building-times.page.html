@@ -1,0 +1,70 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper time-settings">
+      <div ng-hide="pageLoading || showData">
+        <form name="form" class="reports-form width-mobile-100">
+          <div class="text-center">
+            <h2 class="mim-panel-header">Allowable Moving Times</h2>
+            <div class="mim-header-building-info"><span>{{buildName}}</span></div>
+            <h5 class="width-mobile-100">Select your building’s allowable moving times and days. Untick any time slots
+              or days that you would not like residents to move in or out of the building.</h5>
+          </div>
+          <div class="time-intervals">
+            <span>Time Intervals</span>
+            <mat-select [(ngModel)]="timeInterval" [ngModelOptions]="{standalone: true}" (selectionChange)="changeType($event.value)">
+              <mat-option class="manager-option" [value]="type.key" *ngFor="let type of timeTypes | keyvalue: returnZero">{{ type.value }}</mat-option>
+            </mat-select>
+          </div>
+          <div class="reports-content">
+            <div>
+              <div class="columns2 time-settings-h awt">
+                <span></span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+              </div>
+              <div class="columns2">
+                <span class="columns2 columns2-item-sp2 time-settings-lc awc-lc">
+                  <span class="" *ngFor="let time of times">{{ time.time }}</span>
+                </span>
+                <div *ngFor="let day of days; let dayId = index" class="time-settings-rcl">
+                  <div class="mat-input md-block columns2-item" *ngFor="let time of times; let id = index">
+                    <span id="{{ 'time' + day.id + time.id }}" class="check-span" (click)="addDellTime(time.id, day.id)"> ✓
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="delay-booking">
+            <div class="mat-input">
+              Residents can book <input matInput type="number" min="0" [(ngModel)]="bookingDelay" [ngModelOptions]="{standalone: true}"> days in advance
+            </div>
+          </div>
+          <div class="position-relative mgt20 buttons-back buttons-back-mobile">
+            <button mat-button class="button-log back-btn btn-back" (click)="back()">
+              <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+            </button>
+            <button mat-button class="primary-btn" ng-disabled="form.$invalid || loading"
+              aria-label="description" (click)="submit()">
+              <span>{{buttonText}}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

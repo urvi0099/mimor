@@ -1,0 +1,82 @@
+.building-information-tenant{
+  width: 640px;
+  min-height: 750px;
+  align-items: flex-start;
+  .print-info-btn-wrap{
+    right: 0;
+    top: 0;
+    position: absolute;
+    display: block;
+    width: 150px;
+  }
+  .mim-print-build-info-title{
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .subheader{
+    margin-top: 0;
+  }
+  .build-i-wrapper{
+    border-top: 1px solid #eee;
+    margin-bottom: 20px;
+    padding: 16px;
+    padding-bottom: 0;
+    color: rgba(0,0,0,0.87);
+    background-color: rgb(250,250,250);
+  }
+
+  .fix-height{
+    max-height: 440px;
+    border-top: 1px solid #eee;
+    margin-bottom: 20px;
+    overflow: scroll;
+  }
+
+  .description-block{
+    padding: 10px;
+    max-width: 100%;
+    margin-top: 25px;
+    position: relative;
+    overflow-wrap: break-word;
+    border: 1px solid #ccc;
+  }
+  .search-wrap{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    .button-fullsize{
+      color: rgba(255,255,255,0.87);
+      background-color: rgb(0,97,152);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 40px;
+      min-width: 0;
+      width: 40px;
+      height: 40px;
+      vertical-align: middle;
+      box-shadow: 0 2px 5px 0 rgb(0 0 0 / 26%);
+      border-radius: 50%;
+      background-clip: padding-box;
+      overflow: hidden;
+      -webkit-transition: all .3s cubic-bezier(.55,0,.55,.2);
+      transition: all .3s cubic-bezier(.55,0,.55,.2);
+      -webkit-transition-property: background-color,box-shadow,-webkit-transform;
+      transition-property: background-color,box-shadow,-webkit-transform;
+      transition-property: background-color,box-shadow,transform;
+      transition-property: background-color,box-shadow,transform,-webkit-transform;
+    }
+  }
+  .item-interactive.ion-valid {
+    --highlight-background: #3880ff;
+  }
+  .map-info{
+    border-top: 1px solid #eee;
+    padding: 8px;
+    margin-top: 20px;
+  }
+  .res-action-button{
+    background-color: rgb(0,97,152);
+  }
+}

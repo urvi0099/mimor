@@ -1,0 +1,57 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+          <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper sub-role-wrap">
+      <div class="move-wrapper full-width" *ngIf="!pageLoading">
+        <div class="text-center">
+          <div class="text-center">{{ buildingName }}</div>
+          <h2 class="resident-header">Change status</h2>
+        </div>
+        <div class="d-flex-col content-wrap">
+          <div class="full-width radio-groups" *ngIf="!(!out && next || !next && out || title == 'Book move in')">
+            <mat-radio-group required [(ngModel)]="model.user_status" 
+              (change)="changeResidingStatus()">
+              <span class="notify-send">Change status: </span>
+              <mat-radio-button value="Resident" class="md-primary">Tenant</mat-radio-button>
+              <mat-radio-button value="Owner" class="md-primary"> Owner </mat-radio-button>
+            </mat-radio-group>
+            <mat-radio-group required [(ngModel)]="model.is_residing"
+              *ngIf="!(model.user_status == 'Resident' || model.user_status == 'Unselected')">
+              <mat-radio-button value="1">Residing</mat-radio-button>
+              <mat-radio-button value="0">Non-Residing</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <button mat-raised-button (click)="submit()" [disabled]="loading || model.user_status == 'Unselected'"
+            class="res-action-button" style="width: 100%; margin-top: 20px;"><span
+              >{{buttonText}}</span>
+            <mat-icon class="material-icons">&#xE876;</mat-icon>
+          </button>
+        </div>
+
+        <div class="buttons-back autoheight">
+          <button mat-raised-button (click)="back()">
+            <mat-icon class="material-icons">keyboard_arrow_left</mat-icon> Back
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

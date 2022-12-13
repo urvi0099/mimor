@@ -1,0 +1,63 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper login-form-wrapper">
+      <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+        <div *ngIf="!pageLoading" class="login-block login-block-existing">
+          <div class="login-block-header">
+            <p>Don't have an account?<a (click)="register()"> Register!</a></p>
+            or
+            <h3 class="login-block-header">Log in</h3>
+          </div>
+
+          <div class="login-fields">
+            <div class="mat-input login-field">
+              <label for="login-email">Email</label>
+              <input matInput type="email" id="login-email" placeholder="For example john@gmail.com"
+                formControlName="email">
+              <div *ngIf="loginForm.submitted || loginForm.controls.email.touched && loginForm.controls.email.errors">
+                <span class="login-block-novalid" *ngIf="loginForm.controls.email.errors.required">Tell us your
+                  email.</span>
+                <span class="login-block-novalid" *ngIf="loginForm.controls.email.errors.pattern">This is not a valid
+                  email.</span>
+                <!-- <div class="email-check" ng-if="existingEmail && form.email.$valid">
+                            <span class="another-role-novalid">{{existingEmail}}</span>
+                        </div> -->
+              </div>
+            </div>
+
+            <div class="mat-input login-field">
+              <label for="login-password">Password</label>
+              <input matInput type="password" id="login-password" placeholder="*************"
+                formControlName="password">
+              <div
+                *ngIf="loginForm.submitted || loginForm.controls.password.touched && loginForm.controls.password.errors">
+                <span class="login-block-novalid" *ngIf="loginForm.controls.password.errors.required">Tell us your
+                  password.</span>
+                <span class="login-block-novalid" *ngIf="loginForm.controls.password.errors.minlength">Password can't be
+                  shorter than 6 characters.</span>
+              </div>
+            </div>
+            <div class="text-left">
+              <a class="gray-text" (click)="forgot()">Forgot your password? Click here</a>
+            </div>
+          </div>
+          <div class="login-buttons">
+            <button mat-button type="button" class="back-btn" (click)="back()">
+              <mat-icon aria-hidden="false" aria-label="back">keyboard_backspace</mat-icon>Back
+            </button>
+            <button mat-button type="submit" (click)="login()" class="submit-btn"
+              [disabled]="loginForm.invalid" aria-label="login">Log in</button>
+          </div>
+        </div>
+        <div class="loading-bar" *ngIf="pageLoading">
+          <ion-spinner class="spinner" color="primary"></ion-spinner>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

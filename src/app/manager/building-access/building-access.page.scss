@@ -1,0 +1,47 @@
+.mim-panel--move-out{
+  width: 690px;
+  position: relative;
+  .access-label {
+    position: absolute;
+    right: 37px;
+  }
+  .booking-list {
+    height: 500px;
+    overflow-y: scroll;
+    &__item {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+  
+      &:not(:last-child) {
+        margin-bottom: 0.5rem;
+      }
+  
+      &:hover {
+        background: rgba(0, 0, 0, 0.15);
+      }
+  
+      mat-checkbox {
+        margin: 0;
+        margin-right: 10px;
+      }
+    }
+  
+    &__book-info {
+      max-width: 90%;
+      line-height: 1.5rem;
+    }
+  }
+  .loading-bar{
+    display: flex;
+    justify-content: center;
+  }
+  .buttons-back{
+    width: 100%;
+    justify-content: space-between;
+    margin: auto;
+    margin-top: 20px;
+  }
+}

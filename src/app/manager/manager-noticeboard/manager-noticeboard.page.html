@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper user-noticeboard">
+      <div *ngIf="!(pageLoading || loading)" class="mim-panel-content-wrap">
+        <h2 class="mim-panel-header">{{buildingName}} notice board</h2>
+        <div *ngIf="isNoNotices" class="no-notices-msg"><span>There Are No Notices For This Building.</span></div>
+        <div *ngIf="!isNoNotices" class="noticeboard-cols-wrap">
+          <div class="noticeboard-col noticeboard-col-1">
+            <div class="noticeboard-notice" *ngFor="let notice of noticeList">
+              <div class="notice-added"><img height="18" width="18" src="assets/img/icons/attention.svg"
+                  alt=""><span>Expires: {{notice.expirable == true ? formatDateForClient(notice.expire) :
+                  'never'}}</span></div>
+              <div class="notice-header">{{notice.title}}</div>
+              <div class="notice-text" *ngIf="notice.content && notice.content.replace('/\s/g', '')" [innerHtml]="formatNoticeText(notice.content)"></div>
+              <div *ngIf="notice.fileList" class="notice-uploaded-files">
+                <div class="notice-files-item" ng-hide="!key" *ngFor="let file of notice.fileList | keyvalue">
+                  <a target="_blank" title="{{ file.key }}" href="{{ file.value }}">
+                    <mat-icon svgIcon="upload2" aria-label="download file"></mat-icon><span>{{ file.key }}</span>
+                  </a>
+                </div>
+              </div>
+              <div class="notice-action-buttons">
+                <button class="mim-btn--notice mim-btn--notice-edit mim-btn-reset"><a href="manager/building/{{buildId}}/noticeboard/edit/{{notice.id}}">Edit</a></button>
+                <button class="mim-btn--notice mim-btn--notice-delete mim-btn-reset" (click)="showConfirm(notice.id)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!pageLoading" class="btn-wrap-single buttons-back">
+        <button mat-button class="back-btn mim-btn" [disabled]="loading" (click)="back()">
+          <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+        </button>
+        <button mat-button class="primary-btn" [disabled]="loading" (click)="addNote()">
+          Add new note</button>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading || loading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

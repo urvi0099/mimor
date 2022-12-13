@@ -1,0 +1,29 @@
+.guidelines-wrapper {
+  min-height: 700px;
+  width: 640px;
+
+  .description-scroll {
+    min-height: 470px;
+    position: relative;
+    display: block;
+    -webkit-overflow-scrolling: touch;
+  }
+  .guidline-controls{
+    justify-content: flex-end;
+  }
+  .guidlines-text{
+    height: 82%;
+    max-height: 470px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    padding-right: 16px;
+    word-wrap: break-word;
+  }
+  .pdfFileGuid{
+    margin-bottom: 20px;
+  }
+  .res-action-button{
+    background-color: rgb(0,97,152);
+  }
+}

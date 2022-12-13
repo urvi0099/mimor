@@ -1,0 +1,85 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page" [class.is-fullscreen]="isFullscreen">
+    <div class="global__form form-wrapper" [class.guidelines__fullscreen-form]="isFullscreen" *ngIf="!exampleModal">
+      <div class="global__inner guidelines__inner" [class.guidelines__fullscreen-inner]="isFullscreen">
+        <button mat-button class="guidelines__fullscreen" (click)="isFullscreen=!isFullscreen">
+          <mat-icon class="material-icons">fullscreen</mat-icon>
+        </button>
+        <div class="building__header mim-panel-header">Moving In/Out Guidelines <a class="guidelines__example-link"
+            (click)="exampleModal = !exampleModal">Click here for example</a> </div>
+        <div class="building-name mim-panel-header">{{currentBuilding.name}}</div>
+        <div class="guidelines__toggle">Real Estate Visibility: OFF
+          <ion-toggle [(ngModel)]="realEstateVisibility" (ionChange)="switchStatus()" class="ion-toggle" mode="ios"></ion-toggle> ON
+        </div>
+        <div class="guidelines__text-editor">
+          <quill-editor name="GuidelinesTextEditor" [(ngModel)]="guidelinesTextEditor" [modules]="quillConfig"
+            [styles]="{height: '350px'}" placeholder=""></quill-editor>
+        </div>
+        <div class="guidelines__button-block">
+          <div class="fileUpload guidelines__uppload-btn">
+            <span>Upload file</span>
+            <input (change)="onSelect($event)" type="file" accept=".jpeg, .jpg, .png, .pdf"
+              class="guidelines__upload-input" />
+          </div>
+          <div class="scroll-guidelines-files">
+            <div class="pdfFileGuid" *ngFor="let file of guidelinesFiles.blobUrlGuidelines | keyvalue">
+              <button class="pdfGuidDelete" [disabled]="loading" ng-hide="pdfShow" matTooltip="Delete file"
+                (click)="showConfirm(file.key)">
+                <mat-icon class="material-icons">clear</mat-icon>
+              </button>
+              <a target="_blank" title="{{ file.key }}" (click)="openFile(file.value)">{{ file.key }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="buttons-back notify-buttons buttons-column">
+          <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+          <button mat-button class="primary-btn save-btn" (click)="submit()" aria-label="Submit" ng-disabled="loading">
+            <span>{{buttonText}}</span>
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="loading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+    <div class="example-guidelines form-wrapper" *ngIf="exampleModal">
+      <mat-dialog-content class="terms">
+        <h2 class="mim-panel-header">Moving Guidelines Example</h2>
+        <p class="text-center">Please edit to the requirements of each building</p>
+        <ul style="list-style-position: inside;">
+          <li>All moves are to be booked through the MIMOR website</li>
+          <li>Please ensure you move-in/move-out within your allocated 2-hour time slot</li>
+          <li>All moves are to go through the basement car park and not through the glass doors front entrance</li>
+          <li>There is no allocated parking for trucks so it is up to you and your removalist company to find
+            appropriate parking as close to the car park garage door.</li>
+          <li>The Car park height is 2.1M so most trucks will not fit under</li>
+          <li>Please do not block any entrances residents may need to use to access the building</li>
+          <li>Please be careful whilst using the lift. Do not put anything in front of the lift doors to keep them open
+            and do not damage the surrounding area</li>
+          <li>There is no need to book a move-in time for future one off deliveries. E.G. Mattress or TV</li>
+          <li>Please read the Owners Corporation rules attached for more information</li>
+        </ul>
+      </mat-dialog-content>
+      <mat-dialog-actions class="login-buttons">
+        <button mat-button (click)="exampleModal = !exampleModal" class="mat-btn back-btn">
+          <mat-icon aria-hidden="false" aria-label="back">keyboard_backspace</mat-icon> Back
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </div>
+</ion-content>

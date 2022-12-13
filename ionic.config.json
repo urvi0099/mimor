@@ -1,0 +1,7 @@
+{
+  "name": "mimor-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

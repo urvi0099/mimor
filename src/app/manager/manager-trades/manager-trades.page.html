@@ -1,0 +1,108 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="name-and-photo trades-access form-wrapper">
+      <div *ngIf="!loading" class="manager-wrapper full-width">
+        <div class="dashboard-header">
+          <h2>Trades & Access</h2>
+        </div>
+        <div class="service-input mat-input">
+          <div class="title-input"><span>Service Name</span></div>
+          <mat-select name="services" [(value)]="selectedService" (selectionChange)="onServiceChange()"
+            aria-label="services">
+            <mat-option class="manager-option" [value]="service" *ngFor="let service of services">{{ service.name }}</mat-option>
+          </mat-select>
+        </div>
+        <div class="trades" *ngIf="!isAll">
+          <div class="service-name" *ngIf="filteredTrades.length > 0">
+            {{selectedService.name}}
+          </div>
+          <div class="workers" *ngIf="filteredTrades.length > 0">
+            <div class="worker" *ngFor="let trade of filteredTrades">
+              <div class="name">
+                <mat-icon class="material-icons name-icon">&#xe7fd;</mat-icon>
+                <div class="content">
+                  <div class="trade-name">{{trade.name}}</div>
+                </div>
+              </div>
+              <div class="emails">
+                <mat-icon class="material-icons email-icon">&#xe0be;</mat-icon>
+                <div class="content">
+                  <div class="email" *ngFor="let email of trade.emails">{{email}}</div>
+                </div>
+              </div>
+              <div class="phones">
+                <mat-icon class="material-icons phone-icon">&#xe9cd;</mat-icon>
+                <div class="content">
+                  <div class="phone" *ngFor="let phone of trade.mobiles">{{phone}}</div>
+                </div>
+              </div>
+              <div class="edit-buttons">
+                <button mat-button class="give" (click)="giveAccess(trade.id)">Give access</button>
+                <button mat-button class="delete" (click)="editTrade(trade.id)">Edit</button>
+                <button mat-button class="delete" (click)="showConfirm(trade.id)">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="no-workers" *ngIf="filteredTrades.length === 0">
+            Sorry, there is no trades for selected service.
+          </div>
+        </div>
+        <div class="trades" *ngIf="isAll">
+          <div class="workers" *ngFor="let service of filteredTrades">
+            <div class="all-service" *ngIf="service.trades && service.trades.length > 0">
+              {{service.service}}
+            </div>
+            <div class="worker" *ngFor="let trade of service.trades">
+              <div class="name">
+                <mat-icon class="material-icons name-icon">&#xe7fd;</mat-icon>
+                <div class="content">
+                  <div class="trade-name">{{trade.name}}</div>
+                </div>
+              </div>
+              <div class="emails">
+                <mat-icon class="material-icons email-icon">&#xe0be;</mat-icon>
+                <div class="content">
+                  <div class="email" *ngFor="let email of trade.emails">{{email}}</div>
+                </div>
+              </div>
+              <div class="phones">
+                <mat-icon class="material-icons phone-icon">&#xe9cd;</mat-icon>
+                <div class="content">
+                  <div class="phone" *ngFor="let phone of trade.mobiles">{{phone}}</div>
+                </div>
+              </div>
+              <div class="edit-buttons">
+                <button mat-button class="give" (click)="giveAccess(trade.id)">Give access</button>
+                <button mat-button class="delete" (click)="editTrade(trade.id)">Edit</button>
+                <button mat-button class="delete" (click)="showConfirm(trade.id)">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="no-workers" *ngIf="filteredTrades.length === 0">
+            Sorry, there is no trades for selected service.
+          </div>
+        </div>
+        <div class="buttons-back">
+          <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+          <button mat-button class="primary-btn" (click)="submit()" aria-label="AO BAO">Add New Trade
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

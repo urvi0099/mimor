@@ -1,0 +1,59 @@
+.resident-update-profile{
+  width: 640px; 
+  min-height: 450px;
+  .inner-wrap, .inner-content, .inner-header{
+    width: 100%;
+  }
+  .inner-field{
+    width: 100%;
+    :first-child{
+      margin-right: 5px;
+    }
+    .mat-form-field{
+      width: 50%;
+    }
+  }
+  .inner-field-full{
+    width: 100%;
+    .mat-form-field{
+      width: 100%;
+    }
+  }
+  .special-needs{
+    width: 50%;
+    justify-content: flex-start;
+    padding-left: 20px;
+    .special-check{
+      margin-left: 5px;
+    }
+  }
+  .upd-profile-book-wrap{
+    width: 100%;
+    margin-bottom: 16px;
+    .upd-profile-book-info{
+      margin-bottom: 8px;
+      margin-left: 6px;
+      font-weight: 500;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+    .mat-raised-button{
+      text-transform: uppercase;
+      margin: 6px 8px;
+    }
+  }
+  .loading-bar{
+    display: flex;
+    justify-content: center;
+  }
+}
+.res-action-button{
+  margin: 6px 8px;
+}
+
+.email-field{
+  width: 70% !important;
+}
+.phone-field{
+  width: 30% !important;
+}

@@ -1,0 +1,200 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper manager-dashboard">
+      <div class="manager-wrapper dashboard-frame" *ngIf="!pageLoading">
+        <div class="dashboard-header">
+          <h2>{{buildings[building].name}}</h2>
+        </div>
+        <div class="building-selector">
+          <div class="building-block">
+            <div class="building-block-img">
+              <div class="mim-no-img" *ngIf="!buildings[building].photo"></div>
+              <img *ngIf="buildings[building].photo" class="md-whiteframe-z2"
+                src="assets/img/buildings/{{buildings[building].photo}}" alt="">
+            </div>
+            <div class="building-block-header">
+              <h3 class="dash-h3">{{buildings[building].name}}</h3>
+              <span class="dash-h3">{{buildings[building].address}}</span>
+            </div>
+          </div>
+          <div class="build-actions-wrap">
+            <div class="guidelines__toggle">Visibility: OFF
+              <ion-toggle [(ngModel)]="visibility" (ionChange)="changeVisibility()" class="ion-toggle" mode="ios"></ion-toggle> ON
+            </div>
+            <div *ngIf="activeUsers.length > 0 && isLogSwitchAvail" class="login-as-resident">
+              <div class="login-as-resident-title">Login as Resident: </div>
+              <div class="mat-input md-block">
+                <mat-select placeholder="Select a resident" class="select-active-user" aria-label="login as resident">
+                  <mat-option class="manager-option" [value]="activeUser.id" *ngFor="let activeUser of activeUsers">
+                    {{activeUser.name}}</mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="button-palette pallete-block">
+          <div class="button-palette">
+            <a class="building-button" *ngIf="access && access.send_notifications == '1' || access.accesses === 'full'"
+              (click)="redirect('notifications')">
+              <div class="building-button-notifications">
+                <span class="icon"></span>
+                <span class="title">Send notifications</span>
+              </div>
+            </a>
+            <a class="building-button" *ngIf="access && access.reports == '1' || access.accesses === 'full'"
+              (click)="redirect('reports')">
+              <div class="building-button-report">
+                <span class="icon"></span>
+                <span class="title">Reports</span>
+              </div>
+            </a>
+            <a class="building-button"
+              *ngIf="isShowParcel && isShowParcel !== zero && (access && access.parcel_management == '1' || access.accesses === 'full')"
+              (click)="redirect('parcel_management')">
+              <div class="building-button-parcel">
+                <span class="icon"></span>
+                <span class="title">Parcel Management</span>
+              </div>
+            </a>
+            <a class="building-button" *ngIf="access && access.remove_resident == '1' || access.accesses === 'full'"
+              (click)="redirect('move-out')">
+              <div class="building-button-move-out">
+                <span class="icon"></span>
+                <span class="title">Resident access</span>
+              </div>
+            </a>
+            <a class="building-button" *ngIf="access && access.real_estate == '1' || access.accesses === 'full'"
+              (click)="redirect('trusted-real-estate')">
+              <div class="building-button-noticeboard">
+                <mat-icon class="material-icons">house</mat-icon>
+                <span class="title">REAL ESTATE / PROPERTY MGR</span>
+              </div>
+            </a>
+            <a class="building-button" *ngIf="access && access.notice_board == '1' || access.accesses === 'full'"
+              (click)="redirect('noticeboard')">
+              <div class="building-button-noticeboard">
+                <mat-icon class="material-icons">content_paste</mat-icon>
+                <span class="title">Noticeboard</span>
+              </div>
+            </a>
+          </div>
+          <span class="headline mim-uppercase">Building Set-Up</span>
+          <div class="button-palette">
+            <a class="building-button" (click)="redirect('common-areas/show')">
+              <div class="building-button-common_area">
+                <span class="icon"></span>
+                <span class="title">Common areas</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('apartments', true)">
+              <div class="building-button-ap_numbers">
+                <span class="icon"></span>
+                <span class="title">Apartment numbers</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('name', true)">
+              <div class="building-button-building_name">
+                <span class="icon"></span>
+                <span class="title">Building Details</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('info', true)">
+              <div class="building-button-building_info">
+                <span class="icon"></span>
+                <span class="title">Building information</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('contdet', true)">
+              <div class="building-button-notification_contacts">
+                <span class="icon"></span>
+                <span class="title">Notification contacts</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('address', true)">
+              <div class="building-button-building_contact">
+                <span class="icon"></span>
+                <span class="title">Building contact details</span>
+              </div>
+            </a>
+            <a *ngIf="isShowTrades" class="building-button" (click)="redirect('trades')">
+              <div class="building-button-building-trades">
+                <span class="icon"></span>
+                <span class="title">Trades</span>
+              </div>
+            </a>
+            <a class="building-button" *ngIf="(+buildings[building].is_email_editable)"
+              (click)="redirect('email-templates')">
+              <div class="building-button-email-templates">
+                <span class="icon"></span>
+                <span class="title">White Label</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('share')">
+              <div class="building-button-share">
+                <span class="icon"></span>
+                <span class="title">Share Building</span>
+              </div>
+            </a>
+          </div>
+          <span class="headline mim-uppercase">Moving Information</span>
+          <div class="button-palette">
+            <a class="building-button" (click)="redirect('time-settings')">
+              <div class="building-button-moving_times">
+                <span class="icon"></span>
+                <span class="title">Allowable moving times</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('addemail', true)">
+              <div class="building-button-moving_emails">
+                <span class="icon"></span>
+                <span class="title">Additional moving e-mails</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('calendar')">
+              <div class="building-button-calendar">
+                <span class="icon"></span>
+                <span class="title">Moving Calendar View</span>
+              </div>
+            </a>
+            <a class="building-button" (click)="redirect('guidelines', true)">
+              <div class="building-button-guidleines">
+                <span class="icon"></span>
+                <span class="title">Moving guidelines</span>
+              </div>
+            </a>
+          </div>
+          <span class="headline mim-uppercase">Other</span>
+          <div class="button-palette">
+            <a class="building-button" (click)="redirect('payments')">
+              <div class="building-button-billing">
+                <span class="icon"></span>
+                <span class="title">Payments</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="buttons-back buttons-back-mobile buttons-back-single buttons-back-dashboard">
+          <button mat-button class="button-log back-btn btn-back" [disabled]="loading" (click)="back()">
+            <mat-icon class="material-icons">keyboard_backspace</mat-icon> Back
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner color="primary" class="spinner"></ion-spinner>
+      </div>
+    </div>
+  </div>
+</ion-content>

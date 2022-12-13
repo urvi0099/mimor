@@ -1,0 +1,41 @@
+.login-form-wrapper{
+  width: 585px;
+  height: 807px;
+  justify-content: center;
+}
+.login-block-header {
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center;
+  margin-top: 20px;
+  p{
+    margin-bottom: 6px;
+  }
+  h3{
+    margin-top: 5px;
+  }
+}
+
+.text-left {
+  text-align: left;
+  margin-top: 15px;
+  margin-bottom: 46px;
+}
+.gray-text {
+  color: gray;
+  font-size: 16px;
+}
+
+
+@media (max-width: 600px) {
+  .login-form-wrapper{
+    width: 100%;
+    height: auto;
+    min-width: 300px;
+  }
+  .mim-header-toolbar{
+    background-color: transparent;
+    max-height: 90px;
+    justify-content: center;
+  }
+}

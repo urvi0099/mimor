@@ -1,0 +1,106 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page resident-view">
+    <div class="form-wrapper book-area-wrapper" *ngIf="!showRulesModal">
+      <div class="move-wrapper d-flex-col full-page" ng-hide="pageLoading">
+        <div class="text-center" *ngIf="commonArea">
+          <div class="text-center">{{ commonArea.building_name }}</div>
+          <h2 class="resident-header">{{ commonArea.name }}</h2>
+        </div>
+        <form name="form" *ngIf="!loading" class="booking-form move-form d-flex-col">
+          <div class="no-date-msg-3" *ngIf="hours && hours.length === 0">This date is booked/blocked out, please select
+            another date.</div>
+          <span></span>
+          <span class="md-icon-button icon-tooltip"
+            aria-label="There is no available time for this date. Please, select another day"
+            *ngIf="hours && hours.length === 0"
+            matTooltip="There is no available time for this date. Please, select another day">
+            <mat-icon>error</mat-icon>
+          </span>
+          <mat-form-field class="book-datepicker">
+            <mat-label>Enter date</mat-label>
+            <input matInput [formControl]="selectedDate" [min]="minDate" [matDatepicker]="picker" (ngModelChange)="loadHours()">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <div class="timepicker" *ngIf="!hours || hours.length > 0">
+            <mat-form-field class="md-block select2 booking-form--timepicker" *ngIf="!hours || hours.length > 0">
+              <mat-select placeholder="Time" [formControl]="selectedHour">
+                <mat-option *ngFor="let hour of hours" [value]="hour.id">
+                  {{ hour.from + ':' + hour.from_min + ' ' + hour.day_part_from + ' - ' + hour.to + ':' + hour.to_min +
+                  ' ' + hour.day_part_to }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix class="material-icons">&#xE192;</mat-icon>
+            </mat-form-field>
+          </div>
+          <button mat-raised-button (click)="submit()" [disabled]="loading || selectedDate.invalid || selectedHour.invalid" class="book-button full-width">
+            <span>{{buttonText}}</span>
+            <mat-icon class="material-icons">&#xE876;</mat-icon>
+          </button>
+        </form>
+        <div class="text-center" *ngIf="loading">
+          <h3 сlass="loading-message">{{loadingMessage}}</h3>
+          <div class="loading-bar">
+            <ion-spinner class="spinner" color="primary"></ion-spinner>
+          </div>
+        </div>
+        <div class="buttons-back autoheight full-width">
+          <button mat-raised-button (click)="back()">
+            <mat-icon class="material-icons">keyboard_arrow_left</mat-icon> Back
+          </button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+    </div>
+
+    <div class="form-wrapper area-rules-wrapper rules-modal description-block"
+      *ngIf="showRulesModal">
+      <h2 class="text-center resident-header">{{commonArea.name}} booking rules</h2>
+      <div class="description-scroll" style="max-height: 570px">
+        <div class="md-padding fix-height" style="border:none; margin-bottom:0px;">
+          <div class="description-block">
+            <div [innerHtml]="commonArea.rules"></div>
+          </div>
+        </div>
+        <!-- <div ng-repeat="(key, value) in fromFilesName(commonArea.name)" ng-hide="!value">
+          <span ng-show="commonArea.name"></span>
+          <button mat-button class="inform-cat-download-button md-accent btn-view-pdf-tenant"
+            сlass="md-accent btn-view-pdf-tenant"
+            href="/download_area_file/{{building.id}}/{{commonArea.id}}/{{ value }}">
+            <mat-icon class="material-icons">file_download</mat-icon>
+          </button>
+          <mat-button target="_blank" class=" md-accent btn-view-pdf-tenant"
+            href="/upload/pdf/{{building.id}}/common_areas/{{commonArea.id}}/{{ value }}">
+            <span style="text-transform: none !important;">
+              View {{ value }}
+            </span>
+            <mat-icon class="material-icons">&#xE89E;</mat-icon>
+          </button>
+        </div> -->
+      </div>
+      <div class="buttons-back full-width">
+        <button mat-raised-button (click)="showRulesModal=false;">Close
+          <mat-icon class="material-icons">close</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="!whitelabelMode" class="mim-contact-link-wrap">
+      <a class="mim-contact-link" href="mailto:info@mimor.com.au">info@mimor.com.au</a>
+    </div>
+  </div>
+</ion-content>

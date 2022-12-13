@@ -1,0 +1,319 @@
+.add-parcel {
+  width: 100%;
+  max-width: 400px;
+  padding: 35px 10px;
+
+  &-select {
+    margin: 0;
+    width: 60%;
+    height: 40px;
+    line-height: 40px;
+    text-indent: 10px;
+    font-family: "Montserrat";
+  }
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .parcel-label {
+    margin-right: 20px;
+  }
+
+  .carrier,
+  .apartment {
+    & span {
+      font-size: 18px;
+      margin-right: 20px;
+      color: black;
+    }
+  }
+
+  .apartment {
+    padding-top: 15px;
+    margin-bottom: 20px;
+
+    & input {
+      width: 100%;
+      min-height: initial;
+      height: 30px;
+      border-radius: 0;
+      border-width: 0 0 1px !important;
+    }
+  }
+
+  .users {
+    height: 125px;
+    overflow-y: auto;
+  }
+
+  .carrier {
+    width: 200px;
+  }
+
+  .users {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    & .mat-radio-button {
+      font-family: 'Montserrat';
+      display: flex;
+      align-items: center;
+      padding: 0;
+      margin: 10px 0;
+    }
+  }
+
+  .unknown {
+    margin: 20px 0;
+    flex-direction: column;
+    align-items: center;
+    &-field {
+      margin: 5px 0;
+    }
+    .mat-input {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .notifications,
+  .location-wrap {
+    margin: 20px 0;
+  }
+
+  .location-wrap {
+    span {
+      padding-bottom: 10px;
+    }
+    input {
+      width: 60%;
+      border-top: none !important;
+      border-right: none !important;
+      border-left: none !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+      padding: 0 2px;
+      font-size: 16px;
+      font-family: "Montserrat";
+      outline: none !important;
+      padding-bottom: 10px;
+      text-indent: 10px;
+      &::placeholder {
+        font-style: normal;
+        color: #000;
+        font-size: 16px;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .submit {
+    width: 150px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(108, 206, 93, 0.5);
+    border: 1px solid #4bc93a;
+    border-radius: 8px;
+    margin: 0 auto;
+  }
+
+  .mat-checkbox {
+    margin-left: 5px;
+  }
+}
+
+.add-parcels-dialog {
+  padding: 30px 0;
+  width: 970px;
+  .add-parcels {
+    overflow: auto;
+  }
+  .parcels-add {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    .parcels-header {
+      padding: 5px 0 5px 20px;
+      margin-bottom: 5px;
+      justify-content: space-around;
+      width: 100%;
+      .par-head-el {
+        display: flex;
+        flex-direction: row;
+        min-width: 100px;
+        i {
+          margin-left: 5px;
+        }
+      }
+    }
+    .parcels-body {
+      max-height: 250px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      .par-body-el {
+        align-items: center;
+        padding: 5px 0 5px 20px;
+        margin-bottom: 5px;
+        background-color: #eee;
+        width: 100%;
+        .par-body-wrap {
+          justify-content: space-around;
+          width: 100%;
+        }
+        .par-body-unknown {
+          width: 100%;
+          justify-content: flex-start;
+          .un-name,
+          .un-email,
+          .un-phone,
+          .un-message {
+            margin-left: 15px;
+          }
+        }
+        &:hover {
+          background-color: rgba(244, 98, 0, 0.25);
+        }
+        .flat,
+        .resident,
+        .carr,
+        .location,
+        .sms,
+        .email,
+        .edit-btns {
+          min-width: 100px;
+          display: flex;
+          align-items: center;
+        }
+        .resident {
+          width: 96px;
+        }
+        .sms,
+        .email {
+          .mat-checkbox {
+            margin: 0 !important;
+          }
+        }
+        .edit-btns {
+          display: flex;
+          align-items: center;
+          img {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .unknown {
+    padding: 20px 40px;
+    justify-content: flex-start;
+    button {
+      height: 31px;
+      font-weight: 400;
+      font-size: 14px;
+      border: 1px solid transparent;
+      min-height: 31px;
+      line-height: 31px;
+      letter-spacing: 0.01rem;
+    }
+    .mat-input {
+      min-height: 38px;
+    }
+    .unknown-field{
+      max-width: 150px;
+      margin-right: 10px;
+      input{
+        max-width: 150px;
+      }
+    }
+  }
+  .ap-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 20px 30px 0 40px;
+    font-size: 14px;
+    button {
+      height: 31px;
+      font-weight: 400;
+      font-size: 14px;
+      border: 1px solid transparent;
+      min-height: 31px;
+      line-height: 31px;
+      letter-spacing: 0.01rem;
+    }
+    input {
+      border-width: 1px;
+      height: 40px;
+      outline: none;
+      font-family: "Montserrat";
+    }
+    .location-wrap {
+      input {
+        max-width: 153px;
+      }
+    }
+    .add-parcels-select {
+      width: 100%;
+      min-width: 165px;
+      height: 40px;
+      .mat-select-value {
+        border: 1px solid black;
+      }
+    }
+    .notifications {
+      .mat-checkbox {
+        margin: 0 !important;
+      }
+    }
+  }
+  .back-btn{
+    width: 165px;
+  }
+}
+
+.flex-column {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mat-button {
+  min-height: 50px;
+  text-transform: uppercase;
+  color: white;
+  background-color: #f26204;
+  font-family: "Montserrat";
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 1.5px;
+  margin: 5px;
+  &:disabled {
+    background-color: #f5a069;
+    color: white;
+    &:hover {
+      background-color: #f5a069;
+    }
+  }
+  &:hover {
+    background-color: #565655;
+  }
+  &.back-btn {
+    background-color: #fff;
+    border: 1px solid #565655;
+    color: #565655;
+    width: 50%;
+  }
+  &.add-btn {
+    width: 50%;
+  }
+  &.notify-btn {
+    width: 100%;
+  }
+}

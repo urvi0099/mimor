@@ -1,0 +1,78 @@
+.welcome-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 56px); // 56px is header heigth, change later
+  margin-top: 56px;
+}
+.welcome-form-group {
+  margin-right: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+  z-index: 2;
+  .welcome-btn {
+    width: 415px;
+    height: 415px;
+    transition: 0.25s;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #3d5a92;
+    box-shadow: 0 7px 8px -4px rgb(0 0 0 / 20%), 0 13px 19px 2px rgb(0 0 0 / 14%), 0 5px 24px 4px rgb(0 0 0 / 12%);
+    a{
+      color: #3d5a92;
+      h2{
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+    }
+    &:hover {
+      background-color: #3d5a92;
+      transform: scale(1.05);
+      a{
+        color: #fff;
+      }
+      hr {
+        color: #fff;
+        background-color: #fff;
+      }
+    }
+    
+  }
+}
+
+.welcome-btn hr {
+  width: 70px;
+  border: none;
+  color: #4f75b4;
+  background-color: #4f75b4;
+  height: 2px;
+  margin-top: 25px;
+}
+
+.auth-menu-toolbar{
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 1364px){
+  .welcome-form {
+    height: auto;
+    margin-bottom: 40px;
+  }
+  .welcome-form-group {
+    margin-top: 40px;
+  } 
+}

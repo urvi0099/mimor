@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true">
+  <mat-toolbar class="mim-header-toolbar">
+    <a href="https://mimor.com.au" class="mim-main-logo mim-main-logo-orig">
+      <img src="assets/img/logoNew.png" class="logo" alt="">
+    </a>
+    <div class="switch-role">
+      <button class="logout-btn" aria-label="logoutbut" (click)="rolesService.logout()">
+        <span class="icon"></span><span class="logout">Log Out</span>
+      </button>
+      <select class="switch-role-select" *ngIf="rolesService.getRoles().length > 1" (change)="rolesService.selectRole($event.target.value)">
+        <option *ngFor="let role of rolesService.getRoles()" [value]="role.name">{{role.displayName}}</option>
+      </select>
+    </div>
+  </mat-toolbar>
+  <div class="flex-page">
+    <div class="form-wrapper d-flex-col mim-building-selector">
+      <div class="top-wrap full-width">
+        <h2 class="mim-panel-header">My buildings</h2>
+        <div class="building-selector-head">
+          <div class="build-search-input mat-input" appearance="standard">
+            <label for="buildingName">Building Name or Street Address</label>
+            <input #input="ngModel" matInput type="text" id="buildingName" name="building_name" [(ngModel)]="buildingSearchText"
+              [ngModelOptions]="{debounce: 1000}">
+          </div>
+          <button class="mim-btn add-new-build" routerLink="../building/name">Add new building</button>
+        </div>
+      </div>
+      <div class="loading-bar" *ngIf="pageLoading">
+        <ion-spinner class="spinner" color="primary"></ion-spinner>
+      </div>
+      <div *ngIf="!pageLoading && !buildingsQuery.length"
+        class="build-list-empty">Building list
+        is empty</div>
+      <div class="build-list-wrap" *ngIf="!pageLoading && buildingsQuery.length">
+        <div class="buildings-list">
+          <a class="build-item" *ngFor="let build of buildingsQuery" ng-click="$event.preventDefault(); goToBuilding(build.id);" routerLink="../dashboard/{{build.id}}">
+            <div class="build-img">
+              <!-- <img ng-src="/img/buildings/{{build.photo}}" ng-if="build.photo" alt=""> -->
+              <img src="assets/img/icons/image-icon.png" ng-if="!build.photo" alt="">
+            </div>
+            <div class="build-meta">
+              <div class="build-name">{{build.name}}</div>
+              <div class="build-addr">{{build.address}}</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="edit-my-profile-wrap" ng-hide="pageLoading">
+        <a class="edit-my-profile" routerLink="../profile" aria-label="AO BAO">
+          <mat-icon class="material-icons">edit</mat-icon>
+          <span>Edit my personal profile</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</ion-content>
